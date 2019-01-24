@@ -27,7 +27,7 @@ int main()
 
     cin >> candies >> children;
 
-    //cout << "Candies: " << candies << endl;
+    // cout << "Candies: " << candies << endl;
 
     vector<pair<int, int>> child_demand;
     for (int i = 0; i < children; i++)
@@ -47,18 +47,21 @@ int main()
     int last_index = child_demand.size() - 1;
     while (candies > 0)
     {
-	// cout << "last demand: " << last_demand << endl;
 	// cout << "remaining candy: " << candies << endl;
 	// print_list(child_demand);	
 
-	int candy = clamp(child_demand[last_index] - child_demand[last_index - 1] + 1, 0, candies);
+	int candy = clamp(demand(child_demand[last_index]) - demand(child_demand[last_index - 1]) + 1, 0, candies);
 	
-	child_demand[last_index] += candy;
+	child_demand[last_index].second += candy;
 	candies -= candy;
 
-	
+	sort(child_demand.begin(), child_demand.end(),
+	     [] (pair<int, int> p1, pair<int, int> p2)
+	     {
+		 return demand(p1) < demand(p2);
+	     });
     }
-    //print_list(child_demand);	
+    // print_list(child_demand);	
     // cout << "final candies: " << candies << endl;
     
     int anger = 0;
