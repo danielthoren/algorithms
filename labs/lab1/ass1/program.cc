@@ -44,7 +44,7 @@ vector<int> cover(pair<float, float>& target, vector<pair<float, float>>& interv
     }
     result.push_back(best[2]);
 
-    if (best[1] < target.second || intervals[result[0]].first >= target.first)
+    if (best[1] < target.second || intervals[result[0]].first > target.first)
 	return {};
 
     return result;
