@@ -29,44 +29,63 @@ int main()
 
     // cout << "Candies: " << candies << endl;
 
-    vector<pair<int, int>> child_demand;
+    vector<int> indata;
     for (int i = 0; i < children; i++)
     {
-	pair<int, int> demand;
-	cin >> demand.first;
-	demand.second = 0;
-	child_demand.push_back(demand);
+	int demand;
+	cin >> demand;
+	indata.push_back(demand);
     }
+    
+    sort(indata.begin(), indata.end());
 
-    sort(child_demand.begin(), child_demand.end(),
-	 [] (pair<int, int> p1, pair<int, int> p2)
-	 {
-	     return p1.first < p2.first;
-	 });
-
-    int last_index = child_demand.size() - 1;
+    vector<pair<int, int>> demand;
+    int count = 1;    
+    for (int i = 1; i < children; i++)
+    {
+	if (indata[i-1] != indata[i])
+	{
+	    demand.push_back({indata[i-1], count});
+	    count = 1;
+	}
+	else
+	    count++;
+    }
+    demand.push_back({indata[indata.size() - 1], count});
+    
+    int last_index = demand.size() - 1;
     while (candies > 0)
     {
 	// cout << "remaining candy: " << candies << endl;
-	// print_list(child_demand);	
+	// print_list(demand);	
 
-	int candy = clamp(demand(child_demand[last_index]) - demand(child_demand[last_index - 1]) + 1, 0, candies);
-	
-	child_demand[last_index].second += candy;
+	int demand_diff = demand[last_index].first - demand[last_index - 1].first;
+	// cout << "demand_diff: " << demand_diff << endl;
+	int candy = clamp(demand[last_index].second * demand_diff, 0, candies);
+
 	candies -= candy;
-
-	sort(child_demand.begin(), child_demand.end(),
-	     [] (pair<int, int> p1, pair<int, int> p2)
-	     {
-		 return demand(p1) < demand(p2);
-	     });
+	if ((candy == 0 && candies / demand[last_index].second > 0) || demand.size() == 0)
+	{
+	    demand[last_index].first--;
+	    candies -= demand[last_index].second;
+	}
+	else if (candy == 0)
+	{
+	    demand.push_back({demand[last_index].first - 1, candy});
+	    demand[last_index].second -= candy;
+	    candies -= candy;
+	}
+	else
+	{
+	    demand[last_index - 1].second += demand[last_index].second;
+	    demand.pop_back();
+	    last_index--;
+	}	
     }
-    // print_list(child_demand);	
-    // cout << "final candies: " << candies << endl;
     
     int anger = 0;
-    for (auto child : child_demand)
-	anger += pow(demand(child), 2);
+    for (auto child : demand)
+	anger += (pow(child.first, 2) * child.second);
 
     cout << anger;
 }
