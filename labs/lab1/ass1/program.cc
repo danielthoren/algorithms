@@ -2,71 +2,93 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include <iterator>
 
 using namespace std;
 
 vector<int> cover(pair<float, float>& target, vector<pair<float, float>>& intervals)
 {
-    sort(intervals.begin(), intervals.end(), [] (pair<float, float>& p1, pair<float, float>& p2)
+
+    if (intervals.size() == 0)
+	return {};
+    
+    vector<vector<float>> intervals_copy;
+    for (int i = 0; i < (int) intervals.size(); i++)
+    {
+	intervals_copy.push_back(vector<float>{intervals[i].first, intervals[i].second, (float) i});
+    }
+
+    sort(intervals_copy.begin(), intervals_copy.end(), [] (vector<float>& vec1, vector<float>& vec2)
 	 {
-	     if (p1.first == p2.first)
-		 return p1.second > p2.second;
-	     return p1.first < p2.first;
+	     if (vec1[0] == vec2[0])
+		 return vec1[1] > vec2[1];
+	     return vec1[0] < vec2[0];
 	 });
 
-    if (intervals.size() == 0 || intervals[0].first > target.first)
-	return vector<int>{};
-
+    float position{target.first};
+    vector<float>& best{intervals_copy[0]};
     vector<int> result;
-    int optimal{-1};
-    float pos = target.first;
-    for (int i = 0; i < intervals.size(); i++)
-    {	
-	if (optimal == -1 || (intervals[i].first <= pos &&
-			      (intervals[i].second - pos) > (intervals[optimal].second - pos)))
+    for (auto it = ++intervals_copy.begin(); it != intervals_copy.end(); it++)
+    {
+	if (position >= it->at(0) && position <= it->at(1))
 	{
-	    optimal = i;
-	    pos = intervals[optimal].second;
-	}
-	if (i != optimal && intervals[i].first >= intervals[optimal].first)
-	{
-	    result.push_back(optimal);
+	    if (best[0] <= position && best[1] >= position && best[1] <= it->at(0))
+	    {
+		result.push_back(best[2]);
+		position = best[1];
+	    }
+	
+	    if ((it->at(1) - position) > (best[1] - position))
+	    {
+		best = *it;
+	    }
 	}
     }
-    result.push_back(optimal);
+    result.push_back(best[2]);
 
-    if (intervals[optimal].second < target.second)
-	return vector<int>{};
+    // for (auto elem : intervals_copy)
+    // 	cout << "{" << elem[0] << ", " << elem[1] << ", " << elem[2] << "}, ";
+
+    if (best[1] < target.second)
+    {
+	return {};	
+    }
+
     return result;
 }
 
 int main()
 {
     pair<float, float> target_interval;
-    cin >> target_interval.first >> target_interval.second;
 
-    int count;
-    cin >> count;
 
-    vector<pair<float, float>> intervals;
-    for (int i = 0; i < count; i++)
+    while (cin >> target_interval.first >> target_interval.second)
     {
-	pair<float, float> interval;
-	cin >> interval.first >> interval.second;
-	intervals.push_back(interval);	
-    }
 
-    vector<int> res = cover(target_interval, intervals);
+	int count;
+	cin >> count;
+
+	vector<pair<float, float>> intervals;
+	for (int i = 0; i < count; i++)
+	{
+	    pair<float, float> interval;
+	    cin >> interval.first >> interval.second;
+	    intervals.push_back(interval);	
+	}
+
+	vector<int> res = cover(target_interval, intervals);
     
-    if (res.size() == 0)
-    {
-	cout << "impossible" << endl;
-    }
-    else{
-	cout << res.size() << endl;
+	if (res.size() == 0)
+	{
+	    cout << "impossible" << endl;
+	}
+	else
+	{
+	    cout << res.size() << endl;
 
-	for (int i : res)
-	    cout << i << " ";
-	cout << endl;
+	    for (int i : res)
+		cout << i << " ";
+	    cout << endl;
+	}
     }
 }
