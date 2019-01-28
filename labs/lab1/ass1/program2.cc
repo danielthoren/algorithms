@@ -6,6 +6,14 @@
 
 using namespace std;
 
+vector<int> help_cover(pair<float, float>& target, vector<vector<float>> intervals)
+{
+    if (target.second >= intervals[0][0])
+	return {target[2]};
+    else if (intervals.size() != 0)
+	
+}
+
 vector<int> cover(pair<float, float>& target,
 		  vector<pair<float, float>>& intervals)
 {
@@ -32,41 +40,7 @@ vector<int> cover(pair<float, float>& target,
     vector<float> best{intervals_copy[0]};
     vector<int> result{};
 
-    for (auto it = intervals_copy.begin();
-	 it != intervals_copy.end(); it++)
-    {
-	if (best[0] <= position && best[1] >= position && it->at(0) > position)
-	{
-	    if (!(result.size() > 0 && result[result.size() - 1] == best[2]))
-	    {
-		result.push_back((int) best[2]);
-		position = best[1];
-	    }
-	}
-	
-	if ((it->at(0) <= position && it->at(1) >= position &&
-	     (it->at(1) - position) > (best[1] - position)) ||
-	    best[1] < position)
-	{
-	    best = *it;
-	    if (best[1] >= target.second)
-	    	break;
-	}
-    }
-
-    if ((best[0] <= position && best[1] >= position) &&
-	(target.second > position || target.first == target.second))
-    {
-	if (!(result.size() > 0 && result[result.size() - 1] == best[2]))
-	{
-	    result.push_back((int) best[2]);
-	}
-    }
-
-    if (best[1] < target.second ||
-	(result.size() > 0 &&intervals[result[0]].first > target.first))
-	return {};
-
+    
     return result;
 }
 
