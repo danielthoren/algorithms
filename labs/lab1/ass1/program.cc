@@ -6,7 +6,8 @@
 
 using namespace std;
 
-vector<int> cover(pair<float, float>& target, vector<pair<float, float>>& intervals)
+vector<int> cover(pair<float, float>& target,
+		  vector<pair<float, float>>& intervals)
 {
 
     if (intervals.size() == 0)
@@ -15,34 +16,46 @@ vector<int> cover(pair<float, float>& target, vector<pair<float, float>>& interv
     vector<vector<float>> intervals_copy;
     for (int i = 0; i < (int) intervals.size(); i++)
     {
-	intervals_copy.push_back(vector<float>{intervals[i].first, intervals[i].second, (float) i});
+	intervals_copy.push_back(
+	    vector<float>{intervals[i].first, intervals[i].second, (float) i});
     }
 
-    sort(intervals_copy.begin(), intervals_copy.end(), [] (vector<float>& vec1, vector<float>& vec2)
+    sort(intervals_copy.begin(), intervals_copy.end(),
+	 [] (vector<float>& vec1, vector<float>& vec2)
 	 {
 	     if (vec1[0] == vec2[0])
 		 return vec1[1] > vec2[1];
 	     return vec1[0] < vec2[0];
 	 });
 
+    // for(auto elem : intervals_copy)
+    // 	cout << "{" << elem[0] << ", " << elem[1] << ", " << elem[2]
+    // 	     << "}, " << endl;
+
     float position{target.first};
     vector<float> best{intervals_copy[0]};
     vector<int> result;
+
     for (auto it = intervals_copy.begin(); it != intervals_copy.end(); it++)
     {
-	if (best[0] <= position && best[1] >= position && best[1] <= it->at(1))
+	if (best[0] <= position && best[1] >= position && it->at(0) > position)
 	{	    
 	    result.push_back(best[2]);
 	    position = best[1];
 	}
 	
-	if (position >= it->at(0) && position <= it->at(1) &&
+	if (it->at(0) <= position && it->at(1) >= position &&
 	    (it->at(1) - position) > (best[1] - position))
 	{
 	    best = *it;
 	}
     }
-    result.push_back(best[2]);
+
+    if (best[0] <= position && best[1] >= position &&
+	target.second > position)
+    {
+	result.push_back(best[2]);
+    }
 
     if (best[1] < target.second || intervals[result[0]].first > target.first)
 	return {};
