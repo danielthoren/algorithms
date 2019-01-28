@@ -6,6 +6,14 @@
 
 using namespace std;
 
+inline bool check_insert(vector<float> best, float position,
+			 vector<int> result, vector<float> elem)
+{
+    if (best[0] <= position && best[1] >= position && elem.at(0) > position)
+	return (!(result.size() > 0 && result[result.size() - 1] == best[2]));
+    return false;
+}
+
 vector<int> cover(pair<float, float>& target,
 		  vector<pair<float, float>>& intervals)
 {
@@ -30,31 +38,37 @@ vector<int> cover(pair<float, float>& target,
 
     float position{target.first};
     vector<float> best{intervals_copy[0]};
-    vector<int> result;
+    vector<int> result{};
 
-    for (auto it = intervals_copy.begin(); it != intervals_copy.end(); it++)
+    for (auto it = intervals_copy.begin();
+	 it != intervals_copy.end(); it++)
     {
-	if (best[0] <= position && best[1] >= position && it->at(0) > position)
+	if(check_insert(best, position, result, *it))
 	{
-	    result.push_back(best[2]);
+	    result.push_back((int) best[2]);
 	    position = best[1];
 	}
 	
 	if ((it->at(0) <= position && it->at(1) >= position &&
-	    (it->at(1) - position) > (best[1] - position)) ||
+	     (it->at(1) - position) > (best[1] - position)) ||
 	    best[1] < position)
 	{
 	    best = *it;
 	}
     }
 
-    if ((best[0] <= position && best[1] >= position) &&
-	(target.second > position || target.first == target.second))
+    if (check_insert(best, position, result,
+		     intervals_copy[intervals_copy.size() - 1]) ||
+	target.first == target.second)
     {
-	result.push_back((int)best[2]);
+	if (!(result.size() > 0 && result[result.size() - 1] == best[2]))
+	{
+	    result.push_back((int) best[2]);
+	}
     }
 
-    if (best[1] < target.second || intervals[result[0]].first > target.first)
+    if (best[1] < target.second ||
+	(result.size() > 0 &&intervals[result[0]].first > target.first))
 	return {};
 
     return result;
