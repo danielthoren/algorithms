@@ -6,14 +6,6 @@
 
 using namespace std;
 
-inline bool check_insert(vector<float> best, float position,
-			 vector<int> result, vector<float> elem)
-{
-    if (best[0] <= position && best[1] >= position && elem.at(0) > position)
-	return (!(result.size() > 0 && result[result.size() - 1] == best[2]));
-    return false;
-}
-
 vector<int> cover(pair<float, float>& target,
 		  vector<pair<float, float>>& intervals)
 {
@@ -43,10 +35,13 @@ vector<int> cover(pair<float, float>& target,
     for (auto it = intervals_copy.begin();
 	 it != intervals_copy.end(); it++)
     {
-	if(check_insert(best, position, result, *it))
+	if (best[0] <= position && best[1] >= position && it->at(0) > position)
 	{
-	    result.push_back((int) best[2]);
-	    position = best[1];
+	    if (!(result.size() > 0 && result[result.size() - 1] == best[2]))
+	    {
+		result.push_back((int) best[2]);
+		position = best[1];
+	    }
 	}
 	
 	if ((it->at(0) <= position && it->at(1) >= position &&
@@ -57,9 +52,8 @@ vector<int> cover(pair<float, float>& target,
 	}
     }
 
-    if (check_insert(best, position, result,
-		     intervals_copy[intervals_copy.size() - 1]) ||
-	target.first == target.second)
+    if ((best[0] <= position && best[1] >= position) &&
+	(target.second > position || target.first == target.second))
     {
 	if (!(result.size() > 0 && result[result.size() - 1] == best[2]))
 	{
