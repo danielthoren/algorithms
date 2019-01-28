@@ -28,10 +28,6 @@ vector<int> cover(pair<float, float>& target,
 	     return vec1[0] < vec2[0];
 	 });
 
-    // for(auto elem : intervals_copy)
-    // 	cout << "{" << elem[0] << ", " << elem[1] << ", " << elem[2]
-    // 	     << "}, " << endl;
-
     float position{target.first};
     vector<float> best{intervals_copy[0]};
     vector<int> result;
@@ -39,22 +35,23 @@ vector<int> cover(pair<float, float>& target,
     for (auto it = intervals_copy.begin(); it != intervals_copy.end(); it++)
     {
 	if (best[0] <= position && best[1] >= position && it->at(0) > position)
-	{	    
+	{
 	    result.push_back(best[2]);
 	    position = best[1];
 	}
 	
-	if (it->at(0) <= position && it->at(1) >= position &&
-	    (it->at(1) - position) > (best[1] - position))
+	if ((it->at(0) <= position && it->at(1) >= position &&
+	    (it->at(1) - position) > (best[1] - position)) ||
+	    best[1] < position)
 	{
 	    best = *it;
 	}
     }
 
-    if (best[0] <= position && best[1] >= position &&
-	target.second > position)
+    if ((best[0] <= position && best[1] >= position) &&
+	(target.second > position || target.first == target.second))
     {
-	result.push_back(best[2]);
+	result.push_back((int)best[2]);
     }
 
     if (best[1] < target.second || intervals[result[0]].first > target.first)
