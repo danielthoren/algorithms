@@ -13,32 +13,35 @@ using namespace std;
 
 using namespace std;
 
-vector<int> cover(pair<float, float>& target,
-		  vector<pair<float, float>>& intervals)
+vector<int> cover(pair<double, double>& target,
+		  vector<pair<double, double>>& intervals)
 {
 
     if (intervals.size() == 0)
 	return {};
     
-    vector<vector<float>> intervals_copy;
+    vector<vector<double>> intervals_copy;
     for (int i = 0; i < (int) intervals.size(); i++)
     {
 	intervals_copy.push_back(
-	    vector<float>{intervals[i].first, intervals[i].second, (float) i});
+	    vector<double>{intervals[i].first, intervals[i].second, (double) i});
     }
 
     sort(intervals_copy.begin(), intervals_copy.end(),
-	 [] (vector<float>& vec1, vector<float>& vec2)
+	 [] (vector<double>& vec1, vector<double>& vec2)
 	 {
 	     if (vec1[0] == vec2[0])
 		 return vec1[1] > vec2[1];
 	     return vec1[0] < vec2[0];
 	 });
 
-    float position{target.first};
-    vector<float> best{intervals_copy[0]};
+    double position{target.first};
+    vector<double> best{};
     vector<int> result{};
     int index = 0;
+
+    if (intervals_copy[0][0] > target.first)
+	return {};
 
     do
     {
@@ -46,12 +49,17 @@ vector<int> cover(pair<float, float>& target,
 	     i < intervals_copy.size() && intervals_copy[i][0] <= position;
 	     i++)
 	{
-	    if ((intervals_copy[i][1] > position &&
-		 (intervals_copy[i][1] - position) > (best[1] - position)) ||
-		best[1] <= position)
+	    if (best.size() == 0 || (intervals_copy[i][1] > position &&
+	       (intervals_copy[i][1] - position) > (best[1] - position)))
 	    {
 		best = intervals_copy[i];
 		index = i;
+
+		if (best[1] >= target.second)
+		{
+		    result.push_back(best[2]);
+		    return result;
+		}		    
 	    }
 	}
 
@@ -65,37 +73,6 @@ vector<int> cover(pair<float, float>& target,
 	
     } while (position < target.second);
 
-    // for (auto it = intervals_copy.begin();
-    // 	 it != intervals_copy.end(); it++)
-    // {
-    // 	if (best[0] <= position && best[1] >= position && it->at(0) > position)
-    // 	{
-    // 	    if (!(result.size() > 0 && result[result.size() - 1] == best[2]))
-    // 	    {
-    // 		result.push_back((int) best[2]);
-    // 		position = best[1];
-    // 	    }
-    // 	}
-	
-    // 	if ((it->at(0) <= position && it->at(1) >= position &&
-    // 	     (it->at(1) - position) > (best[1] - position)) ||
-    // 	    best[1] < position)
-    // 	{
-    // 	    best = *it;
-    // 	    if (best[1] >= target.second)
-    // 	    	break;
-    // 	}
-    // }
-
-    // if ((best[0] <= position && best[1] >= position) &&
-    // 	(target.second > position || target.first == target.second))
-    // {
-    // 	if (!(result.size() > 0 && result[result.size() - 1] == best[2]))
-    // 	{
-    // 	    result.push_back((int) best[2]);
-    // 	}
-    // }
-
     if (best[1] < target.second ||
     	(result.size() > 0 &&intervals[result[0]].first > target.first))
     	return {};
@@ -105,7 +82,7 @@ vector<int> cover(pair<float, float>& target,
 
 int main()
 {
-    pair<float, float> target_interval;
+    pair<double, double> target_interval;
 
 
     while (cin >> target_interval.first >> target_interval.second)
@@ -114,10 +91,10 @@ int main()
 	int count;
 	cin >> count;
 
-	vector<pair<float, float>> intervals;
+	vector<pair<double, double>> intervals;
 	for (int i = 0; i < count; i++)
 	{
-	    pair<float, float> interval;
+	    pair<double, double> interval;
 	    cin >> interval.first >> interval.second;
 	    intervals.push_back(interval);	
 	}
