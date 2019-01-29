@@ -103,7 +103,7 @@ int main()
 	    {
 		cout << i << " ";
 	    }
-	    cout << res[res.size() - 1];
+	    cout << res[res.size() - 1] << endl;
 	}
     }
 }
