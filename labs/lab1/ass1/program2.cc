@@ -5,19 +5,20 @@
 #include <iterator>
 
 using namespace std;
-#include <utility>
-#include <algorithm>
-#include <iostream>
-#include <vector>
-#include <iterator>
-
-using namespace std;
 
 struct Interval
 {
     double first, second;
     int orig_index;
 };
+
+vector<int> cover_point(double target, vector<Interval> sorted_intervals)
+{
+    for (auto it = sorted_intervals.begin(); it != sorted_intervals.end(); it++)
+	if (it->first <= target && it->second >= target)
+	    return {it->orig_index};
+    return {};
+}
 
 vector<int> cover(pair<double, double>& target,
 		  vector<pair<double, double>>& intervals)
@@ -40,6 +41,9 @@ vector<int> cover(pair<double, double>& target,
 		 return i1.second > i2.second;
 	     return i1.first < i2.first;
 	 });
+
+    if (target.first == target.second)
+    	return cover_point(target.first, intervals_copy);
 
     double position{target.first};
     Interval best{};
@@ -118,7 +122,7 @@ int main()
 
 	    for (unsigned int i{0}; i < (res.size()- 1); i++)
 	    {
-		cout << i << " ";
+		cout << res[i] << " ";
 	    }
 	    cout << res[res.size() - 1] << endl;
 	}
