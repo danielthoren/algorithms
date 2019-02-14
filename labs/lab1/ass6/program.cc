@@ -9,12 +9,12 @@
 
 using namespace std;
 
-vector<complex<double>> FFT(vector<complex<double>> poly, complex<double> w)
+vector<complex<double>> FFT(vector<complex<double>> poly, int w)
 {
     if (poly.size() <= 1)
 	return poly;
 
-    complex<double> nw{cos(2*M_PI/poly.size()), sin(2*M_PI/poly.size())};
+    complex<double> nw{cos(w*2*M_PI/poly.size()), sin(w*2*M_PI/poly.size())};
     
     vector<complex<double>> poly_even, poly_uneven;    
     for (int i = 0; i < poly.size()/2; ++i)
@@ -26,43 +26,40 @@ vector<complex<double>> FFT(vector<complex<double>> poly, complex<double> w)
     vector<complex<double>> poly_even_res{ FFT(poly_even, w) };
     vector<complex<double>> poly_uneven_res{ FFT(poly_uneven, w) };
 
+    complex<double> x{1};
     for (int j{0}; j < poly.size()/2 ; ++j)
     {
-	poly[j] = poly_even_res[j] + w*poly_uneven_res[j];
-	poly[j+poly.size()/2] = poly_even_res[j] - w*poly_uneven_res[j];
-	w = w * nw;
+	poly[j] = poly_even_res[j] + x*poly_uneven_res[j];
+	poly[j+poly.size()/2] = poly_even_res[j] - x*poly_uneven_res[j];
+	
+	if (w == -1)
+	{
+	    poly[j] /= 2;	    /* Dividing every entry in poly by n since this is recursive */
+	    poly[j+poly.size()/2] /= 2;
+	}
+	    
+	x = x * nw;
     }
     return poly;
 }
 
-void pad_with_ones(vector<complex<double>>& poly, int amount)
+int next_power_of_two(int n)
 {
-    for (int i = 0; i < amount; i++)
-	poly.push_back(1);
+    n |= n >> 16;
+    n |= n >> 8;
+    n |= n >> 4;
+    n |= n >> 2;
+    n |= n >> 1;
+
+    n++;
+    return n;
 }
 
-vector<complex<double>> convalution(vector<complex<double>>& poly1, vector<complex<double>>& poly2)
-{    
-    reverse(poly1.begin(), poly1.end());
-    vector<complex<double>> result;
-    
-    int overlap = 1;
-    int max_overlap = abs(poly1.size() - poly2.size());
-    bool turning = false;
-    for(int i{0}; i < (poly2.size() + poly1.size()); i++)
-    {
-	for(int j{0}; j < overlap; j++)
-	{	    
-	    result.push_back(poly1.at(poly1.size() - j) * poly2.at(j));
-	}
-	if (overlap >= max_overlap)
-	    turning = true;
-
-	if (turning)
-	    overlap--;
-	else
-	    overlap++;
-    }
+void pad_zeroes(vector<complex<double>>& poly, int target_size)
+{
+    int orig_size{poly.size()};
+    for (int i{0}; i < (target_size - orig_size); i++)
+	poly.push_back(0);
 }
 
 int main()
@@ -82,28 +79,44 @@ int main()
 	poly1.push_back(in);
     }
 
-    order = 0;
-    cin >> order;
+    int order2;
+    cin >> order2;
 
-    for (int i = 0; i <= order; i++)
+    for (int i = 0; i <= order2; i++)
     {
     	double in;
     	cin >> in;
     	poly2.push_back(in);
     }
 
+    int target_size = next_power_of_two(order + order2 + 1);
+    pad_zeroes(poly1, target_size);
+    pad_zeroes(poly2, target_size);
+
     vector<complex<double>> poly1_c = FFT(poly1, 1);
     vector<complex<double>> poly2_c = FFT(poly2, 1);
 
-    vector<complex<double>> result_c{ FFT(poly1_c, poly2_c), 0) };
-    vector<double> result;
-    
-    for (int i = 0; i < result_c.size(); ++i)
+    vector<complex<double>> joined_poly(target_size);
+    for (int i{0}; i < target_size; i++)
     {
-	result.push_back(result_c.at(i).real() * result_c.size());
+	joined_poly[i] = poly1_c[i] * poly2_c[i];
     }
-    
 
-    for (auto it : result)
-	cout << "Re: " << it << endl;
+    vector<complex<double>> result_c{ FFT(joined_poly, -1) };
+    vector<int> result;
+    
+    for (int i = 0; i < (order + order2 + 1); ++i)
+    {
+	int tmp = round(result_c.at(i).real());
+	result.push_back(tmp);
+    }
+
+    cout << (order + order2) << endl;
+
+    for (int i{0}; i < result.size(); i++)
+	cout  << result.at(i) << " ";
+
+    cout << endl;
+
+    return 0;
 }
