@@ -1,0 +1,43 @@
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+  int length, height;
+  cin >> length >> height;
+
+  cout << "length: " << length << " height: " << height << endl;
+
+  vector<int> obs_line(height);
+							   
+
+  bool upper = false;
+  for (int i{0}; i < length; ++i)
+    {
+      int obs;
+      cin >> obs;
+      if (upper)
+	{
+	  for (int j{obs_line.size() - 1}; j > (obs_line.size() - obs); ++j)
+	    {
+	      obs_line.at(j)++;
+	    }
+	  upper = false;
+	}
+      else
+	{
+	  for (int j{0}; j < obs; j++)
+	    {
+	      obs_line.at(j)++;
+	    }
+	  upper = true;
+	}
+    }
+
+  for (int i : obs_line)
+    cout << i << endl;
+}
