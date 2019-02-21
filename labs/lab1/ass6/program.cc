@@ -62,6 +62,50 @@ void pad_zeroes(vector<complex<double>>& poly, int target_size)
 	poly.push_back(0);
 }
 
+vector<complex<double>> join_poly(vector<complex<double>>& poly1_c, vector<complex<double>> poly2_c, int target_size)
+{
+    vector<complex<double>> joined_poly(target_size);
+    for (int i{0}; i < target_size; i++)
+    {
+	joined_poly[i] = poly1_c[i] * poly2_c[i];
+    }
+    return joined_poly;
+}
+
+vector<int> polynomial_multiplication(vector<double> poly1_r, vector<double> poly2_r)
+{
+    vector<complex<double>> poly1;
+    for (double elem : poly1_r)
+	poly1.push_back(elem);
+    
+    int order1 = poly1_r.size() - 1;
+    
+    vector<complex<double>> poly2;
+    for (double elem : poly2_r)
+	poly2.push_back(elem);
+    
+    int order2 = poly2_r.size() - 1;    
+    
+    int target_size = next_power_of_two(order1 + order2 + 1);
+    pad_zeroes(poly1, target_size);
+    pad_zeroes(poly2, target_size);
+
+    vector<complex<double>> poly1_c = FFT(poly1, 1);
+    vector<complex<double>> poly2_c = FFT(poly2, 1);
+    
+    vector<complex<double>> joined_poly = join_poly(poly1_c, poly2_c, target_size);
+
+    vector<complex<double>> result_c{ FFT(joined_poly, -1) };
+    vector<int> result;
+    
+    for (int i = 0; i < (order1 + order2 + 1); ++i)
+    {
+	int tmp = round(result_c.at(i).real());
+	result.push_back(tmp);
+    }
+    return result;
+}
+
 int main()
 {
     int T, order;
@@ -70,7 +114,7 @@ int main()
     if (T != 1)
 	return -1;
 
-    vector<complex<double>> poly1, poly2;
+    vector<double> poly1, poly2;
 
     for (int i = 0; i <= order; i++)
     {
@@ -89,27 +133,7 @@ int main()
     	poly2.push_back(in);
     }
 
-    int target_size = next_power_of_two(order + order2 + 1);
-    pad_zeroes(poly1, target_size);
-    pad_zeroes(poly2, target_size);
-
-    vector<complex<double>> poly1_c = FFT(poly1, 1);
-    vector<complex<double>> poly2_c = FFT(poly2, 1);
-
-    vector<complex<double>> joined_poly(target_size);
-    for (int i{0}; i < target_size; i++)
-    {
-	joined_poly[i] = poly1_c[i] * poly2_c[i];
-    }
-
-    vector<complex<double>> result_c{ FFT(joined_poly, -1) };
-    vector<int> result;
-    
-    for (int i = 0; i < (order + order2 + 1); ++i)
-    {
-	int tmp = round(result_c.at(i).real());
-	result.push_back(tmp);
-    }
+    vector<int> result{polynomial_multiplication(poly1, poly2)};
 
     cout << (order + order2) << endl;
 

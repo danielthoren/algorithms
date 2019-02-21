@@ -1,0 +1,10 @@
+
+
+int main()
+{
+    int num;
+    while (cin >> num)
+    {
+
+    }
+}
