@@ -36,17 +36,17 @@ vector<vector<preference>> get_data()
     return data;
 }
 
-vector<int> get_vote(vector<preference>& priest_preference, vector<int>& translation,  map<int, vector<int>> const& neighbours)
+vector<int> get_vote(vector<preference>& priest_preference, map<int, int>& final_outcome,  map<int, vector<int>> const& neighbours)
 {
     vector<int> outcome{};
     for (int data_in{0}; data_in < 8; data_in++)
     {
 	for (struct preference p : priest_preference)
 	{
-	    auto it = find(neighbours.at(data_in).begin(), neighbours.at(data_in).end(), translation.at(p.val));
+	    auto it = find(neighbours.at(data_in).begin(), neighbours.at(data_in).end(), final_outcome.at(p.val));
 	    if (it != neighbours.at(data_in).end())
 	    {
-		outcome.push_back(translation.at(p.val));
+		outcome.push_back(final_outcome.at(p.val));
 		break;
 	    }
 	}
@@ -58,7 +58,7 @@ vector<int> get_vote(vector<preference>& priest_preference, vector<int>& transla
     return outcome;
 }
 
-void calc_translation(vector<int>& priest_voting, vector<int>& translation)
+void calc_final_outcome(vector<int>& priest_voting, map<int, int>& final_outcome)
 {
     for (int i{0}; i < 8; i++)
     {
@@ -73,7 +73,7 @@ void calc_translation(vector<int>& priest_voting, vector<int>& translation)
 	    }
 	}
 
-	translation.at(i) = index;
+	final_outcome.at(i) = index;
     }
 }
 
@@ -109,14 +109,14 @@ int main()
     {
     	vector<vector<preference>> priest_preference = get_data();
     	vector<vector<int>> priest_voting{};
-    	vector<int> translation{0,1,2,3,4,5,6,7};
+	map <int, int> final_outcome{ {0,0},{1,1},{2,2},{3,3},{4,4},{5,5},{6,6},{7,7} }; // {wanted outcome, needed vote}
 	
     	for (int priest{priest_preference.size() - 1}; priest >= 0; priest--)
     	{
-    	    priest_voting.push_back(get_vote(priest_preference[priest], translation, neighbours));
+    	    priest_voting.push_back(get_vote(priest_preference[priest], final_outcome, neighbours));
 
 	    if (priest > 0)
-		calc_translation(priest_voting.at(priest_voting.size() - 1), translation);
+		calc_final_outcome(priest_voting.at(priest_voting.size() - 1), final_outcome);
     	}
 
 	//reverse(priest_voting.begin(), priest_voting.end());

@@ -1,0 +1,29 @@
+struct preference
+{
+    int pref;
+    int val;
+};
+
+vector<vector<preference>> get_data()
+{
+    int priests;
+    cin >> priests;
+
+    vector<vector<preference>> data;
+    for (int i{0}; i < priests; i++)
+    {
+	data.push_back({});
+	for (int j{0}; j < 8; j++)
+	{
+	    preference pref_data;
+	    cin >> pref_data.pref;
+	    pref_data.val = j;
+	    data.at(i).push_back(pref_data);
+	}
+	sort(data[i].begin(), data[i].end(), [] (preference p1, preference p2)
+	     {
+		 return p1.pref < p2.pref;
+	     });	
+    }
+    return data;
+}
