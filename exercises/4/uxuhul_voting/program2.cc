@@ -51,23 +51,23 @@ int get_vote(map<int, vector<int>> const& neighbours, vector<Priest>& priests, i
 
     for (int i{0}; i < 3; i++)
     {
-	// auto it = pr.memory.find(reachable[i]);
-	// if (it != pr.memory.end())
-	// {
-	//     result.at(i) = it->second;
-	// }
-	// else
-	// {
+	auto it = pr.memory.find(reachable[i]);
+	if (it != pr.memory.end())
+	{
+	    result.at(i) = it->second;
+	}
+	else
+	{
 	    result.at(i) = get_vote(neighbours, priests, priest_index + 1, reachable[i]);
-	//     pr.memory[reachable[i]] = result.at(i);
-	// }
+	    pr.memory[reachable[i]] = result.at(i);
+	}
     }
     
     for (int pref : pr.preference)
     {
 	for (int res{0}; res < 3; res++)
 	    if (result.at(res) == pref)
-		return reachable.at(res);
+		return result.at(res);
     }
 }
 
