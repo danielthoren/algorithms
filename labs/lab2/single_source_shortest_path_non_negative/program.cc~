@@ -1,0 +1,4 @@
+int main()
+{
+    int node_count, edge_count, querie_count, start_node;
+}
