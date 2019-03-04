@@ -15,6 +15,7 @@ struct Node
 {
     int min_cost;
     bool visited;
+    int parent;
     vector<Edge> edges;
 };
 
@@ -35,25 +36,47 @@ void update_distance(vector<Node>& graph, Node& node)
     }
 }
 
+/*
+ *Takes a graph as a vector where the index is the node number and each 
+ *node is of type "Node" which contains edges, cost and if its visited or not
+ */
 void dijkstras(vector<Node>& graph, int start_node)
 {
     graph.at(start_node).min_cost = 0;
+    int prev_node = start_node;
     for (int i{0}; i < graph.size(); i++)
     {
-	Node* min_node = nullptr;
-	for (Node& n : graph)
+        int min_node = -1;
+	for (int n{0}; n < graph.size(); n++)
 	{
-	    if (!n.visited)
+	    if (!graph.at(n).visited)
 	    {
-		if (min_node == nullptr || n.min_cost < min_node->min_cost)
+		if (min_node == -1 || graph.at(n).min_cost < graph.at(min_node).min_cost)
 		{
-		    min_node = &n;
+		    min_node = n;
 		}
 	    }
 	}
-       
-	update_distance(graph, *min_node);
+	graph.at(min_node).parent = prev_node;
+	prev_node = min_node;
+	update_distance(graph, graph.at(min_node));
     }
+}
+
+/*
+ *returns shortest path, assumes there is a shortest path
+ */
+vector<int> get_shortest_path(vector<Node>& graph, int start, int end)
+{
+    vector<int> path{};
+    int curr = end;
+    while (curr != start)
+    {
+	path.insert(path.begin(), curr);
+	curr = graph.at(curr).parent;
+    }
+    path.insert(path.begin(), start);
+    return path;
 }
 
 int main()
@@ -89,7 +112,7 @@ int main()
 	    if (graph.at(querie).min_cost == INT_MAX)
 		cout << "Impossible" << endl;
 	    else
-		cout << graph.at(querie).min_cost << endl;	
+		cout << graph.at(querie).min_cost << endl;
 	}
 	cin >> node_count >> edge_count >> querie_count >> start_node;
 		
