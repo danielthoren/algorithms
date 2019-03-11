@@ -19,17 +19,20 @@ struct Node
     vector<Edge> edges;
 };
 
-void update_distance(vector<Node>& graph, Node& node)
+void update_distance(vector<Node>& graph, Node& node, int node_index)
 {
     if (node.min_cost != INT_MAX)
     {
-	for (Edge edge: node.edges)
+	for (Edge& edge: node.edges)
 	{
 	    int tmp = node.min_cost + edge.cost;
 	    if (tmp < graph.at(edge.end_node).min_cost &&
 		!graph.at(edge.end_node).visited)
 	    {
 		graph.at(edge.end_node).min_cost = tmp;
+
+		//Uncomment to enable backtracking of path
+		//graph.at(edge.end_node).parent = node_index;
 	    }
 	}
 	node.visited = true;
@@ -43,7 +46,6 @@ void update_distance(vector<Node>& graph, Node& node)
 void dijkstras(vector<Node>& graph, int start_node)
 {
     graph.at(start_node).min_cost = 0;
-    int prev_node = start_node;
     for (int i{0}; i < graph.size(); i++)
     {
         int min_node = -1;
@@ -57,9 +59,7 @@ void dijkstras(vector<Node>& graph, int start_node)
 		}
 	    }
 	}
-	graph.at(min_node).parent = prev_node;
-	prev_node = min_node;
-	update_distance(graph, graph.at(min_node));
+	update_distance(graph, graph.at(min_node), min_node);
     }
 }
 
@@ -81,6 +81,8 @@ vector<int> get_shortest_path(vector<Node>& graph, int start, int end)
 
 int main()
 {
+    std::ios_base::sync_with_stdio(false);
+    
     int node_count, edge_count, querie_count, start_node;
     cin >> node_count >> edge_count >> querie_count >> start_node;
 

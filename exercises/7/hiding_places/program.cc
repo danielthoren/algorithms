@@ -21,8 +21,9 @@ struct Node
     vector<Edge> edges;
 };
 
-void update_distance(vector<Node>& graph, Node& node)
+void update_distance(vector<Node>& graph, int node_index)
 {
+    Node& node{graph.at(node_index)};
     if (node.min_cost != INT_MAX)
     {
 	for (Edge edge: node.edges)
@@ -32,6 +33,7 @@ void update_distance(vector<Node>& graph, Node& node)
 		!graph.at(edge.end_node).visited)
 	    {
 		graph.at(edge.end_node).min_cost = tmp;
+		graph.at(edge.end_node).parent = node_index;
 	    }
 	}
 	node.visited = true;
@@ -45,7 +47,6 @@ void update_distance(vector<Node>& graph, Node& node)
 vector<Node> dijkstras(vector<Node> graph, int start_node)
 {
     graph.at(start_node).min_cost = 0;
-    int prev_node = start_node;
     for (int i{0}; i < graph.size(); i++)
     {
         int min_node = -1;
@@ -59,9 +60,7 @@ vector<Node> dijkstras(vector<Node> graph, int start_node)
 		}
 	    }
 	}
-	graph.at(min_node).parent = prev_node;
-	prev_node = min_node;
-	update_distance(graph, graph.at(min_node));
+	update_distance(graph, min_node);
     }
     return graph;
 }
