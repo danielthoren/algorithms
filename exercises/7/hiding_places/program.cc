@@ -110,11 +110,11 @@ pair<int, vector<string>> get_longest_paths(vector<Node>& graph, int start)
 	    {
 		paths.push_back(string({column.at(hori_p),
 				static_cast<char>('0' + vert_p + 1)}));
-		vector<int> path = get_shortest_path(graph, start, pos);
-		cout << paths.at(paths.size() - 1) << " : ";
-		for (int n : path)
-		    cout << n << " -> ";
-		cout << endl;
+		// vector<int> path = get_shortest_path(graph, start, pos);
+		// cout << paths.at(paths.size() - 1) << " : ";
+		// for (int n : path)
+		//     cout << n << " -> ";
+		// cout << endl;
 	    }
 	}
     }
@@ -155,7 +155,7 @@ int main()
 
 		if (hori_p < 7)
 		    node.edges.push_back(Edge{pos_tmp + 1, 1});
-		if (hori_p > 1)
+		if (hori_p > 0)
 		    node.edges.push_back(Edge{pos_tmp - 1, 1});
 	    }
 
