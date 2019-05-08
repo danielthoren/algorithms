@@ -61,32 +61,28 @@ std::vector<int> string_matching(std::string& pattern, std::string& data)
 
     int p_off{0};
     int k{0};
-    for (int j{0}; j < data.size(); j++)
+    for (int j{0}; j <= data.size(); j++)
     {
+	//if current letter is a match
 	if (pattern[k] == data[j])
 	{
-	    k++;
-	    if (k == pattern.size())
-	    {
-		if (j - k + 1 == 511)
-		    std::cout << " " << std::endl;
-		
-		matches.push_back(j - k + 1);
-		k = prefix[k-1];
+	    //Pattern has been found
+	    if (k == (pattern.size() - 1))
+	    {		
+		matches.push_back(j - k);
+		k = prefix[k];
 	    }
-	}
-	else
-	{
-	    if (k > 0)
-	    	k = prefix[k - 1];
+	    //Not match yet, continue checking
 	    else
-		k = prefix[0];
-	    
-	    if (k < 0)
 	    {
-		j++;
 		k++;
 	    }
+	}
+	//If missmatch
+	else if (k != 0)
+	{
+	    k = prefix[k - 1];
+	    j--; //Staying on the same letter in data
 	}
     }
     return matches;
