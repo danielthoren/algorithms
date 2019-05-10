@@ -53,7 +53,7 @@ std::stringstream print_trie(std::vector<Node>& trie, int index = 0)
     std::stringstream stream{};
     if (trie[index].word_done != -1)
     {
-	stream << "->('" << trie[index].letter << "' : " << index << ")" << std::endl;
+	stream << std::endl;
 	return stream;
     }
 
