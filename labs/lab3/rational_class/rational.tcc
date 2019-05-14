@@ -226,7 +226,10 @@ template<typename T>
 void Rational<T>::format()
 {
     if (numerator == 0)
+    {
+	denominator = 1;
 	return;
+    }
     
     if (denominator < 0)
     {

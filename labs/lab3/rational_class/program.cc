@@ -15,8 +15,8 @@ int main()
 	char op;
 
 	cin >> num1 >> denum1 >> op >> num2 >> denum2;
-	Rational<int> r1{num1, denum1};
-	Rational<int> r2{num2, denum2};
+	Rational<long long int> r1{num1, denum1};
+	Rational<long long int> r2{num2, denum2};
 
 	if (op == '+')
 	    r1 += r2;

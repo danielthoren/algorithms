@@ -20,7 +20,6 @@ public:
 	}
 
     Rational<T> operator+(Rational<T> const& other) const;
-
     Rational<T>& operator+=(Rational<T> const& other);
 
     /*
@@ -32,9 +31,7 @@ public:
      * Pre-increment
      */
     Rational<T> operator++(int);
-
     Rational<T> operator-(Rational<T> const& other) const;
-
     Rational<T>& operator-=(Rational<T> const& other);
 
         /*
@@ -46,13 +43,9 @@ public:
      * Pre-decrement
      */
     Rational<T> operator--(int);
-
     Rational<T> operator/(Rational<T> const& other) const;
-    
     Rational<T>& operator/=(Rational<T> const& other);
-
     Rational<T>& operator*=(Rational<T> const& other);
-
     Rational<T> operator*(Rational<T> const& other) const;
 
     /*
@@ -60,27 +53,19 @@ public:
      * by dividing numerator with denominator
      */    
     T operator*() const;
-
     Rational<T>& operator=(Rational<T> const& other);
-
     bool operator==(Rational<T> const& other) const;
-
     bool operator!=(Rational<T> const& other) const;
-
     bool operator<(Rational<T> const& other) const;
-
     bool operator<=(Rational<T> const& other) const;
-
     bool operator>(Rational<T> const& other) const;
-
-    bool operator>=(Rational<T> const& other) const;    
-
+    bool operator>=(Rational<T> const& other) const;
+    
     std::string str() const;
 
+ 
     T greatest_common_denominator(T x, T y) const;
-
     T lowest_common_denominator(T x, T y) const;
-
     void format();
     
     T numerator;   //Täljare
