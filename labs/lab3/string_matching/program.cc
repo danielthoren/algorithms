@@ -2,41 +2,6 @@
 #include <string>
 #include <vector>
 
-// std::vector<int> string_matching2(std::string& pattern, std::string& data)
-// {
-//     std::vector<int> prefix{ generate_prefix(pattern) };
-//     std::vector<int> matches{};
-    
-//     int d_pos{0};
-//     int p_pos{0};
-//     while (d_pos <= (data.size() - pattern.size()))
-//     {
-// 	while (p_pos < (pattern.size()) && pattern[p_pos] == data[d_pos + p_pos])
-// 	{
-// 	    p_pos++;
-// 	}
-	
-// 	if (p_pos == pattern.size())
-// 	{
-// 	    matches.push_back(d_pos);
-// 	}
-
-// 	p_pos--; //getting the index of the latest matched char
-// 	if (p_pos >= 0)
-// 	{
-// 	    d_pos += (p_pos - prefix[p_pos]) + 1;
-// 	    p_pos = prefix[p_pos];
-// 	}
-// 	else
-// 	{
-// 	    d_pos++;
-// 	    p_pos = 0;
-// 	}
-//     }
-//     return matches;
-// }
-
-
 std::vector<int> generate_prefix(std::string& pattern)
 {
     std::vector<int> prefix{0};

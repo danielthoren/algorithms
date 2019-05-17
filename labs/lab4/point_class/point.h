@@ -5,6 +5,7 @@
 template <typename T>
 class Point_2d
 {
+public:
     Point_2d(T x_cord = 0, T y_cord = 0) :
 	x_cord{x_cord}, y_cord{y_cord}
 	{}
@@ -24,8 +25,7 @@ class Point_2d
     /*
      * Cross product
      */
-    Point_2d operator*(Point_2d const& other) const;
-    Point_2d& operator*=(Point_2d const& other);
+    Point_2d<T> operator*(Point_2d const& other) const;
 
     Point_2d& operator=(Point_2d const& other);
 
@@ -40,12 +40,21 @@ class Point_2d
      * Scalar product
      */
     T scalar(Point_2d const& other) const;
-    T distance(Point_2d const& other) const;
-    double angle(Point_2d const&other) const;
 
-    T length();
-    
-private:
+    /*
+     * Determinant (The area of the surface that the two vectors
+     * create when drawing a square with two of each of the vectors)
+     */
+    T determinant(Point_2d const& other) const;
+
+    /*
+     * Distance calculated using pythagorean theorem
+     */
+    T distance(Point_2d const& other) const;
+    Point_2d distance_vec(Point_2d const& other) const;
+    //double angle(Point_2d const&other) const;
+
+    double length() const;
     
     T x_cord;
     T y_cord;
