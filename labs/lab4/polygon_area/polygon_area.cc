@@ -1,36 +1,8 @@
-#include "../point_class/polygon_ops.h"
+#include "polygon_ops.h"
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
-
-template <typename T>
-double polygon_area(std::vector<Point_2d<T>>& pts)
-{
-    pts.push_back(pts.at(0));
-
-    double area{0};
-    for (int p{0}; p < pts.size() - 1; p++)
-    {
-	area += pts.at(p).determinant(pts.at(p+1));	
-    }
-    return area/2;
-}
-
-template <typename T>
-bool polygon_clockwise(std::vector<Point_2d<T>>& pts)
-{
-    T sum{0};
-    for (int p{0}; p < pts.size() - 1; p++)
-    {
-	sum += (pts[p+1].x_cord - pts[p].y_cord)*(pts[p].y_cord + pts[p+1].y_cord);
-    }
-
-    return sum > 0;
-}
-
-
-
-
 
 int main()
 {
@@ -41,21 +13,22 @@ int main()
 
     while (count != 0)
     {
-	vector<Point_2d<int>> polygon;
+	vector<Point_2d<long double>> polygon;
 	
 	for (int v{0}; v < count; v++)
 	{
-	    int x, y;
+	    long double x, y;
 	    cin >> x >> y;
-	    polygon.push_back( Point_2d{x,y} );
+	    polygon.push_back( Point_2d<long double>{x,y} );
 	}
+	long double area = polygon_area(polygon);
 
-	if (polygon_clockwise(polygon))
+	if (area <= 0)
 	    cout << "CW ";
 	else
 	    cout << "CCW ";
-
-	cout << polygon_area(polygon) << endl;
+	
+	cout << fixed << setprecision(1) << std::abs(area) << endl;
 
 	cin >> count;
     }
