@@ -9,13 +9,13 @@ using namespace std;
 
 int main()
 {
-    Point_2d<int> p1{1,1};
-    Point_2d<int> p2{p1};
+    point<int> p1{1,1};
+    point<int> p2{p1};
 
     assert(p2.x_cord == p1.x_cord && p2.y_cord == p1.y_cord);
     assert(p2 == p1);
 
-    Point_2d<int> p3{p1 + p2};
+    point<int> p3{p1 + p2};
 
     assert(p3.x_cord == p1.x_cord + p2.x_cord &&
 	   p3.y_cord == p1.y_cord + p2.y_cord);

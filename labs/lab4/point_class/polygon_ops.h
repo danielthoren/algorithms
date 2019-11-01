@@ -9,14 +9,14 @@
 #define POLYGON_OPS
 
 template <typename T>
-long double polygon_area(std::vector<Point_2d<T>>& pts);
+long double polygon_area(std::vector<point<T>>& pts);
 
 /*************************************************************/
 /* Should be in tcc file, temporarily here for kattis        */
 /*************************************************************/
 
 template <typename T>
-long double polygon_area(std::vector<Point_2d<T>>& pts)
+long double polygon_area(std::vector<point<T>>& pts)
 {
     long double area{0};
     for (long unsigned int p{0}; p < pts.size(); p++)

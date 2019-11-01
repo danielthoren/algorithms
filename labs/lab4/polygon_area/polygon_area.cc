@@ -13,13 +13,13 @@ int main()
 
     while (count != 0)
     {
-	vector<Point_2d<long double>> polygon;
+	vector<point<long double>> polygon;
 	
 	for (int v{0}; v < count; v++)
 	{
 	    long double x, y;
 	    cin >> x >> y;
-	    polygon.push_back( Point_2d<long double>{x,y} );
+	    polygon.push_back( point<long double>{x,y} );
 	}
 	long double area = polygon_area(polygon);
 
