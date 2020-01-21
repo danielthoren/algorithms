@@ -6,12 +6,12 @@ template <typename T>
 class point
 {
 public:
-    point(T x = 0, T y = 0) :
-	x{x}, y{y}
+    point(T x = 0, T y = 0, T prec = 0.05) :
+	x{x}, y{y}, prec{prec}
 	{}
     
-    point(point const& pt) :
-	x{pt.x}, y{pt.y}
+    point(point const& pt, T prec = 0.05) :
+	x{pt.x}, y{pt.y}, prec{prec}
 	{}
 
     ~point() = default;
@@ -21,11 +21,12 @@ public:
 
     point operator-(point const& other) const;
     point& operator-=(point const& other);
-
+    
     /*
-     * Cross product
+     * Scalar product
      */
-    point<T> operator*(point const& other) const;
+    T operator*(point const& other) const;
+    point operator*(T scalar) const;
 
     point& operator=(point const& other);
 
@@ -35,11 +36,6 @@ public:
     bool operator<=(point const& other) const;
     bool operator>(point const& other) const;
     bool operator>=(point const& other) const;
-
-    /*
-     * Scalar product
-     */
-    T scalar(point const& other) const;
 
     /*
      * Determinant (The area of the surface that the two vectors
@@ -58,11 +54,23 @@ public:
     
     T x;
     T y;
+    T prec;
 };
+
+template<typename T>
+point<T> operator*(T scalar, point<T> const& pt);
+
+template<typename T>
+point<T> operator*(point<T> const& pt, T scalar);
 
 /*************************************************************/
 /* Should be in tcc file, temporarily here for kattis        */
 /*************************************************************/
+
+
+/**********************/
+/* Member functions   */
+/**********************/
 
 #include <cmath>
 
@@ -99,9 +107,9 @@ point<T>& point<T>::operator-=(point<T> const& other)
 }
 
 template <typename T>
-point<T> point<T>::operator*(point<T> const& other) const
+T point<T>::operator*(point<T> const& other) const
 {
-	return scalar(other);
+    return x * other.x + y * other.y;
 }
 
 template <typename T>
@@ -115,13 +123,14 @@ point<T>& point<T>::operator=(point const& other)
 template <typename T>
 bool point<T>::operator==(point<T> const& other) const
 {
-    return x == other.x && y == other.y;	
+    return std::abs( std::abs(x) - std::abs(other.x) ) <= prec &&
+	std::abs( std::abs(y) - std::abs(other.y) ) <= prec;
 }
 
 template <typename T>
 bool point<T>::operator!=(point<T> const& other) const
 {
-    return !(*this == other);
+    return !( *this == other );
 }
 
 template <typename T>
@@ -146,12 +155,6 @@ template <typename T>
 bool point<T>::operator>=(point<T> const& other) const
 {
     return *this > other || *this == other;
-}
-
-template <typename T>
-T point<T>::scalar(point<T> const& other) const
-{
-    return x * other.x + y * other.y;
 }
 
 template <typename T>
@@ -182,6 +185,23 @@ template <typename T>
 double point<T>::length() const
 {
     return std::sqrt( std::pow(x, 2) + std::pow(y, 2) );
+}
+
+
+/************************/
+/* Non-Member functions */
+/************************/
+
+template <typename T>
+point<T> operator*(T scalar, point<T> const& pt)
+{
+    return point<T>{pt.x * scalar, pt.y * scalar};
+}
+
+template <typename T>
+point<T> operator*(point<T> const& pt, T scalar)
+{
+    return point<T>{pt.x * scalar, pt.y * scalar};
 }
 
 #endif

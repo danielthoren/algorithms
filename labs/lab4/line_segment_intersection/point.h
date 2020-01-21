@@ -1,1 +1,1 @@
-../point_class/point.h
+../geometry/point.h
