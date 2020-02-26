@@ -2,16 +2,28 @@
 #include <iostream>
 
 /*
- * Fenwick tree implementation, template type must be of integer type
+ * Fenwick tree (Binary indexed tree) implementation
+ * template T must be of integer type
  */
 template <typename T>
 class FenwickTree
 {
 public:
 
+    /**
+     * size: the size of the tree
+     */
     FenwickTree(long unsigned int size) : tree(size + 1)
 	{}	
-    
+
+    /**
+     * Updates the value at index to val
+     *
+     * Complexity: O(log n)
+     * 
+     * index: The index to update
+     * val  : The value to update with
+     */
     void update(T index, T val)
 	{
 	    index += 1;
@@ -22,6 +34,13 @@ public:
 	    }
 	}
 
+    /**
+     * Returns the value at the provided index
+     *
+     * Complexity: O(log n)
+     *
+     * index: The index to fetch data from
+     */
     T query(T index)
 	{
 	    T res = 0;
