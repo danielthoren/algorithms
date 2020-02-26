@@ -24,6 +24,9 @@ int compress_find(int elem, std::vector<int>& sets)
     return elem;
 }
 
+/**
+ * 
+ */
 bool is_joined(int a, int b, std::vector<int>& sets)
 {
     sets.at(a) = compress_find(a, sets);
@@ -31,6 +34,9 @@ bool is_joined(int a, int b, std::vector<int>& sets)
     return sets.at(a) == sets.at(b);
 }
 
+/**
+ * 
+ */
 void join(int a, int b, std::vector<int>& sets)
 {   
     sets.at(compress_find(b, sets)) = compress_find(a, sets);
@@ -38,29 +44,30 @@ void join(int a, int b, std::vector<int>& sets)
 
 int main()
 {
-  int houses, cables;
-  cin >> houses >> cables;
+    int houses, cables;
+    cin >> houses >> cables;
 
-  vector<int> network(houses);
-  iota(network.begin(), network.end(), 0);
-  for (int i{0}; i < cables; i++)
+    vector<int> network(houses);
+    iota(network.begin(), network.end(), 0);
+    
+    for (int i{0}; i < cables; i++)
     {
-      int h1, h2;
-      cin >> h1 >> h2;
-      join(h1-1, h2-1, network);
+	int h1, h2;
+	cin >> h1 >> h2;
+	join(h1-1, h2-1, network);
     }
 
-  vector<int> not_connected{};
-  for (int j{0}; j < network.size(); j++)
+    vector<int> not_connected{};
+    for (int j{0}; j < network.size(); j++)
     {
-      if (! is_joined(0, j, network))
-	not_connected.push_back(j);
+	if (! is_joined(0, j, network))
+	    not_connected.push_back(j);
     }
 
-  if (not_connected.size() == 0)
-    cout << "Connected" << endl;
-  else
-    for (int i{0}; i < not_connected.size(); i++)
-      cout << not_connected.at(i) + 1 << endl;
+    if (not_connected.size() == 0)
+	cout << "Connected" << endl;
+    else
+	for (int i{0}; i < not_connected.size(); i++)
+	    cout << not_connected.at(i) + 1 << endl;
   
 }
