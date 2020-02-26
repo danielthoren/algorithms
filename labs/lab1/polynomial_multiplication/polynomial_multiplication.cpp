@@ -9,6 +9,14 @@
 
 using namespace std;
 
+/**
+ * Implementation of FFT (Fast Fourier Transform) for polynomials.
+ *
+ * Complexity: O(n)
+ *
+ * poly: The polynomial to transform
+ * w   : if 1 then FFT else if -1 then inverse FFT
+ */
 vector<complex<double>> FFT(vector<complex<double>> poly, int w)
 {
     if (poly.size() <= 1)
@@ -43,6 +51,11 @@ vector<complex<double>> FFT(vector<complex<double>> poly, int w)
     return poly;
 }
 
+/**
+ * Returns the next power of two given the number n
+ *
+ * n: the number 
+ */
 int next_power_of_two(int n)
 {
     n |= n >> 16;
@@ -55,6 +68,12 @@ int next_power_of_two(int n)
     return n;
 }
 
+/**
+ * Pads zeroes in the vector so that it becomes the target size
+ *
+ * poly       : The vector to pad
+ * target_size: The target size
+ */
 void pad_zeroes(vector<complex<double>>& poly, int target_size)
 {
     int orig_size{poly.size()};
@@ -62,6 +81,14 @@ void pad_zeroes(vector<complex<double>>& poly, int target_size)
 	poly.push_back(0);
 }
 
+/**
+ * Multiplying the polynomials FFT representations FFT(A * B) = FFT(A) * FFT(B)
+ *
+ * poly1_c: Polynomial A
+ * poly2_c: Polynomial B
+ * target_size: The target size of the polynomials
+ * return: The multiplied polynomials FFT 
+ */
 vector<complex<double>> join_poly(vector<complex<double>>& poly1_c, vector<complex<double>> poly2_c, int target_size)
 {
     vector<complex<double>> joined_poly(target_size);
@@ -72,6 +99,16 @@ vector<complex<double>> join_poly(vector<complex<double>>& poly1_c, vector<compl
     return joined_poly;
 }
 
+/**
+ * Performs polynomial multiplication by using the following properties of DFT
+ * DFT(A * B) = DFT(A) * DFT(B) => A * B = I_DFT( DFT(A) * DFT(B) )
+ * 
+ * Complexity: O(n)
+ *
+ * poly1_r: Polynomial 1 in time domain
+ * poly2_r: Polynomial 2 in time domain
+ * return : Resulting polynomial (rounded to nearest integer) in time domain
+ */
 vector<int> polynomial_multiplication(vector<double> poly1_r, vector<double> poly2_r)
 {
     vector<complex<double>> poly1;
@@ -111,36 +148,36 @@ int main()
     int T, order;
     cin >> T >> order;
 
-    if (T != 1)
-	return -1;
-
-    vector<double> poly1, poly2;
-
-    for (int i = 0; i <= order; i++)
+    for (int p{0}; p < T; p++)
     {
-	double in;
-	cin >> in;
-	poly1.push_back(in);
+	vector<double> poly1, poly2;
+
+	for (int i = 0; i <= order; i++)
+	{
+	    double in;
+	    cin >> in;
+	    poly1.push_back(in);
+	}
+
+	int order2;
+	cin >> order2;
+
+	for (int i = 0; i <= order2; i++)
+	{
+	    double in;
+	    cin >> in;
+	    poly2.push_back(in);
+	}
+
+	vector<int> result{polynomial_multiplication(poly1, poly2)};
+
+	cout << (order + order2) << endl;
+
+	for (int i{0}; i < result.size(); i++)
+	    cout  << result.at(i) << " ";
+
+	cout << endl;
     }
-
-    int order2;
-    cin >> order2;
-
-    for (int i = 0; i <= order2; i++)
-    {
-    	double in;
-    	cin >> in;
-    	poly2.push_back(in);
-    }
-
-    vector<int> result{polynomial_multiplication(poly1, poly2)};
-
-    cout << (order + order2) << endl;
-
-    for (int i{0}; i < result.size(); i++)
-	cout  << result.at(i) << " ";
-
-    cout << endl;
 
     return 0;
 }

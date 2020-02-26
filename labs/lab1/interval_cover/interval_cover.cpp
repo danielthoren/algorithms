@@ -6,12 +6,24 @@
 
 using namespace std;
 
+/**
+ * Structure used for keeping track of original index meaning the
+ * index in the original vector
+ */
 struct Interval
 {
     double first, second;
     int orig_index;
 };
 
+/**
+ * Gets the interval needed to cover a point
+ *
+ * Complexity: O(n)
+ *
+ * target          : The point to cover
+ * sorted_intervals: The intervals to cover the point with. Must be sorted
+ */
 vector<int> cover_point(double target, vector<Interval> sorted_intervals)
 {
     for (auto it = sorted_intervals.begin(); it != sorted_intervals.end(); it++)
@@ -20,6 +32,14 @@ vector<int> cover_point(double target, vector<Interval> sorted_intervals)
     return {};
 }
 
+/**
+ * Calculates the minimum amount of intervals that covers the target and then returns
+ *
+ * Complexity: O(n)
+ *
+ * target   : The interval to cover
+ * intervals: The intervals to cover target with 
+ */
 vector<int> cover(pair<double, double>& target,
 		  vector<pair<double, double>>& intervals)
 {
