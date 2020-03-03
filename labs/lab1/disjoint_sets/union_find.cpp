@@ -2,7 +2,6 @@
 #include <iostream>
 #include <numeric>
 
-
 /**
  * This class keeps track of a number of elements partitioned into a
  * number of disjoint subsets. It provides the standard functions of a
@@ -70,6 +69,7 @@ public:
 	    for (int e : elems)
 		sets.at(e) = elem;
 	    return elem;
+	    
 	}
 
 private:
