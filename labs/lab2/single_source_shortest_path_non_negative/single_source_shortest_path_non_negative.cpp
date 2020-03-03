@@ -1,4 +1,3 @@
-#include <iostream>
 #include <algorithm>
 #include <vector>
 #include <queue>
@@ -11,8 +10,7 @@ using namespace std;
  * Author: Daniel Thorén
  *
  * Class that solves the shortest path problem with non negative
- * weights. Contains a number of methods to query the graph
- *
+ * weights. Contains a number of methods to query the graphx
  */
 class Shortest_path_non_negative
 {
@@ -104,11 +102,6 @@ public:
 	{
 	    return graph.at(end).min_cost;
 	}
-
-    bool queue_compare(int n1, int n2)
-	{
-	    return graph.at(n1).min_cost > graph.at(n2).min_cost;
-	}
     
     /*
      * Searches the graph for the shortest path between start node and
@@ -196,7 +189,7 @@ private:
 			graph.at(edge.end_node).min_cost = tmp;
 
 			min_queue.push(graph.at(edge.end_node));
-//Enable backtracking of path
+                        //Enable backtracking of path
 			graph.at(edge.end_node).parent = node_index;
 		    }
 		}
