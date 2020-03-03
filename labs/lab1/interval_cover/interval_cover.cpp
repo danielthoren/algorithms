@@ -7,6 +7,10 @@
 using namespace std;
 
 /**
+ * Author: Daniel Thorén
+ */
+
+/**
  * Structure used for keeping track of original index meaning the
  * index in the original vector
  */
@@ -22,7 +26,8 @@ struct Interval
  * Complexity: O(n)
  *
  * target          : The point to cover
- * sorted_intervals: The intervals to cover the point with. Must be sorted
+ * sorted_intervals: The intervals to cover the point with. 
+ *                   Must be sorted, smallest element first (compared using the normal < operator)
  */
 vector<int> cover_point(double target, vector<Interval> sorted_intervals)
 {
@@ -33,7 +38,8 @@ vector<int> cover_point(double target, vector<Interval> sorted_intervals)
 }
 
 /**
- * Calculates the minimum amount of intervals that covers the target and then returns
+ * Calculates the minimum amount of intervals that covers the target
+ * and then returns those intervals
  *
  * Complexity: O(n)
  *

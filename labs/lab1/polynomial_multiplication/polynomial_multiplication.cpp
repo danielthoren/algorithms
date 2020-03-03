@@ -12,7 +12,7 @@ using namespace std;
 /**
  * Implementation of FFT (Fast Fourier Transform) for polynomials.
  *
- * Complexity: O(n)
+ * Complexity: O(n log n)
  *
  * poly: The polynomial to transform
  * w   : if 1 then FFT else if -1 then inverse FFT
@@ -103,7 +103,7 @@ vector<complex<double>> join_poly(vector<complex<double>>& poly1_c, vector<compl
  * Performs polynomial multiplication by using the following properties of DFT
  * DFT(A * B) = DFT(A) * DFT(B) => A * B = I_DFT( DFT(A) * DFT(B) )
  * 
- * Complexity: O(n)
+ * Complexity: O(n log n)
  *
  * poly1_r: Polynomial 1 in time domain
  * poly2_r: Polynomial 2 in time domain
