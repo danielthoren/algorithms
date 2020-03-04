@@ -108,50 +108,50 @@ T get_modular_inverse(T num, T mod)
 
 int main()
 {
-    int mod;
+    long long mod;
     long long ops;
 
     while (true)
     {
-	scanf(" %d", &mod);
+	scanf(" %lld", &mod);
 	scanf(" %lld", &ops);
 
 	if (mod == 0 && ops == 0)
 	    return 0;
 
-	for (int i{0}; i < ops; i++)
+	for (long long i{0}; i < ops; i++)
 	{
-	    int x, y;
+	    long long x, y;
 	    char op;
 	
-	    scanf(" %d", &x);
+	    scanf(" %lld", &x);
 	    scanf(" %c", &op);
-	    scanf(" %d", &y);
+	    scanf(" %lld", &y);
 
 	    if (op == '/')
-	    {
-		int res = get_modular_inverse(y, mod);
-		if (res == -1)
-		{
-		    printf("%d\n", res);
-		}
-		else
-		{
-		    printf("%d\n", true_mod<int>(x*res, mod));
-		}
-	    }
-	    else if (op == '+')
-	    {
-		printf("%d\n", true_mod<int>(x+y, mod));
-	    }
-	    else if (op == '-')
-	    {
-		printf("%d\n", true_mod<int>(x-y, mod));
-	    }
-	    else if (op == '*')
-	    {
-		printf("%d\n", true_mod<int>(x*y, mod));
-	    }
+	 {
+	     long long res = get_modular_inverse<long long>(y, mod);
+	     if (res == -1)
+	{
+	    printf("%lld\n", res);
 	}
-    }
+		 else
+		 {
+		     printf("%lld\n", true_mod<long long>(x*res, mod));
+		 }
+	     }
+	     else if (op == '+')
+	     {
+		 printf("%lld\n", true_mod<long long>(x+y, mod));
+	     }
+	     else if (op == '-')
+	     {
+		 printf("%lld\n", true_mod<long long>(x-y, mod));
+	     }
+	     else if (op == '*')
+	     {
+		 printf("%lld\n", true_mod<long long>(x*y, mod));
+	     }
+	 }
+     }
 }
