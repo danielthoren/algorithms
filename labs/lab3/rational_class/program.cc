@@ -1,20 +1,25 @@
-#include <iostream>
+
 #include "rational.h"
 
 using namespace std;
 int main()
 {
-    std::ios_base::sync_with_stdio(false);
 
     int cases;
-    cin >> cases;
+
+    scanf(" %d", &cases);
 
     for (int c{0}; c < cases; c++)
     {
 	int num1, denum1, num2, denum2;
 	char op;
 
-	cin >> num1 >> denum1 >> op >> num2 >> denum2;
+	scanf(" %d", &num1);
+	scanf(" %d", &denum1);
+	scanf(" %c", &op);	
+	scanf(" %d", &num2);
+	scanf(" %d", &denum2);
+	
 	Rational<long long int> r1{num1, denum1};
 	Rational<long long int> r2{num2, denum2};
 
@@ -27,6 +32,6 @@ int main()
 	else if (op == '/')
 	    r1 /= r2;
 
-	cout << r1 << endl;	
+	printf("%s\n",r1.str().c_str());
     }
 }

@@ -3,6 +3,17 @@
 #ifndef RATIONAL_NUM_H
 #define RATIONAL_NUM_H
 
+/**
+ * Class that represents a rational number on the form a/b
+ * There are various operations that can be performed on a rational number 
+ * =,+,-,*,--,++,-=,+=,*=,<,<=,>,>=,==,!=
+ *
+ * There are also functions to calculate the greatest and lowest
+ * common denominator.
+ *
+ * Template type must be of numberal type
+ *
+ */
 template<typename T>
 class Rational
 {
@@ -34,7 +45,7 @@ public:
     Rational<T> operator-(Rational<T> const& other) const;
     Rational<T>& operator-=(Rational<T> const& other);
 
-        /*
+    /*
      * Post-decrement
      */
     Rational<T>& operator--();
