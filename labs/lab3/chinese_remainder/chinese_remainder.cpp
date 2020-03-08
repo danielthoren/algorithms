@@ -25,7 +25,7 @@
 template<typename T>
 std::tuple<T, T> merge_crt(std::tuple<T, T> e1, std::tuple<T, T> e2)
 {
-    //Extended euclidean gives <GCD(m1, m2), p, q>
+    //Extended euclidean gives <GCD(m1, m2), S, T
     std::tuple<T, T, T> euclid = extended_euclidean(std::get<1>(e1), std::get<1>(e2));
 
     T x =
@@ -36,6 +36,21 @@ std::tuple<T, T> merge_crt(std::tuple<T, T> e1, std::tuple<T, T> e2)
 
     return std::make_tuple(x, std::get<1>(e1) * std::get<1>(e2));       
 }
+
+// template<typename T>
+// std::tuple<T, T> merge_crt(std::tuple<T, T> e1, std::tuple<T, T> e2)
+// {
+//     T m1_inv = get_modular_inverse(std::get<1>(e1), std::get<1>(e2));
+//     T m2_inv = get_modular_inverse(std::get<1>(e2), std::get<1>(e1));
+
+//     T a0 =
+// 	m1_inv * std::get<1>(e1) * std::get<0>(e2) +
+// 	m2_inv * std::get<1>(e2) * std::get<0>(e1);
+
+//     T x = true_mod(a0, std::get<1>(e1) * std::get<1>(e2));
+
+//     return std::make_tuple(x, std::get<1>(e1) * std::get<1>(e2));       
+// }
 
 int main()
 {
