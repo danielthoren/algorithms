@@ -6,6 +6,8 @@
 #include <iostream>
 
 /**
+ * Author: Daniel Thorén
+ *
  * Calculates which of all numbers between 2 and upper
  * that are prime numbers. This is done using the "sieve of
  * eratoshthenes" algorithm. The algorithm assumes that 1 is not a
@@ -67,6 +69,8 @@ std::vector<bool> prime_sieve(T upper, T& prime_count)
 }
 
 /**
+ * Author: Daniel Thorén
+ *
  * This function accepts a sieve and returns a vector containing all
  * primes thus separating the actual prime numbers from the rest.
  *
