@@ -13,7 +13,7 @@ struct Node
 };
 
 std::vector<Node> build_trie(std::vector<std::string>& patterns)
-{    
+{
     std::vector<Node> trie{ Node{-1, -1, {}} };
     int curr{0};
     
@@ -21,6 +21,8 @@ std::vector<Node> build_trie(std::vector<std::string>& patterns)
     {
 	for (unsigned l{0}; l < patterns[p].size(); l++)
 	{
+	    //If there is no edge from the current node with the next letter then
+	    //add a new node and a edge to that node. Move curr to the new node
 	    if (trie[curr].next.find(patterns[p][l]) == trie[curr].next.end())
 	    {
 		//Adding new node for letter l
@@ -31,6 +33,8 @@ std::vector<Node> build_trie(std::vector<std::string>& patterns)
 		//Stepping forward to the new node in the graph
 		curr = trie.size() - 1;
 	    }
+	    //If there already is a edge from the current node with the next letter,
+	    //move curr to that node
 	    else
 	    {
 		curr = trie[curr].next[patterns[p][l]];

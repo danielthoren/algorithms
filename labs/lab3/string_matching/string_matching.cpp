@@ -2,6 +2,11 @@
 #include <string>
 #include <vector>
 
+/**
+ * Generates the prefix for the search pattern. 
+ *
+ * Time complexity: O(m) where m is the length of the pattern
+ */
 std::vector<int> generate_prefix(std::string& pattern)
 {
     std::vector<int> prefix{0};
@@ -19,6 +24,16 @@ std::vector<int> generate_prefix(std::string& pattern)
     return prefix;
 }
 
+/**
+ * Implementation of the KMP (Knuth-Morris-Pratt) algorithm. It
+ * searches the string by generating a prefix for the pattern. The
+ * prefix details which position in the string to jump to the correct
+ * position when a match is found and when one is'nt found. This
+ * greatly optimizes the search by not revisiting unnecessary letters
+ * in the search string.
+ *
+ * Time complexity: O(n) where n is the length of the search string
+ */
 std::vector<int> string_matching(std::string& pattern, std::string& data)
 {
     std::vector<int> prefix{ generate_prefix(pattern) };
