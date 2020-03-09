@@ -29,29 +29,29 @@ int main()
 	    scanf(" %lld", &y);
 
 	    if (op == '/')
-	 {
-	     long long res = get_modular_inverse<long long>(y, mod);
-	     if (res == -1)
-	{
-	    printf("%lld\n", res);
+	    {
+		long long res = get_modular_inverse<long long>(y, mod);
+		if (res == -1)
+		{
+		    printf("%lld\n", res);
+		}
+		else
+		{
+		    printf("%lld\n", true_mod<long long>(x*res, mod));
+		}
+	    }
+	    else if (op == '+')
+	    {
+		printf("%lld\n", true_mod<long long>(x+y, mod));
+	    }
+	    else if (op == '-')
+	    {
+		printf("%lld\n", true_mod<long long>(x-y, mod));
+	    }
+	    else if (op == '*')
+	    {
+		printf("%lld\n", true_mod<long long>(x*y, mod));
+	    }
 	}
-		 else
-		 {
-		     printf("%lld\n", true_mod<long long>(x*res, mod));
-		 }
-	     }
-	     else if (op == '+')
-	     {
-		 printf("%lld\n", true_mod<long long>(x+y, mod));
-	     }
-	     else if (op == '-')
-	     {
-		 printf("%lld\n", true_mod<long long>(x-y, mod));
-	     }
-	     else if (op == '*')
-	     {
-		 printf("%lld\n", true_mod<long long>(x*y, mod));
-	     }
-	 }
-     }
+    }
 }

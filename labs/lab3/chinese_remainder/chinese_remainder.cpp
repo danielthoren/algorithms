@@ -28,29 +28,17 @@ std::tuple<T, T> merge_crt(std::tuple<T, T> e1, std::tuple<T, T> e2)
     //Extended euclidean gives <GCD(m1, m2), S, T
     std::tuple<T, T, T> euclid = extended_euclidean(std::get<1>(e1), std::get<1>(e2));
 
-    T x =
+    T a0 =
 	std::get<0>(e1) * std::get<1>(e2) * std::get<2>(euclid) +
 	std::get<0>(e2) * std::get<1>(e1) * std::get<1>(euclid);
 
-    x = true_mod(x, std::get<1>(e1) * std::get<1>(e2));
+    T prod = std::get<1>(e1) * std::get<1>(e2);
 
-    return std::make_tuple(x, std::get<1>(e1) * std::get<1>(e2));       
+    //true_mod always returns positive
+    T x = true_mod(a0, prod);
+
+    return std::make_tuple(x, prod);
 }
-
-// template<typename T>
-// std::tuple<T, T> merge_crt(std::tuple<T, T> e1, std::tuple<T, T> e2)
-// {
-//     T m1_inv = get_modular_inverse(std::get<1>(e1), std::get<1>(e2));
-//     T m2_inv = get_modular_inverse(std::get<1>(e2), std::get<1>(e1));
-
-//     T a0 =
-// 	m1_inv * std::get<1>(e1) * std::get<0>(e2) +
-// 	m2_inv * std::get<1>(e2) * std::get<0>(e1);
-
-//     T x = true_mod(a0, std::get<1>(e1) * std::get<1>(e2));
-
-//     return std::make_tuple(x, std::get<1>(e1) * std::get<1>(e2));       
-// }
 
 int main()
 {
@@ -59,15 +47,16 @@ int main()
 
     for (long i{0}; i < cases; i++)
     {
-	long long a, n, b, m;
+	long long  a, n, b, m;
 	scanf(" %lld", &a);
 	scanf(" %lld", &n);
 	scanf(" %lld", &b);
 	scanf(" %lld", &m);
 
-	std::tuple<long long, long long> res = merge_crt<long long>(std::make_tuple(a,n),
-						     std::make_tuple(b,m));
+	std::tuple<__int128, __int128> res =
+	    merge_crt(std::make_tuple( (__int128) a, (__int128) n),
+					  std::make_tuple( (__int128) b, (__int128) m));
 
-	printf("%lld %lld\n", std::get<0>(res), std::get<1>(res));
+	printf("%lld %lld\n", (long long) std::get<0>(res), (long long) std::get<1>(res));
     }
 }
