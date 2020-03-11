@@ -11,11 +11,11 @@
 
 struct Node
 {
-    int word_done;
+    std::vector<int> word_done;
     char letter;
     int parent;
     std::map<char, int> next;
-    std::map<char, int> reset;
+    int reset;
 };
 
 /**
@@ -30,21 +30,21 @@ struct Node
  * patterns: Vector containing all the search patterns
  * return  : Vector containing the trie
  */
-std::vector<Node> build_trie(std::vector<std::string>& patterns)
+std::vector<Node> build_trie(std::vector<std::string> const& patterns)
 {
-    std::vector<Node> trie{ Node{-1, -1, 0, {}, {}} };
+    std::vector<Node> trie{ Node{{}, -1, 0, {}, -1} };
     int curr{0};
     
-    for (unsigned p{0}; p < patterns.size(); p++)
+    for (int p{0}; p < patterns.size(); p++)
     {
-	for (unsigned l{0}; l < patterns[p].size(); l++)
+	for (int l{0}; l < patterns[p].size(); l++)
 	{
 	    //If there is no edge from the current node with the next letter then
 	    //add a new node and a edge to that node. Move curr to the new node
 	    if (trie[curr].next.find(patterns[p][l]) == trie[curr].next.end())
 	    {
 		//Adding new node for letter l
-		trie.push_back( Node{-1, patterns[p][l], curr,{}, {}} );
+		trie.push_back( Node{{}, patterns[p][l], curr,{}, -1} );
 
 		//Creating vertex from current node to new node
 		trie[curr].next[patterns[p][l]] = trie.size() - 1;
@@ -60,79 +60,65 @@ std::vector<Node> build_trie(std::vector<std::string>& patterns)
 
 	    if (l == patterns[p].size() - 1)
 	    {
-		trie[curr].word_done = p;
+		trie[curr].word_done.push_back(p);
 	    }
 	}	    
 	//Reset curr to root between every new pattern
 	curr = 0;
     }
-
     return trie;
 }
 
-int search_forward_error(std::vector<Node>& trie, int curr, std::stack<char> prefix)
+int search_backward_error(std::vector<Node>& trie, int curr)
 {
-    while (!prefix.empty())
-    {
-	char curr_ch = prefix.top();
-	prefix.pop();
-	auto it = trie[curr].next.find(curr_ch);
+    char ch = trie[curr].letter;
 
-	//If the current node has a next edge that matches prefix,
-	//move to that node else abort the forward search
-	if (it != trie[curr].next.end())
-	{
-	    curr = it->second;
-	}
-	else
-	{
-	    return -1;
-	}
-    }
-    return curr;
-}
-
-int search_backward_error(std::vector<Node>& trie, int curr, char ch)
-{
-
-    //Stack used to keep track of current prefix
-    std::stack<char> prefix{};
-    prefix.push(ch);
-    int prev = curr;
-    curr = trie[curr].parent;
+    int prev = curr;    
+    int parent = trie[curr].parent;
+    curr = trie[parent].reset;
     
     //Searching backwards through trie to find previous reset edge
     //that matches the prefix
     while (prev != 0)
     {
-	char curr_ch = prefix.top();
-
-	//If current prefix symbol exists in the current node or if
-	//the search has reached the root node, start searching
-	//forward to se if the entire prefix matches
-	auto it = trie[curr].reset.find(ch);
-	if (it != trie[curr].reset.end() || curr == 0)
+	auto it = trie[curr].next.find(ch);
+	if (it != trie[curr].next.end())
 	{
-	    int res = search_forward_error(trie, curr, prefix);
-
-	    //If the entire prefix fit then return, else continue backwards
-	    if (res != -1)
-		return res;
+	    return it->second;
+	}
+	else if (curr == 0)
+	{
+	    return 0;
 	}
 
-	//Push current nodes letter and jump back one node
-	prefix.push(trie[prev].letter);
 	prev = curr;
-	curr = trie[curr].parent;
+	curr = trie[curr].reset;
     }
-    
-    return -1;
+    return 0;
 }
 
+/**
+ * Builds a finite state automaton from the tiven trie by setting the
+ * reset edges of all nodes in the trie. A reset edge leads to a node
+ * with the same prefix and is used when there is no match in the
+ * current node.
+ * OBS modifies the trie
+ *
+ * Time complexity: O( n*log(n) ) n = nodes
+ *
+ * trie: Reference to the trie, this is modified
+ */
 void build_automaton(std::vector<Node>& trie)
 {
-    std::queue<int> search_queue{};
+    //initialize root and its direct neighbours
+    trie[0].reset = 0;
+    for (auto it : trie[0].next)
+    {
+	trie[it.second].reset = 0;
+    }
 
+    
+    std::queue<int> search_queue{};
     search_queue.push(0);
 
     while (!search_queue.empty())
@@ -146,93 +132,125 @@ void build_automaton(std::vector<Node>& trie)
 	    search_queue.push(it.second);
 	}
 	
-//SCHAR_MAX = 127, if custom character demands higher values
-	//then change to USCHAR_MAX
-	for (char ch{0}; ch < SCHAR_MAX; ch++)
+	int res = search_backward_error(trie, curr);
+	if (res != curr)
 	{
-	    //If the current character does not have a valid next edge
-	    if (trie[curr].next.find(ch) == trie[curr].next.end())
-	    {
-		int res = search_backward_error(trie, curr, ch);
+	    trie[curr].reset = res;
 
-		//If search yilded a result then add the reset edge
-		if (res != -1)
-		{
-		    trie[curr].reset.insert( {ch, res} );
-		}
+	    //If the new reset edge leads to a leaf node then add the
+	    //patterns matching at that node to the current node so
+	    //that theese words are not missed
+	    for (int w : trie[res].word_done)
+	    {		
+		trie[curr].word_done.push_back(w);
 	    }
 	}
     }
 }
 
-std::stringstream print_trie(std::vector<Node>& trie, int index = 0)
+/**
+ * This function searches the given text for all of the patterns and
+ * returns a vector containing one vector for each pattern (at the
+ * same indexes). Each such vector contians an integer per match
+ * detailing the position of the match (first letter of the match)
+ *
+ * Time complexity  : O( n + pn + m )
+ * Memory complexity: O(pn)
+ *                    n  = len(text)
+ *                    pn = sum[i=0]( len( patterns[i] ) )
+ *                    m  = count( matches )
+ *
+ * patterns: A reference to the patterns to be searched for
+ * text    : The text to search
+ * return  : Vector containing positions of all matches. Has the
+ *           following format: 
+ *           vector< vector< matches of pattern 0 >, vector< matches of pattern 1 >, ...>
+ */
+std::vector<std::vector<int>>
+multimach_search(std::vector<std::string> const& patterns, std::string const& text)
 {
-    std::stringstream stream{};
-
-
+    //Build trie from the patterns
+    std::vector<Node> trie = build_trie(patterns);
+    //Construct automaton from the trie
+    build_automaton(trie);
     
-    for (auto it : trie[index].next)
-    {
-	stream << "->('"
-	       << "this: "
-	       << index
-	       << " letter: '"
-	       << trie[index].letter
-	       << " parent: "
-	       << trie[index].parent
-	       << "' next: "
-	       << it.second
-	       << ") "
-	       << print_trie(trie, it.second).str();
-    }
+    std::vector<std::vector<int>> matches(patterns.size());
 
-    if (trie[index].next.size() == 0)
+    int curr = 0;
+
+    for (long pos{0}; pos < text.size(); pos++)
     {
-	stream << "->('"
-	       << "this: "
-	       << index
-	       << " letter: '"
-	       << trie[index].letter
-	       << " parent: "
-	       << trie[index].parent
-	       << ") ";
-    }
-    
-    if (trie[index].word_done != -1)
-    {
-	stream << std::endl;
-	return stream;
+	char ch = text[pos];
+	//If the current node has an edge with the current letter,
+	//follow that edge
+	auto it = trie[curr].next.find(ch);
+	if (it != trie[curr].next.end())
+	{
+	    curr = it->second;
 	}
-    
-	return stream;
+	//If there is no edge for the char in the current node then
+	//follow parents reset edge and look for forward edge that
+	//matches ch there. Repeate this until matching forward edge
+	//is found or until curr node is root
+	else
+	{	    
+	    while (curr != 0)
+	    {
+		curr = trie[curr].reset;
+
+		auto it = trie[curr].next.find(ch);
+		if (it != trie[curr].next.end())
+		{
+		    curr = it->second;
+		    break;
+		}
+	    }	    
+	}
+
+	//If curr node is an end node then register matches
+	if (trie[curr].word_done.size() != 0)
+	{
+	    for (int m : trie[curr].word_done)
+	    {
+		matches[m].push_back(pos - patterns[m].size() + 1);
+	    }
+	}
+    }
+    return matches;
 }
 
 int main()
 {
-    // std::string text;        
-    // std::getline(std::cin, text);
-
-    // std::vector<std::string> patterns{};
-    // std::string tmp;
-    // while (std::cin >> tmp)
-    // 	patterns.push_back(tmp);
-
-    // std::vector<Node> trie{ build_trie(patterns) };
-
-    // std::cout << print_trie(trie).str() << std::endl;
-
-    // return 0;
-
-    std::string text = "abbabcabap";
-    std::vector<std::string> patterns{"abbab", "abc", "bap"};
-
-    std::vector<Node> trie = build_trie(patterns);
-
-    std::cout << print_trie(trie).str() << std::endl;;
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
     
-    build_automaton(trie);
+    int cases;
 
-    std::cout << print_trie(trie).str() << std::endl;;
-    
+    while (std::cin >> cases)
+    {
+
+	std::vector<std::string> patterns{};
+	std::string pattern{};
+	std::getline(std::cin, pattern);
+	for (int c{0}; c < cases; c++)
+	{
+	    std::getline(std::cin, pattern);
+	    patterns.push_back(pattern);
+	}
+
+	std::string text{};
+	std::getline(std::cin, text);
+
+	std::vector<std::vector<int>> res = multimach_search(patterns, text);
+
+	for (int p{0}; p < res.size(); p++)
+	{
+	    for (int m{0}; m < res[p].size(); m++)
+	    {
+		std::cout << res[p][m] << " ";
+	    }
+	    std::cout << std::endl;
+	}
+    }
     return 0;
 }

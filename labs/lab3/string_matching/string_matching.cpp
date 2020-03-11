@@ -71,6 +71,7 @@ std::vector<int> string_matching(std::string& pattern, std::string& data)
 int main()
 {
     std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
     
     std::string pattern;
     std::string data;
