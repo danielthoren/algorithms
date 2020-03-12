@@ -25,6 +25,8 @@ std::vector<int> generate_prefix(std::string& pattern)
 }
 
 /**
+ * Author: Daniel Thorén
+ *
  * Implementation of the KMP (Knuth-Morris-Pratt) algorithm. It
  * searches the string by generating a prefix for the pattern. The
  * prefix details which position in the string to jump to the correct
@@ -39,7 +41,6 @@ std::vector<int> string_matching(std::string& pattern, std::string& data)
     std::vector<int> prefix{ generate_prefix(pattern) };
     std::vector<int> matches{};
 
-    int p_off{0};
     int k{0};
     for (int j{0}; j <= data.size(); j++)
     {

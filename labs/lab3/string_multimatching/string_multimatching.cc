@@ -157,6 +157,8 @@ void build_automaton(std::vector<Node>& trie)
 }
 
 /**
+ * Author: Daniel Thorén
+ *
  * This function searches the given text for all of the patterns and
  * returns a vector containing one vector for each pattern (at the
  * same indexes). Each such vector contians an integer per match

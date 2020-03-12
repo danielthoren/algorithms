@@ -4,6 +4,8 @@
 #define RATIONAL_NUM_H
 
 /**
+ * Author: Daniel Thorén
+ *
  * Class that represents a rational number on the form a/b
  * There are various operations that can be performed on a rational number 
  * =,+,-,*,--,++,-=,+=,*=,<,<=,>,>=,==,!=
