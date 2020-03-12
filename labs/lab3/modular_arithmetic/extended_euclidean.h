@@ -4,6 +4,8 @@
 #include <tuple>
 
 /**
+ * Author: Daniel Thorén
+ *
  * Performs true mod in the mathmatical sense. Normal % operator does
  * not work as expected when using negative numbers. This method
  * always returns posetive results
@@ -17,6 +19,8 @@ template<typename T>
 T true_mod(T num, T mod);
 
 /**
+ * Author: Daniel Thorén
+ *
  * The extened euclidean algorithm calculates GCD(a, b) and the 
  * Bezout coefficients S, T which ar defined as follows:
  * a*S + b*T = GCD(a, b) = d
@@ -35,6 +39,8 @@ template<typename T>
 std::tuple<T, T, T> extended_euclidean(T a, T b);
 
 /**
+ * Author: Daniel Thorén
+ *
  * Returns the modular multiplicative inverse of num.
  * Template must be of integer type (int, long...)
  *

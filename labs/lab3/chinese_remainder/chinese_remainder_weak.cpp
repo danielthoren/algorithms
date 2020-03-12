@@ -4,6 +4,8 @@
 #include <tuple>
 
 /**
+ * Author: Daniel Thorén
+ *
  * Merges two congruence equations using the weak chinese remainder
  * theorem, thus it is assumed that m1, m2 are coprime. With other
  * words, it is assumed that GCD(m1, m2) = 1
