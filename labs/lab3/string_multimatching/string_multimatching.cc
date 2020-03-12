@@ -69,6 +69,14 @@ std::vector<Node> build_trie(std::vector<std::string> const& patterns)
     return trie;
 }
 
+/**
+ * This functions searches for the error edge of the current node by
+ * following the error-edges of the parent and then trying to search
+ * forward
+ *
+ * trie: The trie to build into an automata
+ * curr: the node to find the error edge of
+ */
 int search_backward_error(std::vector<Node>& trie, int curr)
 {
     char ch = trie[curr].letter;
