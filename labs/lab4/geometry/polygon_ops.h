@@ -8,6 +8,18 @@
 #ifndef POLYGON_OPS
 #define POLYGON_OPS
 
+/**
+ * Author: Daniel Thorén
+ *
+ * Calculates the area of the given polygon. The polygon concists of a
+ * number of points, two points beside each other in the vector are
+ * assumed to be connected.
+ *
+ * Time complexity: O(n) n = points
+ *
+ * pts   : vector containing the points making up the polygon
+ * return: The area of the polygon
+ */
 template <typename T>
 long double polygon_area(std::vector<point<T>>& pts);
 
@@ -22,10 +34,7 @@ long double polygon_area(std::vector<point<T>>& pts)
     for (long unsigned int p{0}; p < pts.size(); p++)
     {
 	area += pts.at(p).determinant(pts.at( (p + 1)%pts.size() ));
-	// area += (pts[prev].x + pts[p].x) * (pts[prev].y - pts[p].y);
-	// prev = p;
     }
-    //std::cout << area << " abs: " << std::abs(area) << std::endl;
     return area/2;
 }
 

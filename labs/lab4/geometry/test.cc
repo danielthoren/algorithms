@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "point.h"
-#include "line.h"
+#include "Line.h"
 
 using namespace std;
 
@@ -118,14 +118,14 @@ bool line_test()
     point<int> p1{0,0};
     point<int> p2{1,1};
 
-    line<int> l1{p1, p2};
+    Line<int> l1{p1, p2};
 
     result = (l1.p0 == p1 &&
 	      l1.u == (p2 - p1));
 
 
     point<int> pt{5,5};
-    line<int> l2{p2, pt};
+    Line<int> l2{p2, pt};
     
     result = (l2.p0 == p2 &&
 	      l2.u == pt - p2);
@@ -143,11 +143,11 @@ bool line_test()
 
     result = l1.is_parallel(l2);
 
-    line<int> l3{0,1, 1,2};
+    Line<int> l3{0,1, 1,2};
 
     result = l1.is_parallel(l3);
 
-    line<int> l4{0, 0, 1, -2};
+    Line<int> l4{0, 0, 1, -2};
 
     result = !l1.is_parallel(l4);
     
@@ -173,7 +173,7 @@ bool line_test()
     result = true;
 
     point<double> pt1{2, 3};
-    line<double> line1{0,0, 1,2};
+    Line<double> line1{0,0, 1,2};
 
     result = (line1.orthogonal_projection(pt1) == point<double>{8.0/5.0, 16.0/5.0});
     
@@ -185,20 +185,20 @@ bool line_test()
     //------------- intersection Test -------------
     result = true;
 
-    line<double> line2{-10,0, 10,0};
-    line<double> line3{0,-10, 0, 10};
+    Line<double> line2{-10,0, 10,0};
+    Line<double> line3{0,-10, 0, 10};
     
     point<double> tmp{0,0};
     result = (line2.intersection(line3) == tmp);
 
-    line<double> line4{1,1, 1,1};
-    line<double> line5{1,1, 2,1};
+    Line<double> line4{1,1, 1,1};
+    Line<double> line5{1,1, 2,1};
 
     point<double> tmp2{1.0, 1.0};
     // result = (line4.intersection(line5) == tmp2);
 
-    line<double> line6{1871,5789, 216,-517};
-    line<double> line7{189,-518, 3851,1895};
+    Line<double> line6{1871,5789, 216,-517};
+    Line<double> line7{189,-518, 3851,1895};
 
     point<double> tmp3{221.33, -469.70, 0.05};
     result = (tmp3 == line6.intersection(line7));

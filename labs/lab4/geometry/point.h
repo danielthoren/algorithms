@@ -2,6 +2,12 @@
 #ifndef POINT_2D
 #define POINT_2D
 
+/**
+ * Author: Daniel Thorén
+ *
+ * Class representing a 2-dimensional point. The class supports all
+ * expected operations including calculating gcd and lcm.
+ */
 template <typename T>
 class point
 {
@@ -21,12 +27,6 @@ public:
 
     point operator-(point const& other) const;
     point& operator-=(point const& other);
-    
-    /*
-     * Scalar product
-     */
-    T operator*(point const& other) const;
-    point operator*(T scalar) const;
 
     point& operator=(point const& other);
 
@@ -36,12 +36,6 @@ public:
     bool operator<=(point const& other) const;
     bool operator>(point const& other) const;
     bool operator>=(point const& other) const;
-
-    /*
-     * Determinant (The area of the surface that the two vectors
-     * create when drawing a square with two of each of the vectors)
-     */
-    T determinant(point const& other) const;
 
     /*
      * Distance calculated using pythagorean theorem
@@ -62,6 +56,24 @@ point<T> operator*(T scalar, point<T> const& pt);
 
 template<typename T>
 point<T> operator*(point<T> const& pt, T scalar);
+
+/*
+ * Returns the cross product of the two points which is defined as
+ * the Determinant of the two points. 
+ *(The area of the surface that the two vectors
+ * create when drawing a square with two of each of the vectors)
+ */
+template<typename T>
+T cross(point<T> const& u, point<T> const& v)
+{
+    return u.x * v.y - u.y * v.x;
+}
+
+template<typename T>
+T dot(point<T> const& u, point<T> const& v)
+{
+    return u.x * v.x + u.y * v.y;
+}
 
 /*************************************************************/
 /* Should be in tcc file, temporarily here for kattis        */
@@ -104,12 +116,6 @@ point<T>& point<T>::operator-=(point<T> const& other)
     x -= other.x;
     y -= other.y;
     return *this;
-}
-
-template <typename T>
-T point<T>::operator*(point<T> const& other) const
-{
-    return x * other.x + y * other.y;
 }
 
 template <typename T>
@@ -176,12 +182,6 @@ point<T> point<T>::distance_vec(point<T> const& other) const
 }
 
 template <typename T>
-T point<T>::determinant(point<T> const& other) const
-{
-    return x * other.y - y * other.x;
-}
-
-template <typename T>
 double point<T>::length() const
 {
     return std::sqrt( std::pow(x, 2) + std::pow(y, 2) );
@@ -192,6 +192,9 @@ double point<T>::length() const
 /* Non-Member functions */
 /************************/
 
+/**
+ * Scalar multiplication between two points
+ */
 template <typename T>
 point<T> operator*(T scalar, point<T> const& pt)
 {
