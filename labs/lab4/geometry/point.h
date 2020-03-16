@@ -32,11 +32,7 @@ public:
 
     bool operator==(point const& other) const;
     bool operator!=(point const& other) const;
-    bool operator<(point const& other) const;
-    bool operator<=(point const& other) const;
-    bool operator>(point const& other) const;
-    bool operator>=(point const& other) const;
-
+    
     /*
      * Distance calculated using pythagorean theorem
      */
@@ -129,38 +125,13 @@ point<T>& point<T>::operator=(point const& other)
 template <typename T>
 bool point<T>::operator==(point<T> const& other) const
 {
-    return std::abs( std::abs(x) - std::abs(other.x) ) <= prec &&
-	std::abs( std::abs(y) - std::abs(other.y) ) <= prec;
+    return x == other.x && y == other.y;
 }
 
 template <typename T>
 bool point<T>::operator!=(point<T> const& other) const
 {
     return !( *this == other );
-}
-
-template <typename T>
-bool point<T>::operator<(point<T> const& other) const
-{
-    return this->length() < other.length();
-}
-
-template <typename T>
-bool point<T>::operator<=(point<T> const& other) const
-{
-    return *this < other || *this == other;
-}
-
-template <typename T>
-bool point<T>::operator>(point<T> const& other) const
-{
-    return !(*this <= other);
-}
-
-template <typename T>
-bool point<T>::operator>=(point<T> const& other) const
-{
-    return *this > other || *this == other;
 }
 
 template <typename T>

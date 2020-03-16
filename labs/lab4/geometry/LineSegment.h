@@ -4,6 +4,8 @@
 #include <variant>
 #include <algorithm>
 
+#include "point.h"
+
 template<typename T>
 class LineSegment
 {
@@ -148,6 +150,13 @@ LineSegment<T>::intersection(LineSegment<T> const& other) const
 	    {
 		point<T> p_start(p + t_min * u);
 		point<T> p_end(p + t_max * u);
+
+		//If p_start and p_end are the same then the lines
+		//only intersect in one point, return that point
+		if (p_start == p_end)
+		{
+		    return p_start;
+		}
 
 		return LineSegment<T>(p_start, p_end);
 	    }
