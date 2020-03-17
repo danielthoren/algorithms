@@ -29,19 +29,57 @@ public:
 
     /*
      * Returns the point where this Line and other intersects If they
-     * dont intersect or if they are intersecting in multiple places
-     * (parallel) then return point(std::numeric_limits<T>::min())
+     * don't intersect then return point(std::numeric_limits<T>::min())
+     *
+     * There are three cases, the segments are not intersecting, the
+     * segments are intersecting in one point and the segments overlap in
+     * multiple points.
      *
      * Given Lines 
      * L1(t) = p + t * U
      * L2(s) = q + s * V
+     *
+     * If U x V == 0 then the lines are parallel since cross-product
+     * between two points is defined as the determinant of said
+     * points. The determinant is a measurement of area between the
+     * vectors. The only case when there is no area in the square that
+     * they form is when they are parallel
+     *
+     *** Parallel
+     *
+     * Can check if the lines are overlapping with the following condition
+     * (q - p) x U == 0
+     *
+     * If they are not overlapping then there is no way that the line
+     * segmnts could overlap, return {}. If they are we need to determine
+     * the line segment that the overlapping creates. This can be done by
+     * determining either t or s and thus the start and end point of the
+     * new line segment.
+     *
+     * t0 = (q - p)*U / U*U 
+     * t1 = t0 + V*U / V*V 
+     *
+     * where * is the dot product. Six different cases exist for how the
+     * two line segments can be aligned. These cases are handled through
+     * min/max statements thus eliminating the need for numerous if
+     * statements.
+     *
+     * Finally p_start and p_end are calculated using t_min and t_max:
+     * p_start = p + t_min * U
+     * p_end = p + t_max * U
+     *
+     * if p_start == p_end then the intersection only occurs in one spot
+     * and thus the function returns said point only. Otherwise it returns
+     * the resulting line segment.
+     *
+     *** Not parallel
      *
      * The intersection point is defined by the constants t, s that
      * solves the following equation:
      * L1(t) = L2(s) =>
      * p + t * U = q + s * V
      * 
-     * We get the constant t on Line L1: 
+     * We get the constant t on Line L1:
      *t = (q - p) x V / U x V 
      *
      * Then, to be able to check if the intersection is within the
@@ -116,23 +154,23 @@ LineSegment<T>::intersection(LineSegment<T> const& other) const
     //If u2 == 0 then other is a point, not a line
     if (std::abs(u2) < 1e-6)
     {
-	if (other.contains(p))
-	{
-	    return p;
-	}
-	return {};
+    	if (other.contains(p))
+    	{
+    	    return p;
+    	}
+    	return {};
     }
     //If v2 == 0 then this is a point, not a line
     if (std::abs(v2) < 1e-6)
     {
-	if (this->contains(q))
-	{
-	    return q;
-	}
-	return {};
+    	if (this->contains(q))
+    	{
+    	    return q;
+    	}
+    	return {};
     }
 
-    //If uv == 0 then the segments are parallel
+    //If U x V == 0 then the segments are parallel
     if (std::abs(uv) < 1e-6 ) 
     {
 	//IF (q-p) x u == 0 then the lines are overlapping
