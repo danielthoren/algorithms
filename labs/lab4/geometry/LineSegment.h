@@ -179,8 +179,8 @@ LineSegment<T>::intersection(LineSegment<T> const& other) const
 	    T t0 = dot(qp, u) / u2;
 	    T t1 = t0 + dot(v, u) / u2;
 
-	    T t_max = std::min(1.0, std::max(t0, t1));
-	    T t_min = std::max(0.0, std::min(t0, t1));
+	    T t_max = std::min( (T) 1, std::max(t0, t1));
+	    T t_min = std::max( (T) 0, std::min(t0, t1));
 
 	    //If t_min and t_max belongs to the interval [0, 1] then
 	    //the line segments overlap otherwise there is no solution
