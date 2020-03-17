@@ -2,6 +2,8 @@
 #ifndef POINT_2D
 #define POINT_2D
 
+#include <iostream>
+
 /**
  * Author: Daniel Thorén
  *
@@ -52,6 +54,13 @@ point<T> operator*(T scalar, point<T> const& pt);
 
 template<typename T>
 point<T> operator*(point<T> const& pt, T scalar);
+
+template<typename T>
+std::ostream& operator<<(std::ostream& os, point<T> const& pt)
+{
+    os << "x: " << pt.x << " y: " << pt.y;
+    return os;
+}
 
 /*
  * Returns the cross product of the two points which is defined as

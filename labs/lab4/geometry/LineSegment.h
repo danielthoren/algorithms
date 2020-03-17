@@ -25,6 +25,16 @@ public:
     bool operator==(LineSegment<T> const& other) const;
     bool operator!=(LineSegment<T> const& other) const;
 
+    //T segment_distance(LineSegment<T> const& other) const;
+
+    /**
+     * Calculates the point on the line that is closest to the given pt
+     *
+     * pt    : The point to measure distance to
+     * return: The closest point on this line
+     */
+    point<T> closest_point(point<T> const& pt) const;
+
     bool contains(point<T> const& pt) const;
 
     /*
@@ -132,6 +142,52 @@ bool LineSegment<T>::contains(point<T> const& pt) const
 {
     T t { dot( (pt - p0), u) / dot(u, u) };
     return t >= 0 && t <= 1;
+}
+
+/**
+ * The closes distance between a line and a point is the tangent to
+ * the line that passes through the point.
+ *
+ * P: point on the line where tangent to the line intersects both P and pt
+ * L1(t) = q + t * U
+ *
+ * A vector X can be written as X = XL + Xort where XL is the part of
+ * the vector that is parallel to the line and Xort is the part of X
+ * that is orthogonal to the line. Xort is the orthogonal projection
+ * onto the line.
+ *
+ * XL   = q + c * u
+ * Xort = X - XL
+ * c = U*X / U*U
+ *
+ * If 0 <= c <= 1 then the point is on the line segment. If it is not
+ * then one of the endpoints of the line segment is the closest point to x
+ *
+ *
+ */
+template <typename T>
+point<T> LineSegment<T>::closest_point(point<T> const& x) const
+{
+    point<T> u = this->u;
+    point<T> q = this->p0;
+
+    T c = dot(u, x) / dot(u, u);
+
+    //If 0 <= c <= 1 then the point is on the line segment
+    if (c <= 1 && c >= 0)
+    {
+	return u * c;
+    }
+
+    //Otherwise one of the line segments endpoints is closest
+    point<T> v1{q - x};
+    point<T> v2{(q + u) - x};
+
+    if (dot(v1, v1) > dot(v2, v2))
+    {
+	return q;
+    }
+    return q + u;       
 }
 
 template <typename T>
