@@ -120,10 +120,9 @@ template <typename T>
 point<T> LineSegment<T>::closest_point(point<T> const& x) const
 {
     //Move coordinate system if the line does not go through origo
-    point<T> ut = this->u - p0;
     point<T> xt = x - p0;
 
-    T u2 = dot(ut, ut);
+    T u2 = dot(u, u);
     
     //If u2 == 0 then this line is a single point
     if (u2 == 0)
@@ -132,7 +131,7 @@ point<T> LineSegment<T>::closest_point(point<T> const& x) const
     }
 
     //Calculate projection
-    T c = dot(ut, xt) / u2;
+    T c = dot(u, xt) / u2;
 
     //If 0 <= c <= 1 then the point is on the line segment
     if (c <= 1 && c >= 0)
@@ -152,6 +151,9 @@ point<T> LineSegment<T>::closest_point(point<T> const& x) const
     return p0 + u;
 }
 
+/**
+ * 
+ */
 template <typename T>
 std::pair<point<T>, point<T>> LineSegment<T>::closest_points(LineSegment<T> const& lseg) const
 {    
