@@ -3,6 +3,7 @@
 #define POINT_2D
 
 #include <iostream>
+#include <cmath>
 
 /**
  * Author: Daniel Thorén
@@ -58,7 +59,7 @@ point<T> operator*(point<T> const& pt, T scalar);
 template<typename T>
 std::ostream& operator<<(std::ostream& os, point<T> const& pt)
 {
-    os << "x: " << pt.x << " y: " << pt.y;
+    os << "(" << pt.x << ", " << pt.y << ")";
     return os;
 }
 
@@ -149,7 +150,7 @@ T point<T>::distance(point<T> const& other) const
     T x_dist = std::abs(x - other.x);
     T y_dist = std::abs(y - other.y);
 
-    return std::sqrt(x_dist^2 + y_dist^2);
+    return std::sqrt( std::pow(x_dist, 2) + std::pow(y_dist, 2) );
 }
 
 template <typename T>
@@ -164,7 +165,7 @@ point<T> point<T>::distance_vec(point<T> const& other) const
 template <typename T>
 double point<T>::length() const
 {
-    return std::sqrt( std::pow(x, 2) + std::pow(y, 2) );
+    return std::sqrt( dot(*this, *this) );
 }
 
 

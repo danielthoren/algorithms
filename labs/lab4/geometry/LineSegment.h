@@ -35,77 +35,21 @@ public:
      */
     point<T> closest_point(point<T> const& pt) const;
 
+    /**
+     * Calculates the points on the line segments that are the closest
+     * and returns them both
+     *
+     * lseg  : The other line segment
+     * return: The closest points on the line segments
+     *         std::pair<on this, on lseg>
+     */
+    std::pair<point<T>, point<T>> closest_points(LineSegment<T> const& lseg) const;    
+
     bool contains(point<T> const& pt) const;
 
-    /*
+    /**
      * Returns the point where this Line and other intersects If they
      * don't intersect then return point(std::numeric_limits<T>::min())
-     *
-     * There are three cases, the segments are not intersecting, the
-     * segments are intersecting in one point and the segments overlap in
-     * multiple points.
-     *
-     * Given Lines 
-     * L1(t) = p + t * U
-     * L2(s) = q + s * V
-     *
-     * If U x V == 0 then the lines are parallel since cross-product
-     * between two points is defined as the determinant of said
-     * points. The determinant is a measurement of area between the
-     * vectors. The only case when there is no area in the square that
-     * they form is when they are parallel
-     *
-     *** Parallel
-     *
-     * Can check if the lines are overlapping with the following condition
-     * (q - p) x U == 0
-     *
-     * If they are not overlapping then there is no way that the line
-     * segmnts could overlap, return {}. If they are we need to determine
-     * the line segment that the overlapping creates. This can be done by
-     * determining either t or s and thus the start and end point of the
-     * new line segment.
-     *
-     * t0 = (q - p)*U / U*U 
-     * t1 = t0 + V*U / V*V 
-     *
-     * where * is the dot product. Six different cases exist for how the
-     * two line segments can be aligned. These cases are handled through
-     * min/max statements thus eliminating the need for numerous if
-     * statements.
-     *
-     * Finally p_start and p_end are calculated using t_min and t_max:
-     * p_start = p + t_min * U
-     * p_end = p + t_max * U
-     *
-     * if p_start == p_end then the intersection only occurs in one spot
-     * and thus the function returns said point only. Otherwise it returns
-     * the resulting line segment.
-     *
-     *** Not parallel
-     *
-     * The intersection point is defined by the constants t, s that
-     * solves the following equation:
-     * L1(t) = L2(s) =>
-     * p + t * U = q + s * V
-     * 
-     * We get the constant t on Line L1:
-     *t = (q - p) x V / U x V 
-     *
-     * Then, to be able to check if the intersection is within the
-     * limits of both line segments we get the constant s on line
-     * L2. This is optimized by reusing calculations from the
-     * expression above. This is done by rewriting the expressin as
-     * follows:
-     * s = (( (p - q) x U ) / V x U => / A x B = -B x A / =>
-     * s = ( -(q - p) x U ) / -U x V =>
-     * s = ( (q - p) x U ) / U x V
-     *
-     * Now we can check if the intersection point is on both line
-     * segments by checking if s and t are within the interval [0, 1]
-     *
-     * Then we obtain the actual intersection point from the following:
-     * p_inter = p + t * U
      *
      * other : The line to check for intersection with
      * return: The intersection point. If there is non then return point with
@@ -140,8 +84,14 @@ bool LineSegment<T>::operator!=(LineSegment<T> const& other) const
 template <typename T>
 bool LineSegment<T>::contains(point<T> const& pt) const
 {
+    //This is a point, check if both points are the same
+    if (u.x == 0 && u.y == 0)
+    {
+	return p0 == pt;
+    }
+    
     T t { dot( (pt - p0), u) / dot(u, u) };
-    return t >= 0 && t <= 1;
+    return (p0 + u * t) == pt;
 }
 
 /**
@@ -163,33 +113,164 @@ bool LineSegment<T>::contains(point<T> const& pt) const
  * If 0 <= c <= 1 then the point is on the line segment. If it is not
  * then one of the endpoints of the line segment is the closest point to x
  *
- *
+ * x     : The point to measure distance to
+ * return: The closest point on the line segment to the given point
  */
 template <typename T>
 point<T> LineSegment<T>::closest_point(point<T> const& x) const
 {
-    point<T> u = this->u;
-    point<T> q = this->p0;
+    //Move coordinate system if the line does not go through origo
+    point<T> ut = this->u - p0;
+    point<T> xt = x - p0;
 
-    T c = dot(u, x) / dot(u, u);
+    T u2 = dot(ut, ut);
+    
+    //If u2 == 0 then this line is a single point
+    if (u2 == 0)
+    {
+	return p0;
+    }
+
+    //Calculate projection
+    T c = dot(ut, xt) / u2;
 
     //If 0 <= c <= 1 then the point is on the line segment
     if (c <= 1 && c >= 0)
     {
-	return u * c;
+	point<T> res = c * u + p0;
+	return res;
     }
 
     //Otherwise one of the line segments endpoints is closest
-    point<T> v1{q - x};
-    point<T> v2{(q + u) - x};
+    point<T> v1{p0 - x};
+    point<T> v2{(p0 + u) - x};
 
-    if (dot(v1, v1) > dot(v2, v2))
+    if (v1.length() < v2.length())
     {
-	return q;
+	return p0;
     }
-    return q + u;       
+    return p0 + u;
 }
 
+template <typename T>
+std::pair<point<T>, point<T>> LineSegment<T>::closest_points(LineSegment<T> const& lseg) const
+{    
+    point<T> p_res      { closest_point(lseg.p0) };
+    point<T> u_res      { closest_point(lseg.p0 + lseg.u) };
+    point<T> p_res_other{ lseg.closest_point(p0) };
+    point<T> u_res_other{ lseg.closest_point(p0 + u) };
+
+    T p_len       = p_res.distance(lseg.p0);
+    T u_len       = u_res.distance(lseg.p0 + lseg.u);
+    T p_len_other = p_res_other.distance(p0);
+    T u_len_other = u_res_other.distance(p0 + u);
+    
+    if (p_len <= u_len &&
+	p_len <= p_len_other &&
+	p_len <= u_len_other)
+    {
+	return {p_res, lseg.p0};
+    }
+    else if (
+	u_len <= p_len &&
+	u_len <= p_len_other &&
+	u_len <= u_len_other)
+    {
+	return {u_res, lseg.p0 + lseg.u};
+    }
+    else if (
+	p_len_other <= p_len &&
+	p_len_other <= u_len_other &&
+	p_len_other <= u_len)
+    {
+	return {p0, p_res_other};
+    }
+    else //(
+	// u_len_other > p_len &&
+	// u_len_other > p_len_other &&
+	// u_len_other > u_len)
+    {
+	return {p0 + u, u_res_other};
+    }
+}
+
+
+
+
+/*
+ * Returns the point where this Line and other intersects If they
+ * don't intersect then return point(std::numeric_limits<T>::min())
+ *
+ * There are three cases, the segments are not intersecting, the
+ * segments are intersecting in one point and the segments overlap in
+ * multiple points.
+ *
+ * Given Lines 
+ * L1(t) = p + t * U
+ * L2(s) = q + s * V
+ *
+ * If U x V == 0 then the lines are parallel since cross-product
+ * between two points is defined as the determinant of said
+ * points. The determinant is a measurement of area between the
+ * vectors. The only case when there is no area in the square that
+ * they form is when they are parallel
+ *
+ *** Parallel
+ *
+ * Can check if the lines are overlapping with the following condition
+ * (q - p) x U == 0
+ *
+ * If they are not overlapping then there is no way that the line
+ * segmnts could overlap, return {}. If they are we need to determine
+ * the line segment that the overlapping creates. This can be done by
+ * determining either t or s and thus the start and end point of the
+ * new line segment.
+ *
+ * t0 = (q - p)*U / U*U 
+ * t1 = t0 + V*U / V*V 
+ *
+ * where * is the dot product. Six different cases exist for how the
+ * two line segments can be aligned. These cases are handled through
+ * min/max statements thus eliminating the need for numerous if
+ * statements.
+ *
+ * Finally p_start and p_end are calculated using t_min and t_max:
+ * p_start = p + t_min * U
+ * p_end = p + t_max * U
+ *
+ * if p_start == p_end then the intersection only occurs in one spot
+ * and thus the function returns said point only. Otherwise it returns
+ * the resulting line segment.
+ *
+ *** Not parallel
+ *
+ * The intersection point is defined by the constants t, s that
+ * solves the following equation:
+ * L1(t) = L2(s) =>
+ * p + t * U = q + s * V
+ * 
+ * We get the constant t on Line L1:
+ *t = (q - p) x V / U x V 
+ *
+ * Then, to be able to check if the intersection is within the
+ * limits of both line segments we get the constant s on line
+ * L2. This is optimized by reusing calculations from the
+ * expression above. This is done by rewriting the expressin as
+ * follows:
+ * s = (( (p - q) x U ) / V x U => / A x B = -B x A / =>
+ * s = ( -(q - p) x U ) / -U x V =>
+ * s = ( (q - p) x U ) / U x V
+ *
+ * Now we can check if the intersection point is on both line
+ * segments by checking if s and t are within the interval [0, 1]
+ *
+ * Then we obtain the actual intersection point from the following:
+ * p_inter = p + t * U
+ *
+ * other : The line to check for intersection with
+ * return: The intersection point. If there is non then return point with
+ *         std::numeric_limits<T>::min() as its values
+ */
 template <typename T>
 std::variant<std::monostate, point<T>, LineSegment<T>>
 LineSegment<T>::intersection(LineSegment<T> const& other) const

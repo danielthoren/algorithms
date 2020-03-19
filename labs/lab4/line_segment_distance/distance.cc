@@ -7,36 +7,39 @@
 
 using namespace std;
 
-LineSegment<long double> read_line()
+LineSegment<double> read_line()
 {
-    long double x1, y1, x2, y2;
-    scanf(" %Lf", &x1);
-    scanf(" %Lf", &y1);
-    scanf(" %Lf", &x2);
-    scanf(" %Lf", &y2);
+    double x1, y1, x2, y2;
+    scanf(" %lf", &x1);
+    scanf(" %lf", &y1);
+    scanf(" %lf", &x2);
+    scanf(" %lf", &y2);
     
-    LineSegment<long double> l1{x1, y1, x2, y2};
+    LineSegment<double> l1{x1, y1, x2, y2};
 
     return l1;
 }
 
 int main()
 {
-    // int cases{};
+    int cases{};
     
-    // scanf(" %d", &cases);
+    scanf(" %d", &cases);
 
-    // for (int i{0}; i < cases; i++)
-    // {	
-    // 	LineSegment<long double> l1 = read_line();
-    // 	LineSegment<long double> l2 = read_line();
+    for (int i{0}; i < cases; i++)
+    {	
+    	LineSegment<double> l1 = read_line();
+    	LineSegment<double> l2 = read_line();
 
-    // }
-
-    LineSegment<double> line(0, 0, 3, 2);
-    point<double> x(-6, 4);
-    
-    point<double> res = line.closest_point(x);
-
-    std::cout << res << std::endl;
+	auto res = l1.intersection(l2);
+	if (std::holds_alternative<std::monostate>(res))
+	{
+	    auto res = l1.closest_points(l2);
+	    printf("%.2lf\n", std::get<0>(res).distance(std::get<1>(res)));
+	}
+	else
+	{
+	    printf("0.00\n");
+	}
+    }
 }
