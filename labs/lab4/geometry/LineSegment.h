@@ -45,6 +45,10 @@ public:
      */
     std::pair<point<T>, point<T>> closest_points(LineSegment<T> const& lseg) const;    
 
+    /**
+     * Returns true if this linesegment contains the given point,
+     * otherwise false
+     */
     bool contains(point<T> const& pt) const;
 
     /**
@@ -106,15 +110,31 @@ bool LineSegment<T>::contains(point<T> const& pt) const
  * that is orthogonal to the line. Xort is the orthogonal projection
  * onto the line.
  *
+ * Since the projection is done onto a vector it will be relative
+ * origo. Thus to get the correct point on the line the coordinate
+ * system needs to be moved so that origo sits at p0 before the
+ * ṕrojection is calculated. Then the coordinate system needs to be
+ * moved back to get the actual position of the point. Luckily the
+ * only position that needs changing is that of x:
+ *
+ * Xt = X - q
+ *
+ * Then performing the projection:
  * XL   = q + c * u
- * Xort = X - XL
- * c = U*X / U*U
+ * Xort = Xt - XL
+ * c = U*Xt / U*U
  *
  * If 0 <= c <= 1 then the point is on the line segment. If it is not
  * then one of the endpoints of the line segment is the closest point to x
  *
+ * Then moving the point back:
+ * Rt = c * U
+ * R = Rt + q
+ *
+ * Getting the resulting point R
+ *
  * x     : The point to measure distance to
- * return: The closest point on the line segment to the given point
+ * return: The resulting point R
  */
 template <typename T>
 point<T> LineSegment<T>::closest_point(point<T> const& x) const
@@ -152,7 +172,15 @@ point<T> LineSegment<T>::closest_point(point<T> const& x) const
 }
 
 /**
- * 
+ * Functions determines the closest pair of points on the two line
+ * segments. This is done by finding the closest point on the other
+ * line segment for each of the line segments end points and then
+ * calculating the distance. The shortest distance dictates which
+ * points are the closest.
+ *
+ * lseg  : The line segment to calculate the shortest distance to
+ * return: The pair of points that are the closest on the given line segments
+ *         std::pair<closest on this, closest on lseg>
  */
 template <typename T>
 std::pair<point<T>, point<T>> LineSegment<T>::closest_points(LineSegment<T> const& lseg) const
@@ -187,10 +215,7 @@ std::pair<point<T>, point<T>> LineSegment<T>::closest_points(LineSegment<T> cons
     {
 	return {p0, p_res_other};
     }
-    else //(
-	// u_len_other > p_len &&
-	// u_len_other > p_len_other &&
-	// u_len_other > u_len)
+    else
     {
 	return {p0 + u, u_res_other};
     }

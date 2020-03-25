@@ -1,6 +1,4 @@
-#include<vector>
 #include<map>
-#include<string>
 #include<algorithm>
 #include<iostream>
 #include<sstream>
@@ -164,6 +162,9 @@ void build_automaton(std::vector<Node>& trie)
  * same indexes). Each such vector contians an integer per match
  * detailing the position of the match (first letter of the match)
  *
+ * Template type T must support operator[] and .size() operations
+ * The return type of operator[] must support == operator
+ *
  * Time complexity  : O( n + pn + m )
  * Memory complexity: O(pn)
  *                    n  = len(text)
@@ -176,8 +177,9 @@ void build_automaton(std::vector<Node>& trie)
  *           following format: 
  *           vector< vector< matches of pattern 0 >, vector< matches of pattern 1 >, ...>
  */
+template<typename T>
 std::vector<std::vector<int>>
-multimach_search(std::vector<std::string> const& patterns, std::string const& text)
+multimach_search(std::vector<T> const& patterns, T const& text)
 {
     //Build trie from the patterns
     std::vector<Node> trie = build_trie(patterns);
@@ -227,40 +229,4 @@ multimach_search(std::vector<std::string> const& patterns, std::string const& te
 	}
     }
     return matches;
-}
-
-int main()
-{
-    std::ios_base::sync_with_stdio(false);
-    std::cin.tie(NULL);
-    
-    int cases;
-
-    while (std::cin >> cases)
-    {
-
-	std::vector<std::string> patterns{};
-	std::string pattern{};
-	std::getline(std::cin, pattern);
-	for (int c{0}; c < cases; c++)
-	{
-	    std::getline(std::cin, pattern);
-	    patterns.push_back(pattern);
-	}
-
-	std::string text{};
-	std::getline(std::cin, text);
-
-	std::vector<std::vector<int>> res = multimach_search(patterns, text);
-
-	for (int p{0}; p < res.size(); p++)
-	{
-	    for (int m{0}; m < res[p].size(); m++)
-	    {
-		std::cout << res[p][m] << " ";
-	    }
-	    std::cout << std::endl;
-	}
-    }
-    return 0;
 }

@@ -1,13 +1,12 @@
 #include <iostream>
-#include <string>
-#include <vector>
 
 /**
  * Generates the prefix for the search pattern. 
  *
  * Time complexity: O(m) where m is the length of the pattern
  */
-std::vector<int> generate_prefix(std::string& pattern)
+template<typename T>
+std::vector<int> generate_prefix(T& pattern)
 {
     std::vector<int> prefix{0};
     int i{0};
@@ -35,8 +34,13 @@ std::vector<int> generate_prefix(std::string& pattern)
  * in the search string.
  *
  * Time complexity: O(n) where n is the length of the search string
+ *
+ * pattern: The pattern to search for
+ * data   : The data to search in
+ * return : Vector with start positions of all matches
  */
-std::vector<int> string_matching(std::string& pattern, std::string& data)
+template<typename T>
+std::vector<int> string_matching(T& pattern, T& data)
 {
     std::vector<int> prefix{ generate_prefix(pattern) };
     std::vector<int> matches{};
@@ -67,28 +71,4 @@ std::vector<int> string_matching(std::string& pattern, std::string& data)
 	}
     }
     return matches;
-}
-
-int main()
-{
-    std::ios_base::sync_with_stdio(false);
-    std::cin.tie(NULL);
-    
-    std::string pattern;
-    std::string data;
-    while (std::getline(std::cin, pattern))
-    {
-	std::getline(std::cin, data);
-	
-	std::vector<int> matches{ string_matching(pattern, data) };
-	
-	if (matches.size() > 0)
-	    std::cout << matches[0];
-	
-	for (int n{1}; n < matches.size(); n++)
-	    std::cout << " " << matches[n];
-	std::cout << std::endl;
-    }
-
-    return 0;
 }
