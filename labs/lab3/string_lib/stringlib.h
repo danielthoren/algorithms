@@ -32,6 +32,10 @@ struct insert_vec{
  */
 struct insert_pair{
     using res_type = std::vector<std::pair<int, int>>;
+
+    insert_pair(int initial_size = 0):
+	result(0)
+	{};    
     
     void insert(int pattern, int pos)
 	{
