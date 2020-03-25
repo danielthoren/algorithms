@@ -3,23 +3,41 @@
 #include <iostream>
 #include <algorithm>
 
+#include <sstream>
+
 #include "stringlib.h"
 
 using namespace std;
 
 void trim_string(string& str)
 {
+    // stringstream sstream(str);
+
+    // string next{};
+    // string res{};
+    // while(sstream >> next)
+    // {
+    // 	res += next;
+    // 	res += " ";
+    // }
+    // return res;
+
     size_t start = str.find_first_not_of(' ');
 
     if (start != string::npos)
-	str = str.substr(start);
+    	str = str.substr(start);
 
     size_t end = str.find_last_not_of(' ');
 
     if (end != string::npos)
-	str = str.substr(0, end+1);
+    	str = str.substr(0, end+1);
 
-    str = replace( str.begin(), str.end(), "  ", ""); //todo: replace multiple occurances of " " with only one
+    std::size_t doubleSpace = str.find("  ");
+    while (doubleSpace != std::string::npos)
+    {
+	str.erase(doubleSpace, 1);
+	doubleSpace = str.find("  ");
+    }   
 }
 
 string read_block()
@@ -35,7 +53,10 @@ string read_block()
 
 	trim_string(line);
 	
-	res += line;
+	if (line != "" && line != " ")
+	{	
+	    res += line;
+	}
     }
     return res;
 }
@@ -52,8 +73,11 @@ vector<string> read_orig()
 	    break;
 
 	trim_string(line);
-	
-	res.push_back(line);
+
+	if (line != "" && line != " ")
+	{	
+	    res.push_back(line);
+	}
     }
     return res;
 }
@@ -73,7 +97,7 @@ int main()
 	cin >> name;
 	string text{ read_block() };
 
-	blocks.push_back( {name, text} );	
+	blocks.push_back( {name, text} );
     }
 
     vector<string> patterns{ read_orig() };
@@ -81,8 +105,6 @@ int main()
     vector<string> longest_matches{};
     int max_count{0};
 
-    //Keeps track of current position in block
-    int position{0};
     for (auto block : blocks)
     {
 
@@ -131,7 +153,7 @@ int main()
 	    prev = matches[i].second;
 	}
 
-	if (max_count <= local_max_count)
+	if (max_count <= local_max_count && local_max_count != 0)
 	{
 	    //Reset list if not equal
 	    if (max_count < local_max_count)
