@@ -33,7 +33,7 @@ int main()
 	std::string text{};
 	std::getline(std::cin, text);
 
-	std::vector<std::vector<int>> res = multimach_search(patterns, text);
+	std::vector<std::vector<int>> res = string_multi_matching(patterns, text);
 
 	for (int p{0}; p < res.size(); p++)
 	{

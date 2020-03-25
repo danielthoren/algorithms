@@ -165,6 +165,17 @@ void build_automaton(std::vector<Node>& trie)
  * Template type T must support operator[] and .size() operations
  * The return type of operator[] must support == operator
  *
+ * Template type INSERT is used for policy pattern to customize output format. 
+ * Policy must follow this pattern:
+ *
+ * struct NAME {
+ *     using res_type = wanted format
+ *
+ *     void insert(int pattern, int pos); //inserts data into container
+ *
+ *     res_type result;
+ *};
+ *
  * Time complexity  : O( n + pn + m )
  * Memory complexity: O(pn)
  *                    n  = len(text)
@@ -177,16 +188,17 @@ void build_automaton(std::vector<Node>& trie)
  *           following format: 
  *           vector< vector< matches of pattern 0 >, vector< matches of pattern 1 >, ...>
  */
-template<typename T>
-std::vector<std::vector<int>>
-multimach_search(std::vector<T> const& patterns, T const& text)
+template<typename T, typename CONTAINER>
+auto string_multi_matching(std::vector<T> const& patterns, T const& text)
+    -> decltype( std::declval<CONTAINER>().insert(10, 10),
+    	         typename CONTAINER::res_type{})
 {
     //Build trie from the patterns
     std::vector<Node> trie = build_trie(patterns);
     //Construct automaton from the trie
     build_automaton(trie);
-    
-    std::vector<std::vector<int>> matches(patterns.size());
+
+    CONTAINER matches(patterns.size());
 
     int curr = 0;
 
@@ -224,9 +236,9 @@ multimach_search(std::vector<T> const& patterns, T const& text)
 	{
 	    for (int m : trie[curr].word_done)
 	    {
-		matches[m].push_back(pos - patterns[m].size() + 1);
+		matches.insert(m, pos - patterns[m].size() + 1);
 	    }
 	}
     }
-    return matches;
+    return matches.result;
 }

@@ -1,6 +1,48 @@
 #include <vector>
 
 /**
+ * Inserter following this pattern:
+ *
+ * Vector containing positions of all matches. Has the
+ *           following format: 
+ *           vector< vector< matches of pattern 0 >, vector< matches of pattern 1 >, ...>
+ */
+struct insert_vec{
+    using res_type = std::vector<std::vector<int>>;
+
+    insert_vec(int initial_size = 0):
+	result(initial_size)
+	{};
+    
+    void insert(int pattern, int pos)
+	{
+	    result[pattern].push_back(pos);
+	}
+
+    res_type result;
+};
+
+
+/**
+ * Inserter following this pattern:
+ *
+ * Vector containing positions of all matches. Has the
+ *           following format: 
+ *           vector< pair<pattern, position>, ...>
+ */
+struct insert_pair{
+    using res_type = std::vector<std::pair<int, int>>;
+    
+    void insert(int pattern, int pos)
+	{
+	    result.push_back( {pattern, pos} );
+	}
+
+    res_type result{};
+};
+
+
+/**
  * Author: Daniel Thorén
  *
  * This function searches the given text for all of the patterns and
@@ -10,6 +52,17 @@
  *
  * Template type T must support operator[] and .size() operations
  * The return type of operator[] must support == operator
+ *
+ * Template type INSERT is used for policy pattern to customize output format. 
+ * Policy must follow this pattern:
+ *
+ * struct NAME {
+ *     using res_type = wanted format
+ *
+ *     void insert(int pattern, int pos); //inserts data into container
+ *
+ *     res_type result;
+ *};
  *
  * Time complexity  : O( n + pn + m )
  * Memory complexity: O(pn)
@@ -23,9 +76,10 @@
  *           following format: 
  *           vector< vector< matches of pattern 0 >, vector< matches of pattern 1 >, ...>
  */
-template<typename T>
-std::vector<std::vector<int>>
-multimach_search(std::vector<T> const& patterns, T const& text);
+template<typename T , typename CONTAINER = insert_vec>
+auto string_multi_matching(std::vector<T> const& patterns, T const& text)
+    -> decltype( std::declval<CONTAINER>().insert(10, 10),
+    	         typename CONTAINER::res_type{});
 
 
 /**
