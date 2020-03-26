@@ -5,7 +5,7 @@
 
 using namespace std;
 
-bool get_manipulation(vector<pair<int, int>>& matches, vector<int>& scores, vector<int>& res, int max_score)
+bool get_manipulation(vector<pair<int, int>>& matches, vector<int> scores, vector<int>& res, int max_score)
 {
     auto it = max_element(scores.begin(), scores.end() - 1);
     if (*it >= max_score)
@@ -16,9 +16,13 @@ bool get_manipulation(vector<pair<int, int>>& matches, vector<int>& scores, vect
     if (matches.size() == 0)
     {
 	return true;
+    }    
+    
+    if (matches.size() == 0)
+    {
+	return true;
     }
    
-
     pair<int, int> match = matches[0];
     matches.erase(matches.begin(), matches.begin()+1);
 
@@ -42,7 +46,7 @@ bool get_manipulation(vector<pair<int, int>>& matches, vector<int>& scores, vect
     {	
 	res.push_back(2);
 	scores[match.second] += 2;
-		
+	
 	bool ret = get_manipulation(matches, scores, res, max_score);
 
 	if (ret)
@@ -68,17 +72,24 @@ bool get_manipulation(vector<pair<int, int>>& matches, vector<int>& scores, vect
 	res.push_back(0);
 	scores[match.first] += 1;
 	scores[match.second] -= 1;
-
+	
 	ret = get_manipulation(matches, scores, res, max_score);
 
-	return ret;
+	if (ret)
+	{
+	    return true;
+	}
+
+	res.pop_back();
+	matches.push_back(match);
+	return false;
     }
 
     else
     {	
 	res.push_back(0);
 	scores[match.first] += 2;
-		
+
 	bool ret = get_manipulation(matches, scores, res, max_score);
 
 	if (ret)
@@ -107,7 +118,14 @@ bool get_manipulation(vector<pair<int, int>>& matches, vector<int>& scores, vect
 
 	ret = get_manipulation(matches, scores, res, max_score);
 
-	return ret;
+	if (ret)
+	{
+	    return true;
+	}
+
+	res.pop_back();
+	matches.push_back(match);
+	return false;
     }
     
     return false;
