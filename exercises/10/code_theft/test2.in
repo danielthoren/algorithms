@@ -6,21 +6,14 @@ HelloWorld1.bas
 40 PRINT "*******************"
 50 PRINT "*******************"
 ***END***
-panda1
-10 REM Hello ver 1.0 (c) Acme 2008
-20 PRINT "*******************"
-30 PRINT "--- HELLO WORLD ---"
-  
-
-  
-40 PRINT "*******************"
-
-
-50 END
+HelloWorld2.bas
+10  PRINT   "-------------------"
+20  PRINT   "*******************"
+30  PRINT   "--- HELLO WORLD ---"
+40  PRINT   "*******************"
+50  PRINT   "-------------------"
 ***END***
 10 REM Hello ver 1.0 (c) Acme 2008
-  
-     
 20 PRINT "*******************"
 30 PRINT "--- HELLO WORLD ---"
 40 PRINT "*******************"

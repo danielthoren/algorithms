@@ -34,7 +34,7 @@ struct insert_pair{
     using res_type = std::vector<std::pair<int, int>>;
 
     insert_pair(int initial_size = 0):
-	result(0)
+	result{}
 	{};    
     
     void insert(int pattern, int pos)
@@ -42,7 +42,7 @@ struct insert_pair{
 	    result.push_back( {pattern, pos} );
 	}
 
-    res_type result{};
+    res_type result;
 };
 
 
