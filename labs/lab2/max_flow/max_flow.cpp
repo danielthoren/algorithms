@@ -68,7 +68,16 @@ public:
 	    }
 	}
 
-        int calculate_max_flow()
+
+    /**
+     * Calculates the maximum flow in the graph. 
+     *
+     * Time complexity: O(E * V * V)
+     * Memory complexity: O(E + V)
+     *
+     * return: The maximum flow from source to sink
+     */
+    FLOW_T calculate_max_flow()
 	{
 	    FLOW_T result{0};
 	    
@@ -106,7 +115,10 @@ public:
 	{
 	    return graph;
 	}
-    
+
+    /**
+     * Returns the graph as a string
+     */
     std::string str()
 	{
 	    std::stringstream sstream{};
