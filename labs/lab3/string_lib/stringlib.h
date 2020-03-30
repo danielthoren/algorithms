@@ -7,14 +7,15 @@
  *           following format: 
  *           vector< vector< matches of pattern 0 >, vector< matches of pattern 1 >, ...>
  */
+template<typename T = int>
 struct insert_vec{
-    using res_type = std::vector<std::vector<int>>;
+    using res_type = std::vector<std::vector<T>>;
 
-    insert_vec(int initial_size = 0):
+    insert_vec(T initial_size = 0):
 	result(initial_size)
 	{};
     
-    void insert(int pattern, int pos)
+    void insert(T pattern, T pos)
 	{
 	    result[pattern].push_back(pos);
 	}
@@ -30,14 +31,15 @@ struct insert_vec{
  *           following format: 
  *           vector< pair<pattern, position>, ...>
  */
+template<typename T = int>
 struct insert_pair{
-    using res_type = std::vector<std::pair<int, int>>;
+    using res_type = std::vector<std::pair<T, T>>;
 
-    insert_pair(int initial_size = 0):
+    insert_pair(T initial_size = 0):
 	result{}
 	{};    
     
-    void insert(int pattern, int pos)
+    void insert(T pattern, T pos)
 	{
 	    result.push_back( {pattern, pos} );
 	}
@@ -80,7 +82,7 @@ struct insert_pair{
  *           following format: 
  *           vector< vector< matches of pattern 0 >, vector< matches of pattern 1 >, ...>
  */
-template<typename T , typename CONTAINER = insert_vec>
+template<typename T , typename CONTAINER = insert_vec<T>>
 auto string_multi_matching(std::vector<T> const& patterns, T const& text)
     -> decltype( std::declval<CONTAINER>().insert(10, 10),
     	         typename CONTAINER::res_type{});
