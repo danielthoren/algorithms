@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <functional>
 #include <queue>
+#include <sstream>
 
 /**
  * Author: Daniel Thorén
@@ -105,6 +106,27 @@ public:
 	{
 	    return graph;
 	}
+    
+    std::string str()
+	{
+	    std::stringstream sstream{};
+
+	    for (Node& n : graph)
+	    {
+		sstream << "Level: " << n.level << " Edges: ";
+		for (Edge& e : n.edges)
+		{
+		    sstream << "{end_node: "
+			    << e.end_node
+			    << " curr_flow: "
+			    << e.curr_flow
+			    << " max_flow: "
+			    << e.max_flow << "}";
+		}
+		sstream << std::endl;
+	    }
+	    return sstream.str();
+	}
 
 private:
   
@@ -132,26 +154,31 @@ private:
      */
     void help_build_level_graph()
 	{
-	    std::queue<SIZE_T> queue{};
-	    queue.push(source);
-
-	    SIZE_T curr_level{0};
-	    graph[source].level = 0;
+	    //queue<pair<node index, level>>
+	    std::queue<std::pair<SIZE_T, SIZE_T>> queue{};
+	    queue.push({source, 0});
 
 	    while (!queue.empty())
 	    {
-		SIZE_T node = queue.front();
+		std::pair<SIZE_T, SIZE_T> node = queue.front();
 		queue.pop();
 
-		++curr_level;
-
-		for (Edge& e : graph[node].edges)
+		if (graph[node.first].level == -1 ||
+		    graph[node.first].level > node.second)
 		{
-		    if (graph[e.end_node].level == -1 &&
-			e.max_flow - e.curr_flow != 0)
+		
+		    graph[node.first].level = node.second;
+		    
+		    for (Edge& e : graph[node.first].edges)
 		    {
-			graph[e.end_node].level = curr_level;
-			queue.push(e.end_node);
+			if ((graph[e.end_node].level == -1 ||
+			     graph[e.end_node].level > node.second) &&
+			    e.max_flow - e.curr_flow != 0)
+			{
+			    //graph[e.end_node].level = curr_level;
+			    queue.push( {e.end_node, node.second + 1} );
+			}
+
 		    }
 		}
 	    }

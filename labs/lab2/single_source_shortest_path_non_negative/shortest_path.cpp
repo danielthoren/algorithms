@@ -119,6 +119,9 @@ public:
 
 	    graph.at(start_node).min_cost = 0;
 
+	    //Slow solution since it stores copies in the priority
+	    //queue. Does not compile with references and gets wrong
+	    //awnswer with pointers
 	    std::priority_queue<Node, std::vector<Node>, Queue_comparator> min_queue{};
 	    min_queue.push(graph.at(start_node));
 
