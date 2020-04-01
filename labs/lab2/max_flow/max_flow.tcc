@@ -64,21 +64,19 @@ template<typename FLOW_T, typename SIZE_T>
  FLOW_T Max_flow<FLOW_T, SIZE_T>::calculate_max_flow()
 {
     FLOW_T result{0};
-	    
-    FLOW_T prev_result{-1};
 
-    while (prev_result < result)
-    {
-	prev_result = result;
-		
-	build_level_graph();
+    while (true)
+    {		
+	bool cont = build_level_graph();
+	if (!cont)
+	{
+	    return result;
+	}
 		
 	// printf(str().c_str());
 	// printf("\n\n");
 	result += update_flow(source, -1, 0);
-    }
-
-    return result;	    
+    }  
 }
 
 
@@ -159,15 +157,20 @@ template<typename FLOW_T, typename SIZE_T>
  *
  * Time Complexity: O(n)
  *
- * level: The current level
- * node : The current node
+ * level : The current level
+ * node  : The current node
+ * return: True if the sink was found, otherwise false.
  */
 template<typename FLOW_T, typename SIZE_T>
- void Max_flow<FLOW_T, SIZE_T>::build_level_graph()
+ bool Max_flow<FLOW_T, SIZE_T>::build_level_graph()
 {
     reset_level();
+
+    //contains <node index, expected level>
     std::queue<std::pair<SIZE_T, SIZE_T>> queue{};
     queue.push({source, 0});
+
+    bool found_sink{false};
 
     while (!queue.empty())
     {
@@ -185,13 +188,16 @@ template<typename FLOW_T, typename SIZE_T>
 		     graph[e.end_node].level > node.second) &&
 		    e.max_flow - e.curr_flow != 0)
 		{
-		    //graph[e.end_node].level = curr_level;
 		    queue.push( {e.end_node, node.second + 1} );
+		    if (e.end_node == sink)
+		    {
+			found_sink = true;
+		    }
 		}
-
 	    }
 	}
     }
+    return found_sink;
 }
 
 /**
@@ -224,10 +230,10 @@ template<typename FLOW_T, typename SIZE_T>
     FLOW_T res{0};
     for (Max_flow<FLOW_T, SIZE_T>::Edge& e : graph[node].edges)
     {
-	if (graph[e.end_node].level == level + 1)
+	FLOW_T flow{ e.max_flow - e.curr_flow };
+	
+	if (graph[e.end_node].level == level + 1 && flow != 0)
 	{		    
-	    FLOW_T flow{ e.max_flow - e.curr_flow };
-
 	    if (flow > inc_flow &&
 		inc_flow >= 0)
 	    {

@@ -96,7 +96,7 @@ private:
      * level: The current level
      * node : The current node
      */
-    void build_level_graph();
+    bool build_level_graph();
 
     /**
      * Function giving the back edge to the given edge e
