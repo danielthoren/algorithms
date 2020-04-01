@@ -88,6 +88,6 @@ public:
 template<typename T>
 std::ostream& operator<<(std::ostream& os, Rational<T> const& r);
 
-#endif
-
 #include "rational.tcc"
+
+#endif
