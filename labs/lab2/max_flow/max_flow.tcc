@@ -84,7 +84,7 @@ template<typename FLOW_T, typename SIZE_T>
  * Returns graph with residual edges
  */
 template<typename FLOW_T, typename SIZE_T>
-std::vector<typename Max_flow<FLOW_T, SIZE_T>::Node>& Max_flow<FLOW_T, SIZE_T>::get_graph() const
+std::vector<typename Max_flow<FLOW_T, SIZE_T>::Node>& Max_flow<FLOW_T, SIZE_T>::get_graph()
 {
     return graph;
 }

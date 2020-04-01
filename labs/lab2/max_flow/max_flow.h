@@ -64,7 +64,7 @@ public:
     /**
      * Returns graph with residual edges
      */
-    std::vector<Node>& get_graph() const;
+    std::vector<Node>& get_graph();
 
     /**
      * Removes residual edges and returns clean graph
