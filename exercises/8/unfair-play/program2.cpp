@@ -26,7 +26,9 @@ public:
     
 
     enum Match{
-	FirstWon, SecondWon, Tie
+	FirstWon = 0,
+	Tie = 1,
+	SecondWon = 2
     };
 
     std::vector<Match>& get_result()
@@ -39,7 +41,7 @@ public:
 	    //Connect all match nodes to source
 	    for (T m{0}; m < matches.size(); m++)
 	    {
-		if (m != win_team)
+		if (matches[m].first != win_team && matches[m].second != win_team)
 		{
 		    max_flow.connect(0, m + match_offset, WIN_SCORE);
 		}
@@ -65,13 +67,13 @@ public:
 	    T win_score{ win_r + start_scores[win_team] };
 
 	    //Connect all team nodes to drain
-	    for (T t{0}; t < start_scores.size(); t++)
+	    for (T t{1}; t < start_scores.size(); t++)
 	    {
 		if (t != win_team)
 		{
 		    //Max remaining wins that team t is allowed to win
-		    T max_win_remain{ win_score - start_scores[t] };
-		    max_flow.connect(sink, t + team_offset, max_win_remain);
+		    T max_win_remain{ win_score - start_scores[t] - 1};
+		    max_flow.connect(t + team_offset, sink, max_win_remain);
 		}
 	    }
 
@@ -118,14 +120,14 @@ private:
 		    }
 		    else if (orig_graph[m + match_offset].edges[0].curr_flow == WIN_SCORE)
 		    {
-			if (orig_graph[m + match_offset].edges[0].end_node == matches[m].first)
+			if (orig_graph[m + match_offset].edges[0].end_node == matches[m].first + team_offset)
 			    result.push_back(Match::FirstWon);
 			else
 			    result.push_back(Match::SecondWon);
 		    }
 		    else
 		    {
-			if (orig_graph[m + match_offset].edges[1].end_node == matches[m].first)
+			if (orig_graph[m + match_offset].edges[1].end_node == matches[m].first + team_offset)
 			    result.push_back(Match::FirstWon);
 			else
 			    result.push_back(Match::SecondWon);
@@ -161,34 +163,34 @@ int main()
     while (n != -1)
     {
 	scanf(" %ld", &m);
-	vector<int> scores{};
+	vector<long> scores{};
 	scores.push_back(-1);
-	for (int i{0}; i < n; i++)
+	for (long i{0}; i < n; i++)
 	{
-	    int score;
-	    scanf(" %d", &score);
+	    long score;
+	    scanf(" %ld", &score);
 	    scores.push_back(score);
 	}
 
-	vector<pair<int,int>>matches{};
-	for (int p{0}; p < m; p++)
+	vector<pair<long,long>>matches{};
+	for (long p{0}; p < m; p++)
 	{
-	    int a, b;
-	    scanf(" %d", &a);
-	    scanf(" %d", &b);
+	    long a, b;
+	    scanf(" %ld", &a);
+	    scanf(" %ld", &b);
 
 	    matches.push_back({a, b});
 	}
 
-	Baseball_elimination<int> elim(scores.size() - 1, matches, scores);
+	Baseball_elimination<long> elim(scores.size() - 1, matches, scores);
 	bool eliminated{ elim.is_eliminated() };
 
 	if (!eliminated)
 	{
-	    std::vector<Baseball_elimination<int>::Match>& result{ elim.get_result() };
+	    std::vector<Baseball_elimination<long>::Match>& result{ elim.get_result() };
 	    if (result.size() > 0)
 		printf("%d", result[0]);
-	    for (int i{1}; i < m; i++)
+	    for (long i{1}; i < m; i++)
 	    {
 		printf(" %d", result[i]);
 	    }
