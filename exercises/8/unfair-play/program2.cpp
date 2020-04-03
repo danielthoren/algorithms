@@ -65,6 +65,8 @@ public:
 	    }
 
 	    T win_score{ win_r + start_scores[win_team] };
+	    if (win_score <= *std::max_element(start_scores.begin(), start_scores.end()))
+		return true;
 
 	    //Connect all team nodes to drain
 	    for (T t{1}; t < start_scores.size(); t++)

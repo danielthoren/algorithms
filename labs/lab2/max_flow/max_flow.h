@@ -54,8 +54,8 @@ public:
     /**
      * Calculates the maximum flow in the graph. 
      *
-     * Time complexity: O(E * V * V)
-     * Memory complexity: O(E + V)
+     * Time complexity: O(E * N^2) (E = edges, N = Nodes)
+     * Memory complexity: O(E + N)
      *
      * return: The maximum flow from source to sink
      */
@@ -81,7 +81,7 @@ private:
     /**
      * Resets the levels in the graph
      *
-     * Time Complexity: O(n)
+     * Time Complexity: O(N)
      *
      * node: Current node
      */
@@ -91,7 +91,7 @@ private:
      * Builds the level graph by performing a breadth first traversal
      * and setting the depth level in each node.
      *
-     * Time Complexity: O(n)
+     * Time Complexity: O(E)
      *
      * level: The current level
      * node : The current node
@@ -103,13 +103,13 @@ private:
      */
     inline Edge& get_back_edge(Edge const& e);
 
-        /**
+    /**
      * Updates the flow in the graph by traversing the graph in a
-     * breadth first manner, only visiting increasing levels. The
+     * depth first manner, only visiting increasing levels. The
      * maximum posible increase in flow is updated and passed down
      * until sinc is found.
      *
-     * Time Complexity: 
+     * Time Complexity: O(E)
      *
      * node    : The current node
      * inc_flow: The maximum possible increase in flow

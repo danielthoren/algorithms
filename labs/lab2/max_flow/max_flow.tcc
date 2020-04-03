@@ -4,9 +4,7 @@
 #include <queue>
 #include <sstream>
 
-/**
- * Resets the graphs state but not its connections and levels
- */
+
 template<typename FLOW_T, typename SIZE_T>
 void Max_flow<FLOW_T, SIZE_T>::resetGraph()
 {
@@ -20,16 +18,7 @@ void Max_flow<FLOW_T, SIZE_T>::resetGraph()
     }
 }
 
-/**
- * Connects node n1 to node n2 with the given max_flow throught
- * the edge
- *
- * Time Complexity: O(1)
- *
- * n1      : The node the edge leads from
- * N2      : The node the edge leads to
- * max_flow: The maximum flow from n1 to n2
- */
+
 template<typename FLOW_T, typename SIZE_T>
  void Max_flow<FLOW_T, SIZE_T>::connect(SIZE_T n1, SIZE_T n2, FLOW_T max_flow)
 {
@@ -52,14 +41,6 @@ template<typename FLOW_T, typename SIZE_T>
 }
 
 
-/**
- * Calculates the maximum flow in the graph. 
- *
- * Time complexity: O(E * V * V)
- * Memory complexity: O(E + V)
- *
- * return: The maximum flow from source to sink
- */
 template<typename FLOW_T, typename SIZE_T>
  FLOW_T Max_flow<FLOW_T, SIZE_T>::calculate_max_flow()
 {
@@ -73,25 +54,18 @@ template<typename FLOW_T, typename SIZE_T>
 	    return result;
 	}
 		
-	// printf(str().c_str());
-	// printf("\n\n");
 	result += update_flow(source, -1, 0);
     }  
 }
 
 
-/**
- * Returns graph with residual edges
- */
 template<typename FLOW_T, typename SIZE_T>
 std::vector<typename Max_flow<FLOW_T, SIZE_T>::Node>& Max_flow<FLOW_T, SIZE_T>::get_graph()
 {
     return graph;
 }
 
-/**
- * Removes residual edges and returns clean graph
- */
+
 template<typename FLOW_T, typename SIZE_T>
 std::vector<typename Max_flow<FLOW_T, SIZE_T>::Node> Max_flow<FLOW_T, SIZE_T>::get_orig_graph() const
 {
@@ -109,9 +83,7 @@ std::vector<typename Max_flow<FLOW_T, SIZE_T>::Node> Max_flow<FLOW_T, SIZE_T>::g
     return copy;
 }    
 
-/**
- * Returns the graph as a string
- */
+
 template<typename FLOW_T, typename SIZE_T>
  std::string Max_flow<FLOW_T, SIZE_T>::str()
 {
@@ -136,14 +108,7 @@ template<typename FLOW_T, typename SIZE_T>
     return sstream.str();
 }
 
-  
-/**
- * Resets the levels in the graph
- *
- * Time Complexity: O(n)
- *
- * node: Current node
- */
+
 template<typename FLOW_T, typename SIZE_T>
  void Max_flow<FLOW_T, SIZE_T>::reset_level()
 {
@@ -151,16 +116,7 @@ template<typename FLOW_T, typename SIZE_T>
 	n.level = -1;
 }
 
-/**
- * Builds the level graph by performing a breadth first traversal
- * and setting the depth level in each node.
- *
- * Time Complexity: O(n)
- *
- * level : The current level
- * node  : The current node
- * return: True if the sink was found, otherwise false.
- */
+
 template<typename FLOW_T, typename SIZE_T>
  bool Max_flow<FLOW_T, SIZE_T>::build_level_graph()
 {
@@ -200,9 +156,7 @@ template<typename FLOW_T, typename SIZE_T>
     return found_sink;
 }
 
-/**
- * Function giving the back edge to the given edge e
- */
+
 template<typename FLOW_T, typename SIZE_T>
 inline typename Max_flow<FLOW_T, SIZE_T>::Edge&
 Max_flow<FLOW_T, SIZE_T>::get_back_edge (Max_flow<FLOW_T, SIZE_T>::Edge const& e)
@@ -210,20 +164,7 @@ Max_flow<FLOW_T, SIZE_T>::get_back_edge (Max_flow<FLOW_T, SIZE_T>::Edge const& e
     return graph[ e.back_edge.first ].edges[ e.back_edge.second ];
 }
 
-/**
- * Updates the flow in the graph by traversing the graph in a
- * breadth first manner, only visiting increasing levels. The
- * maximum posible increase in flow is updated and passed down
- * until sinc is found.
- *
- * Time Complexity: 
- *
- * node    : The current node
- * inc_flow: The maximum possible increase in flow
- * level   : The current level 
- *
- * return  : The increase in flow
- */
+
 template<typename FLOW_T, typename SIZE_T>
  FLOW_T Max_flow<FLOW_T, SIZE_T>::update_flow(SIZE_T node, FLOW_T inc_flow, SIZE_T level)
 {
