@@ -1,5 +1,7 @@
 #include <vector>
 
+#ifndef STRING_LIB
+#define STRING_LIB
 /**
  * Inserter following this pattern:
  *
@@ -112,3 +114,5 @@ std::vector<int> string_matching(T& pattern, T& data);
 
 #include "string_matching.tcc"
 #include "string_multimatching.tcc"
+
+#endif

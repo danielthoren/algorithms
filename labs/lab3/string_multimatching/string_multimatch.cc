@@ -32,8 +32,9 @@ int main()
 
 	std::string text{};
 	std::getline(std::cin, text);
-
-	std::vector<std::vector<int>> res = string_multi_matching(patterns, text);
+	    
+	//std::vector<std::vector<int>>
+	auto res = string_multi_matching<std::string, insert_vec<int>>(patterns, text);
 
 	for (int p{0}; p < res.size(); p++)
 	{

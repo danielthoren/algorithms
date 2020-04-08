@@ -1,1 +1,1 @@
-../modular_arithmetic/extended_euclidean.h
+/home/daniel5908/git/TDDD95/library/chinese_remainder/extended_euclidean.h

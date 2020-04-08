@@ -188,7 +188,12 @@ void build_automaton(std::vector<Node>& trie)
  *           following format: 
  *           vector< vector< matches of pattern 0 >, vector< matches of pattern 1 >, ...>
  */
-template<typename T, typename CONTAINER>
+// template<typename T, typename CONTAINER>
+// auto string_multi_matching(std::vector<std::string> const& patterns, T const& text)
+//     -> decltype( std::declval<CONTAINER>().insert(10, 10),
+//     	         typename CONTAINER::res_type{})
+
+template<typename T , typename CONTAINER = insert_vec<T>>
 auto string_multi_matching(std::vector<T> const& patterns, T const& text)
     -> decltype( std::declval<CONTAINER>().insert(10, 10),
     	         typename CONTAINER::res_type{})

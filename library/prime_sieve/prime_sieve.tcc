@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <tuple>
+#include <sstream>
 
 #include <iostream>
 
@@ -98,35 +99,17 @@ std::vector<T> get_primes(std::vector<bool>& sieve)
  * Prints all elements in the given vector
  */
 template<typename T>
-void print_primes(std::vector<T> primes)
+std::string print_primes(std::vector<T> primes)
 {
+    std::stringstream stream;
     for (int i{0}; i < primes.size(); i++)
     {
-	std::cout << primes[i] << ", ";
+	stream << primes[i] << ", ";
     }
 
-    std::cout << std::endl;
+    stream << std::endl;
+
+    return stream.str();
 }
 
 
-int main()
-{
-    long n, q;
-
-    scanf(" %ld", &n);
-    scanf(" %ld", &q);
-
-    long prime_count;
-
-    std::vector<bool> primes = prime_sieve(n, prime_count);
-    printf("%ld\n", prime_count);
-
-    for (int i{0}; i < q; i++)
-    {
-	long x;
-	scanf(" %ld", &x);
-
-	printf("%d\n", (int) primes[x]);
-    }
-    return 0;
-}

@@ -33,7 +33,7 @@ long double polygon_area(std::vector<point<T>>& pts)
     long double area{0};
     for (long unsigned int p{0}; p < pts.size(); p++)
     {
-	area += pts.at(p).determinant(pts.at( (p + 1)%pts.size() ));
+	area += cross(pts.at(p), pts.at( (p + 1)%pts.size() ));
     }
     return area/2;
 }
