@@ -22,27 +22,37 @@
 template<int VAR_COUNT>
 inline bool is_satisfied(std::bitset<VAR_COUNT>& vars, std::bitset<VAR_COUNT> const& clause)
 {
-    return (vars & clause).any();
+    std::bitset<VAR_COUNT> tmp =  (vars & clause);
+    return tmp.any();
 }
 
 template<int VAR_COUNT>
-bool help_satisfiable(int pos, std::bitset<VAR_COUNT> vars, std::vector<std::bitset<VAR_COUNT>> const& clauses)
-{       
+bool get_satisfiable(int pos, int var_count,
+		     std::bitset<VAR_COUNT> vars,
+		     std::vector<std::bitset<VAR_COUNT>> const& clauses)
+{
+    bool all_satisfied{true};
     for (std::bitset<VAR_COUNT> const& clause : clauses)
     {
-	if (is_satisfied<VAR_COUNT>(vars, clause))
-	    return true;
+	if (!is_satisfied<VAR_COUNT>(vars, clause))
+	    all_satisfied = false;
     }
 
-    if (pos == VAR_COUNT)
+    if (all_satisfied)
+	return true;
+    
+    // if (pos == VAR_COUNT)
+    // 	return false;
+
+    if (pos == var_count*2)
 	return false;
 
     std::bitset<VAR_COUNT> var_perm{vars};
     var_perm.flip(pos);
     var_perm.set(pos+1, !var_perm[pos]);
     
-    return help_satisfiable<VAR_COUNT>(pos + 2, vars, clauses) ||
-	help_satisfiable<VAR_COUNT>(pos + 2, var_perm, clauses);
+    return get_satisfiable<VAR_COUNT>(pos + 2, var_count, vars, clauses) ||
+	get_satisfiable<VAR_COUNT>(pos + 2, var_count, var_perm, clauses);
 }
 
 /**
@@ -63,14 +73,19 @@ bool help_satisfiable(int pos, std::bitset<VAR_COUNT> vars, std::vector<std::bit
  *            part of the clause. The structure of the variables can be seen above
  */
 template<int VAR_COUNT>
-bool is_satisfiable(std::vector<std::bitset<VAR_COUNT>> const& clauses)
+bool is_satisfiable(std::vector<std::bitset<VAR_COUNT>> const& clauses, int var_count)
 {
     std::bitset<VAR_COUNT> vars;
-    return help_satisfiable<VAR_COUNT>(0, vars, clauses);
+
+    for (int v{1}; v < var_count*2; v+=2)
+    {
+	vars[v] = 1;
+    }    
+    return get_satisfiable<VAR_COUNT>(0, var_count, vars, clauses);
 }
 
 template<int VAR_COUNT>
-bool is_satisfiable(std::vector<std::string>& clauses)
+bool is_satisfiable(std::vector<std::string>& clauses, int var_count)
 {
     std::vector<std::bitset<VAR_COUNT>> bit_clauses{};
 
@@ -110,42 +125,43 @@ bool is_satisfiable(std::vector<std::string>& clauses)
 	}
     }
 
-    return is_satisfiable<VAR_COUNT>(bit_clauses);
+    return is_satisfiable<VAR_COUNT>(bit_clauses, var_count);
 }
 
 int main()
 {
     // std::vector<std::string> clauses{"x1 v x2", "~x1", "~x2 v x3"};
 
-    // std::cout << is_satisfiable<6>(clauses) << std::endl;
+    // std::cout << is_satisfiable<40>(clauses, 3) << std::endl;
+    
+    // std::vector<std::string> clauses2{"x1 v x2 v x3", "x1 v ~x2", "x2 v ~x3", "x3 v ~x1", "~x1 v ~x2 v ~x3"};
 
-    std::vector<std::string> clauses2{"x1 v x2 v x3", "x1 v ~x2", "x2 v ~x3", "x3 v ~x1", "~x1 v ~x2 v ~x3"};
+    // std::cout << is_satisfiable<40>(clauses2, 3) << std::endl;
+  
+    int cases;
+    std::cin >> cases;
 
-    std::cout << is_satisfiable<6>(clauses2) << std::endl;
-    // int cases;
-    // std::cin >> cases;
-
-    // for (int i{0}; i < cases; i++)
-    // {
-    // 	int var_count, claus_count;
-    // 	std::cin >> var_count;
-    // 	std::cin >> claus_count;
+    for (int i{0}; i < cases; i++)
+    {
+    	int var_count, claus_count;
+    	std::cin >> var_count;
+    	std::cin >> claus_count;
 	
-    // 	std::vector<std::string> clauses(claus_count);
+    	std::vector<std::string> clauses(claus_count);
 
-    // 	std::cin.get();
-    // 	for (int c{0}; c < claus_count; c++)
-    // 	{
-    // 	    std::string str;
-    // 	    std::getline(std::cin, str);
-    // 	    clauses[c] = str;
-    // 	}
-    // 	bool sat = is_satisfiable<41>(clauses);
-    // 	if (sat)
-    // 	    std::cout << "satisfiable" << std::endl;
-    // 	else
-    // 	    std::cout << "unsatisfiable" << std::endl;
-    // }
+    	std::cin.get();
+    	for (int c{0}; c < claus_count; c++)
+    	{
+    	    std::string str;
+    	    std::getline(std::cin, str);
+    	    clauses[c] = str;
+    	}
+    	bool sat = is_satisfiable<40>(clauses, var_count);
+    	if (sat)
+    	    std::cout << "satisfiable" << std::endl;
+    	else
+    	    std::cout << "unsatisfiable" << std::endl;
+    }
 }
 
 
