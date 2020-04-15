@@ -1,0 +1,2 @@
+- [ ] Make so that max flow can change source/sink after the graph has been created
+- [ ] Fix shortest path in graph. Now copies entire graph when looping. Problems with representation
