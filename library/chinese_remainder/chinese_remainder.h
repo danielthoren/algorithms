@@ -7,6 +7,13 @@
 #ifndef CHINESE_REMAINDER
 #define CHINESE_REMAINDER
 
+
+/**
+ * Determines which merge function to call then calls it.
+ */
+template<typename T>
+std::pair<T,T> merge_crt(T a1, T m1, T a2, T m2);
+
 /**
  * Author: Daniel Thorén
  *
@@ -29,7 +36,7 @@
  *
  */
 template<typename T>
-std::pair<T,T> merge_crt(T a1, T m1, T a2, T m2);
+std::pair<T,T> merge_crt_weak(T a1, T m1, T a2, T m2);
 
 /**
  * Author: Daniel Thorén
@@ -39,7 +46,7 @@ std::pair<T,T> merge_crt(T a1, T m1, T a2, T m2);
  * words, it is assumed that GCD(m1, m2) != 1
  *
  * Both equations a1, m1, a2, m2 are on the form (= is congruence): 
- * x = 1a (mod 1m) (*1)
+ * x = a1 (mod m1) (*1)
  *
  * If the following is true then there exists a solustion, otherwise not
  * gcd(m1, m2) = g

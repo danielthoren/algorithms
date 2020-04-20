@@ -31,7 +31,7 @@ std::vector<bool> prime_sieve(T upper, T& prime_count)
 {
     std::vector<bool> nums(upper + 1);
 
-    for (int i{2}; i < upper + 1; i++)
+    for (T i{2}; i < upper + 1; i++)
     {
 	nums[i] = true;
     }

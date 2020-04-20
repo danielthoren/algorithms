@@ -1,7 +1,18 @@
 
-
 template<typename T>
 std::pair<T,T> merge_crt(T a1, T m1, T a2, T m2)
+{
+    //Extended euclidean gives <GCD(m1, m2), S, T
+    std::tuple<T, T, T> euclid = extended_euclidean(m1, m2);
+    if (std::get<0>(euclid) == 1)
+    {
+	return merge_crt_weak(a1, m1, a2, m2);
+    }
+    return merge_crt_strong(a1, m1, a2, m2);
+}
+
+template<typename T>
+std::pair<T,T> merge_crt_weak(T a1, T m1, T a2, T m2)
 {
     //Extended euclidean gives <GCD(m1, m2), S, T
     std::tuple<T, T, T> euclid = extended_euclidean(m1, m2);
