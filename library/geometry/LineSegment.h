@@ -6,6 +6,11 @@
 
 #include "point.h"
 
+/**
+ * Author: Daniel Thorén
+ *
+ * Class performing various line segment operations
+ */
 template<typename T>
 class LineSegment
 {
@@ -61,6 +66,16 @@ public:
      */
     std::variant<std::monostate, point<T>, LineSegment<T>>
      intersection(LineSegment<T> const& other) const;
+
+    /**
+     * returns p0 + u
+     */
+    point<T> get_end_point() const;
+
+    /**
+     * Returns p0
+     */
+    point<T> get_start_point() const;
     
     //p(s) = p0 + su
     point<T> p0;
@@ -383,6 +398,18 @@ LineSegment<T>::intersection(LineSegment<T> const& other) const
     }
 
     return {};
+}
+
+template<typename T>
+point<T> LineSegment<T>::get_end_point() const
+{
+    return p0 + u;
+}
+
+template<typename T>
+point<T> LineSegment<T>::get_start_point() const
+{
+    return p0;
 }
 
 #endif
