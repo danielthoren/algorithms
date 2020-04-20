@@ -158,6 +158,10 @@ Polygon<T>::min_distance(LineSegment<T> const& linseg) const
     return closest;
 }
 
+/**
+ * TODO: Implement quad tree and use for optimizing which line
+ * segments needs to be compared instead of comparing all of them
+ */
 template <typename T>
 std::pair<point<T>, point<T>>
 Polygon<T>::min_distance(Polygon<T> const& other) const
