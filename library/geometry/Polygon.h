@@ -43,9 +43,32 @@ public:
      */
     template <typename F = double>
     F polygon_area() const;
+	
+    /**
+     * Calculates the point on this polygon and the given line segment
+     * that are the closest.
+     *
+     * other : The line segment to compare distance to
+     *
+     * return: The closest points on the polygon and segment in the
+     *         following format:
+     *         pair<point on polygon, point on segment>
+     *
+     */
+    std::pair<point<T>, point<T>>
+	      min_distance(LineSegment<T> const& linseg) const;
 
-    template <typename F = double>
-    F closest_distance(LineSegment<T> const& other) const;    
+
+    /**
+     * Calculates the closest points on the given polygons
+     *
+     * other : The other polygon
+     *
+     * return: The closest points on the two polygons
+     */
+    std::pair<point<T>, point<T>>
+	      min_distance(Polygon<T> const& other) const;
+    
     
 private:
 
@@ -114,21 +137,48 @@ F Polygon<T>::polygon_area() const
 }
 
 template <typename T>
-template <typename F>
-F Polygon<T>::closest_distance(LineSegment<T> const& linseg) const
+std::pair<point<T>, point<T>>
+Polygon<T>::min_distance(LineSegment<T> const& linseg) const
 {
-    F smallest_dist{std::numeric_limits<F>::max()};
+    T smallest_dist{std::numeric_limits<T>::max()};
+    
+    std::pair<point<T>, point<T>> closest{};
 
     for (LineSegment<T> const& lseg : segments)
     {
-	F dist = linseg.closest_points(lseg);
+	std::pair<point<T>, point<T>> cl = linseg.closest_points(lseg);
+	T dist = cl.first.distance(cl.second);
 	if (dist < smallest_dist)
 	{
 	    smallest_dist = dist;
+	    closest = cl;
 	}
     }
 
-    return smallest_dist;
+    return closest;
+}
+
+template <typename T>
+std::pair<point<T>, point<T>>
+Polygon<T>::min_distance(Polygon<T> const& other) const
+{
+    T smallest_dist{std::numeric_limits<T>::max()};
+    
+    std::pair<point<T>, point<T>> closest{};
+    
+    for (LineSegment<T> const& lseg : other.segments)
+    {
+	std::pair<point<T>, point<T>> cl{ min_distance(lseg) };
+	T dist = cl.first.distance(cl.second);
+	
+	if (dist < smallest_dist)
+	{
+	    smallest_dist = dist;
+	    closest = cl;
+	}
+    }
+
+    return closest;
 }
 
 #endif
