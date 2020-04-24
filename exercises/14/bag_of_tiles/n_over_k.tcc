@@ -1,1 +1,0 @@
-/home/daniel5908/git/TDDD95/library/binomial_coefficient/n_over_k.tcc

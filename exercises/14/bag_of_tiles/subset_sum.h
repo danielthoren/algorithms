@@ -1,1 +1,0 @@
-/home/daniel5908/git/TDDD95/library/subset_sum/subset_sum.h
