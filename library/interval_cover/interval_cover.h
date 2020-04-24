@@ -1,32 +1,27 @@
 
 #include <vector>
 #include <utility>
+#include <limits>
 
 #ifndef INTERVAL_COVER
 #define INTERVAL_COVER
 /**
  * Author: Daniel Thorén
+ *
+ * Class with functionality for interval cover. The internal vector
+ * "intervals" contains the intervals operated on.
  */
 template <typename T>
 class Interval_cover
 {
 private:
-    /**
-     * Structure used for keeping track of original index meaning the
-     * index in the original vector
-     */
-    struct Interval
-    {
-	T first, second;
-	int orig_index;
-    };
 
     /**
      * Comparator used to sort the intervals
      */
     struct
     {
-	bool operator()(Interval& i1, Interval& i2)
+	bool operator()(std::pair<T,T> const& i1, std::pair<T,T> const& i2)
 	    {
 		if (i1.first == i2.first)
 		    return i1.second > i2.second;
@@ -38,35 +33,21 @@ public:
 
     Interval_cover() = default;
 
-    Interval_cover(std::vector<std::pair<T, T>> const& intervals) : intervals_copy{}
-	{
-	    for (int i = 0; i < (int) intervals.size(); i++)
-	    {
-		intervals_copy.push_back(
-		    Interval{intervals[i].first, intervals[i].second, i});
-	    }
-	    sort_intervals();
+    Interval_cover(std::vector<std::pair<T, T>> const& intervals) : intervals(intervals)
+	{	    
+	    sort(this->intervals.begin(), this->intervals.end(), interval_sort);
 	}
 
     /**
-     * Adds a new interval keeping the internal vector sorted. The new
-     * interval is assumed to be last in the original list and thus
-     * will be indexed as such in the answer. This value is returned
-     * by the function
+     * Adds a new interval keeping the internal vector sorted
      *
      * interval: The interval to be inserted
-     *
-     * return : The index in the original list that will be used to
-     *          reference the interval in the answer(last index in the list)
      */
-    int add_interval(std::pair<T, T> const& interval)
+    void add_interval(std::pair<T, T> const& interval)
 	{
-	    int orig = intervals_copy.size();
-	    Interval add{interval.first, interval.second, orig};
-	    auto it = std::lower_bound<Interval>(intervals_copy.begin(), intervals_copy.end(), add, interval_sort);
+	    auto it = std::lower_bound<std::pair<T,T>>(intervals.begin(), intervals.end(), interval, interval_sort);
 
-	    intervals_copy.insert(it, add);
-	    return orig;
+	    intervals.insert(it, interval);
 	}
 
     /**
@@ -76,16 +57,15 @@ public:
      *
      * target: The point to cover
      *
-     * return: Returns a vector containing the original index of the
-     *         first interval that covers the point.
+     * return: Returns the interval that covers the point
      */
-    std::vector<int> cover_point(T target)
+    std::pair<T,T> cover_point(T target)
 	{	    
-	    for (auto it = intervals_copy.begin(); it != intervals_copy.end(); it++)
+	    for (auto it = intervals.begin(); it != intervals.end(); it++)
 	    {
 		if (it->first <= target && it->second >= target)
 		{
-		    return {it->orig_index};
+		    return *it;
 		}
 	    }
 	    return {};
@@ -100,46 +80,45 @@ public:
      * target   : The interval to cover
      * intervals: The intervals to cover target with 
      */
-    std::vector<int> cover_interval(std::pair<T, T> const& target)
+    std::vector<std::pair<T,T>> cover_interval(std::pair<T, T> const& target)
 	{	    
-	    if (intervals_copy.size() == 0)
+	    if (intervals.size() == 0)
 		return {};
 
 	    if (target.first == target.second)
-		return cover_point(target.first);
+		return std::vector<std::pair<T,T>>{cover_point(target.first)};
 
 	    T position{target.first};
-	    Interval best{};
-	    best.orig_index = -1;
-	    std::vector<int> result{};
+	    std::pair<T,T> best{std::numeric_limits<T>::max(), std::numeric_limits<T>::max()};
+	    std::vector<std::pair<T,T>> result{};
 	    int index = 0;
 
-	    if (intervals_copy[0].first > target.first)
+	    if (intervals[0].first > target.first)
 		return {};
 
 	    do
 	    {
 		for (unsigned int i = index;
-		     i < intervals_copy.size() && intervals_copy[i].first <= position;
+		     i < intervals.size() && intervals[i].first <= position;
 		     i++)
 		{
-		    if (best.orig_index == -1 || (intervals_copy[i].second > position &&
-						  (intervals_copy[i].second - position) > (best.second - position)))
+		    if (best.first == std::numeric_limits<T>::max() || (intervals[i].second > position &&
+						  (intervals[i].second - position) > (best.second - position)))
 		    {
-			best = intervals_copy[i];
+			best = intervals[i];
 			index = i;
 
 			if (best.second >= target.second)
 			{
-			    result.push_back(best.orig_index);
+			    result.push_back(best);
 			    return result;
 			}
 		    }
 		}
 
-		if (result.size() == 0 || (result.size() != 0 && best.orig_index != result[result.size() - 1]))
+		if (result.size() == 0 || (result.size() != 0 && best != result[result.size() - 1]))
 		{
-		    result.push_back(best.orig_index);
+		    result.push_back(best);
 		    position = best.second;
 		}
 		else
@@ -148,38 +127,14 @@ public:
 	    } while (position < target.second);
 
 	    if (best.second < target.second ||
-		(result.size() > 0 && get_by_orig_index(result[0]).first > target.first))
+		(result.size() > 0 && result[0].first > target.first))
 		return {};
 
 	    return result;	    
 	}
-
-    /**
-     * Fetches a interval using the index in the original list.
-     */
-    std::pair<T,T> get_by_orig_index(int index)
-	{
-	    for (Interval& in : intervals_copy)
-	    {
-		if (in.orig_index == index)
-		    return {in.first, in.second};
-	    }
-	    return {};
-	}
     
 private:
-
-    /**
-     * Sorts the intervals in increasing order. Intervals must be
-     * sorted before using cover_point and cover_interval. The class
-     * keeps track of weather the intervals are sorted or not using a
-     * bool. This method is automatically called if needed.
-     */
-    void sort_intervals()
-	{
-	    sort(intervals_copy.begin(), intervals_copy.end(), interval_sort);	   
-	}
-    std::vector<Interval> intervals_copy;
+    std::vector<std::pair<T,T>> intervals;
 };
 
 
