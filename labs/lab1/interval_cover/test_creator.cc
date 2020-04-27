@@ -6,7 +6,7 @@ int main()
 {
     double s, f;
 
-    std::string filename = "test2";
+    std::string filename = "test_gen";
     std::ofstream ostrm(filename, std::ios::binary);
  
     
