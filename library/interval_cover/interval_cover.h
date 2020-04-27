@@ -57,7 +57,9 @@ public:
      *
      * target: The point to cover
      *
-     * return: Returns the interval that covers the point
+     * return: Returns the interval that covers the point. If no
+     *         interval covers the point then returns 
+     *         { numeric_limits<T>::max(), numeric_limits<T>::max() }
      */
     std::pair<T,T> cover_point(T target)
 	{	    
@@ -68,7 +70,7 @@ public:
 		    return *it;
 		}
 	    }
-	    return {};
+	    return {std::numeric_limits<T>::max(), std::numeric_limits<T>::max()};
 	}
 
     /**
@@ -78,15 +80,24 @@ public:
      * Complexity: O(n)
      *
      * target   : The interval to cover
-     * intervals: The intervals to cover target with 
+     * intervals: The intervals to cover target with. 
+     *            If it cant be covered then returns an empty vector
      */
     std::vector<std::pair<T,T>> cover_interval(std::pair<T, T> const& target)
-	{	    
+	{
 	    if (intervals.size() == 0)
 		return {};
 
 	    if (target.first == target.second)
-		return std::vector<std::pair<T,T>>{cover_point(target.first)};
+	    {
+	        std::pair<T,T> result = {cover_point(target.first)};
+		if (result.first == std::numeric_limits<T>::max() &&
+		    result.second == std::numeric_limits<T>::max())
+		{
+		    return {};
+		}
+		return {result};
+	    }
 
 	    T position{target.first};
 	    std::pair<T,T> best{std::numeric_limits<T>::max(), std::numeric_limits<T>::max()};
