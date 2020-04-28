@@ -1,3 +1,4 @@
+
 #include<vector>
 #include<map>
 #include<string>
@@ -9,7 +10,7 @@
 #include<climits>
 #include<stack>
 
-#include "stringlib.h"
+#include "multimatch.h"
 
 int main()
 {
@@ -20,7 +21,6 @@ int main()
 
     while (std::cin >> cases)
     {
-
 	std::vector<std::string> patterns{};
 	std::string pattern{};
 	std::getline(std::cin, pattern);
@@ -33,8 +33,8 @@ int main()
 	std::string text{};
 	std::getline(std::cin, text);
 	    
-	//std::vector<std::vector<int>>
-	auto res = string_multi_matching<std::string, insert_vec<int>>(patterns, text);
+	Multimatch<std::string> matcher(patterns);
+	auto res = matcher.string_multi_matching<Multimatch<std::string>::insert_vec<int>>(text);
 
 	for (int p{0}; p < res.size(); p++)
 	{

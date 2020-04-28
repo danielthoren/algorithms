@@ -2,6 +2,7 @@
 
 #ifndef STRING_LIB
 #define STRING_LIB
+
 /**
  * Inserter following this pattern:
  *
@@ -88,6 +89,7 @@ template<typename T , typename CONTAINER = insert_vec<T>>
 auto string_multi_matching(std::vector<T> const& patterns, T const& text)
     -> decltype( std::declval<CONTAINER>().insert(10, 10),
     	         typename CONTAINER::res_type{});
+
 
 
 /**
