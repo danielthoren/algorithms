@@ -1,9 +1,10 @@
+#include <tuple>
+#include <sstream>
+#include <cmath>
+
 #ifndef RATIONAL_NUM_H
 #error 'rational.gch' is not supposed to be included directly. Include 'rational.h' instead.
 #endif
-
-#include <sstream>
-#include <cmath>
 
 template<typename T>
 Rational<T> Rational<T>::operator+(Rational<T> const& other) const
@@ -135,9 +136,10 @@ Rational<T> Rational<T>::operator*(Rational<T> const& other) const
 }
 
 template<typename T>
-T Rational<T>::operator*() const
+template<typename FT>
+FT Rational<T>::operator*() const
 {
-    return numerator / denominator;
+    return static_cast<FT>(numerator) / static_cast<FT>(denominator);
 }
 
 template<typename T>
@@ -193,27 +195,15 @@ std::string Rational<T>::str() const
     return ss.str();
 }
 
-// template<typename T>
-// T Rational<T>::greatest_common_denominator(T x, T y) const
-// {
-//     if (x == 0 || y == 0)
-// 	return 0;
-
-//     if (x == y)
-// 	return x;
-
-//     if (x > y)
-// 	return greatest_common_denominator(x - y, y);
-//     return greatest_common_denominator(x, y - x);
-// }
-
 template<typename T>
 T Rational<T>::greatest_common_denominator(T x, T y) const
 {
     if (y == 0)
 	return x;
 
-    return greatest_common_denominator(y, x % y);
+    T gcd = std::get<0>( extended_euclidean(x, y) );
+
+    return gcd;
 }
 
 template<typename T>
@@ -251,4 +241,35 @@ std::ostream& operator<<(std::ostream& os, Rational<T> const& r)
 {
     os << r.str();
     return os;
+}
+
+template<typename T>
+std::istream& operator>>(std::istream& is, Rational<T>& r)
+{
+    T numerator;
+    T denominator;
+
+    if (! (is >> numerator))
+    {
+	is.setstate(std::ios_base::failbit);
+	return is;
+    }
+    std::string next{};
+
+    if (! (is >> next) || next != "/")
+    {	
+	is.setstate(std::ios_base::failbit);
+	return is;
+    }
+
+    if (! (is >> denominator))
+    {
+	is.setstate(std::ios_base::failbit);
+	return is;
+    }
+
+    Rational<T> rat(numerator, denominator);
+    r = rat;
+
+    return is;
 }

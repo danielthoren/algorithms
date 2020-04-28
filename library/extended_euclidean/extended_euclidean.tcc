@@ -4,6 +4,10 @@
 #include <limits.h>
 #include <functional>
 
+#ifndef EXTENDED_EUCLIDEAN
+#error 'extended_euclidean.tcc' is not supposed to be included directly. Include 'extended_euclidean.h' instead.
+#endif
+
 template<typename T>
 T true_mod(T num, T mod)
 {

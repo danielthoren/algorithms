@@ -44,7 +44,7 @@ std::tuple<T, T, T> extended_euclidean(T a, T b);
  * Returns the modular multiplicative inverse of num.
  * Template must be of integer type (int, long...)
  *
- * Time complexity: O( (log n)^n )
+ * Time complexity: O(log n)
  *
  * num: The number to get the multiplicative inverse of
  * mod: The modulus number
