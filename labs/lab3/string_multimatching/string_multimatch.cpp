@@ -24,7 +24,7 @@ int main()
 	std::vector<std::string> patterns{};
 	std::string pattern{};
 	std::getline(std::cin, pattern);
-	for (int c{0}; c < cases; c++)
+	for (unsigned c{0}; c < cases; c++)
 	{
 	    std::getline(std::cin, pattern);
 	    patterns.push_back(pattern);
@@ -36,7 +36,7 @@ int main()
 	Multimatch<std::string> matcher(patterns);
 	auto res = matcher.string_multi_matching<Multimatch<std::string>::insert_vec<int>>(text);
 
-	for (int p{0}; p < res.size(); p++)
+	for (unsigned p{0}; p < res.size(); p++)
 	{
 	    for (int m{0}; m < res[p].size(); m++)
 	    {

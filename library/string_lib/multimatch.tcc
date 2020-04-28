@@ -40,21 +40,17 @@ struct Multimatch<T>::insert_pair{
     res_type result;
 };
 
-template<typename T, typename CONTAINER>
-auto string_multi_matching(std::vector<T> const& patterns, T const& text)
+template<typename T>
+template<typename CONTAINER>
+auto Multimatch<T>::string_multi_matching(T const& text)
     -> decltype( std::declval<CONTAINER>().insert(10, 10),
     	         typename CONTAINER::res_type{})
 {
-    //Build trie from the patterns
-    std::vector<typename Multimatch<T>::Node> trie = build_trie(patterns);
-    //Construct automaton from the trie
-    build_automaton(trie);
-
     CONTAINER matches(patterns.size());
 
     int curr = 0;
 
-    for (long pos{0}; pos < text.size(); pos++)
+    for (unsigned long pos{0}; pos < text.size(); pos++)
     {
 	char ch = text[pos];
 	//If the current node has an edge with the current letter,
@@ -101,9 +97,9 @@ std::vector<typename Multimatch<T>::Node> Multimatch<T>::build_trie(std::vector<
     std::vector<typename Multimatch<T>::Node> trie{ Node{{}, -1, 0, {}, -1} };
     int curr{0};
     
-    for (int p{0}; p < patterns.size(); p++)
+    for (unsigned p{0}; p < patterns.size(); p++)
     {
-	for (int l{0}; l < patterns[p].size(); l++)
+	for (unsigned l{0}; l < patterns[p].size(); l++)
 	{
 	    //If there is no edge from the current node with the next letter then
 	    //add a new node and a edge to that node. Move curr to the new node

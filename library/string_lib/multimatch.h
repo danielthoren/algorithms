@@ -20,7 +20,8 @@ private:
     };
    
 public:    
-    Multimatch(std::vector<T> const& patterns) : trie{ build_trie(patterns) }
+    Multimatch(std::vector<T> const& patterns) : trie{ build_trie(patterns) },
+						 patterns{ patterns }
 	{
 	    build_automaton();
 	}
@@ -125,6 +126,7 @@ private:
     void build_automaton();
     
     std::vector<Node> trie;
+    std::vector<T> patterns;
 };
 
 #include "multimatch.tcc"
