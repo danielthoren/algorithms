@@ -3,31 +3,82 @@
 #include <algorithm>
 #include <tuple>
 #include <sstream>
+#include <cmath>
 
 #include <iostream>
 
+template<typename T>
+std::vector<bool>& Prime_sieve<T>::get_sieve()
+{
+    return sieve;
+}
+
+template<typename T>
+std::vector<T>& Prime_sieve<T>::get_primes()
+{
+    if (primes.size() == 0)
+    {
+	calc_primes();
+    }
+    return primes;
+}
+
+template<typename T>
+T Prime_sieve<T>::get_prime_count()
+{
+    return prime_count;
+}
+
+template<typename T>
+std::vector<T> Prime_sieve<T>::get_prime_factors(T num)
+{
+    if (num > upper)
+    {
+	return {};
+    }
+
+    if (primes.size() == 0)
+    {
+	calc_primes();
+    }
+
+    std::vector<T> factors{};
+    long upper{ static_cast<long>(std::sqrt(num)) };
+
+    for (int i{0}; i <= num && i < primes.size(); i++)
+    {
+	if (num % primes[i] == 0)
+	{
+	    factors.push_back(primes[i]);
+	}
+    }
+
+    return factors;
+}
+
 /**
- * Author: Daniel Thorén
- *
- * Calculates which of all numbers between 2 and upper
- * that are prime numbers. This is done using the "sieve of
- * eratoshthenes" algorithm. The algorithm assumes that 1 is not a
- * prime number.
- *
- * Template must be of integer type (int, long, ...)
- *  
- * n = upper
- * Time complexity: O( n * log( log(n) ) )
- * Memory complexity: O(n)
- *
- * upper      : The number to find the sieve to
- * prime_count: This reference is set to the total number of primes found
- * return     : A vector<bool> where the value at each position determines 
- *              if that number is prime or not
- * 
+ * Prints all elements in the given vector
  */
 template<typename T>
-std::vector<bool> prime_sieve(T upper, T& prime_count)
+std::string Prime_sieve<T>::print_primes()
+{
+    if (primes.size() == 0)
+    {
+	calc_primes();
+    }
+    std::stringstream stream;
+    for (int i{0}; i < primes.size(); i++)
+    {
+	stream << primes[i] << ", ";
+    }
+
+    stream << std::endl;
+
+    return stream.str();
+}
+
+template<typename T>
+void Prime_sieve<T>::prime_sieve()
 {
     std::vector<bool> nums(upper + 1);
 
@@ -66,50 +117,19 @@ std::vector<bool> prime_sieve(T upper, T& prime_count)
 	}
 
 	prime_count = prime_counter;
-	return nums;
+	sieve = nums;
 }
 
-/**
- * Author: Daniel Thorén
- *
- * This function accepts a sieve and returns a vector containing all
- * primes thus separating the actual prime numbers from the rest.
- *
- * Time complexity: O(n)
- *
- * sieve : A prime sieve from the function prime_sieve(...)
- * return: A vector containing all primes
- */
 template<typename T>
-std::vector<T> get_primes(std::vector<bool>& sieve)
+void Prime_sieve<T>::calc_primes()
 {
-    std::vector<T> primes{};
     for (T i{2}; i <= sieve.size(); i++)
     {
 	if (sieve[i] == true)
 	{
 	    primes.push_back(i);
 	}
-    }
-    return primes; 
-}
-
-
-/**
- * Prints all elements in the given vector
- */
-template<typename T>
-std::string print_primes(std::vector<T> primes)
-{
-    std::stringstream stream;
-    for (int i{0}; i < primes.size(); i++)
-    {
-	stream << primes[i] << ", ";
-    }
-
-    stream << std::endl;
-
-    return stream.str();
+    }    
 }
 
 
