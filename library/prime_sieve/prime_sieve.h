@@ -35,7 +35,11 @@ public:
     std::vector<T>& get_primes();
 
     /**
-     * Returns the amount of primes found
+     * Returns the amount of primes found. This is counted when
+     * creating the sieve and can be retrieved in constant time after
+     * the sieve has been calculated.
+     *
+     * Time complexity: O(1)
      */
     T get_prime_count();
 
