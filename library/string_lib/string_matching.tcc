@@ -42,7 +42,6 @@ std::vector<int> generate_prefix(T& pattern)
 template<typename T>
 std::vector<int> string_matching(T& pattern, T& data)
 {
-    std::vector<int> prefix{ generate_prefix(pattern) };
     std::vector<int> matches{};
 
     int k{0};

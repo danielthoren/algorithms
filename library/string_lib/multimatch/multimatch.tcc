@@ -5,6 +5,10 @@
 #include<climits>
 #include<stack>
 
+#ifndef MULTIMATCH
+#error 'multimatch.tcc' is not supposed to be included directly. Include 'multimatch.h' instead.
+#endif
+
 template<typename T>
 template<typename IT>
 struct  Multimatch<T>::insert_vec{

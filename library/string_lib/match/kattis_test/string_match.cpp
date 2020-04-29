@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-#include "stringlib.h"
+#include "match.h"
 
 int main()
 {
@@ -14,8 +14,10 @@ int main()
     while (std::getline(std::cin, pattern))
     {
 	std::getline(std::cin, data);
+
+	Match match(pattern);
 	
-	std::vector<int> matches{ string_matching(pattern, data) };
+	std::vector<unsigned> matches{ match.match(data) };
 	
 	if (matches.size() > 0)
 	    std::cout << matches[0];

@@ -2,6 +2,7 @@
 #include<sstream>
 #include<iostream>
 #include<string>
+#include<vector>
 
 #ifndef MULTIMATCH
 #define MULTIMATCH
