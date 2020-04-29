@@ -7,6 +7,18 @@
 #ifndef MULTIMATCH
 #define MULTIMATCH
 
+/**
+ * Author: Daniel Thorén
+ *
+ * Implementation of the Aho-Corasick algorithm that builds an
+ * automaton from the given patterns. The automaton can be traversed
+ * while parsing the input data one time thus gaining all matches in
+ * linear time. Building the automaton can be expensive thus it can be
+ * reused on multiple texts.
+ *
+ * Template type T must support operator[] and .size() operations
+ * The return type of operator[] must support == operator
+ */
 template<typename T = std::string>
 class Multimatch
 {
