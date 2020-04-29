@@ -43,17 +43,43 @@ std::vector<T> Prime_sieve<T>::get_prime_factors(T num)
     }
 
     std::vector<T> factors{};
-    long upper{ static_cast<long>(std::sqrt(num)) };
 
-    for (int i{0}; i <= num && i < primes.size(); i++)
+    for (T prime : primes)
     {
-	if (num % primes[i] == 0)
+	while (num % prime == 0)
 	{
-	    factors.push_back(primes[i]);
+	    factors.push_back(prime);
+
+	    num /= prime;
 	}
     }
 
+    if (num != 1)
+    {
+	factors.push_back(num);
+    }
+
     return factors;
+}
+
+template<typename T>
+std::vector<T> Prime_sieve<T>::get_unique_prime_factors(T num)
+{
+    std::vector<T> primes{ get_prime_factors(num) };
+
+    std::vector<T> unique_primes{};
+
+    T prev{ std::numeric_limits<T>::max() };
+    for (T prime : primes)
+    {
+	if (prime != prev)
+	{
+	    unique_primes.push_back(prime);
+	}
+	prev = prime;
+    }
+
+    return unique_primes;
 }
 
 /**
@@ -94,7 +120,7 @@ void Prime_sieve<T>::prime_sieve()
 	T p{2};
 	T prime_counter{upper - 1};
 
-	while (p < upper)
+	while (p < std::sqrt(upper) )
 	{
 	    T curr = p*p;
 
@@ -123,7 +149,7 @@ void Prime_sieve<T>::prime_sieve()
 template<typename T>
 void Prime_sieve<T>::calc_primes()
 {
-    for (T i{2}; i <= sieve.size(); i++)
+    for (unsigned i{2}; i <= sieve.size(); i++)
     {
 	if (sieve[i] == true)
 	{

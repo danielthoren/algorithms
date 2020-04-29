@@ -19,7 +19,7 @@ int main()
 
     	std::vector<long> factors{ sieve.get_prime_factors(num) };
 
-    	std::vector<long> correct{2, 5};
+    	std::vector<long> correct{2, 2, 5, 5};
 
     	if (correct != factors)
     	{

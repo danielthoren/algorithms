@@ -53,6 +53,17 @@ public:
      */
     std::vector<T> get_prime_factors(T num);
 
+    /**
+     * Uses the get_prime_factors() function then removes all
+     * duplicates
+     *
+     * Time complexity: O(n)
+     *
+     * num   : The number to calculate prime factors from
+     * return: The unique prime factors of num
+     */
+    std::vector<T> get_unique_prime_factors(T num);
+
    /**
     * Creates string of all primes
     *
@@ -73,7 +84,7 @@ private:
      * Template must be of integer type (int, long, ...)
      *  
      * n = upper
-     * Time complexity: O( n * log( log(n) ) )
+     * Time complexity: O( n * log(n) )
      * Memory complexity: O(n)
      *
      * upper      : The number to find the sieve to
