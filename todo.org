@@ -2,3 +2,4 @@
 - [ ] Shortest Path: Fix shortest path in graph. Now copies entire graph when looping. Problems with representation
 - [ ] Polygon (min distance): Implement quad and use to only look at the necessary line segments
 - [ ] Add error message to all tcc files
+- [ ] Fix all w-signed warnings
