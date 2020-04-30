@@ -40,6 +40,20 @@ public:
     void resetGraph();
 
     /**
+     * Changes the source of this max flow instance. Flow needs to be
+     * recalculated using the calculate_max_flow functions for changed
+     * to take effect.
+     */
+    void set_source(SIZE_T src);
+
+    /**
+     * Changes the drain of this max flow instance. Flow needs to be
+     * recalculated using the calculate_max_flow functions for changed
+     * to take effect.
+     */
+    void set_drain(SIZE_T drain);
+
+    /**
      * Connects node n1 to node n2 with the given max_flow throught
      * the edge
      *

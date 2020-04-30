@@ -18,6 +18,18 @@ void Max_flow<FLOW_T, SIZE_T>::resetGraph()
     }
 }
 
+template<typename FLOW_T, typename SIZE_T>
+void Max_flow<FLOW_T, SIZE_T>::set_source(SIZE_T src)
+{
+    source = src;
+}
+
+template<typename FLOW_T, typename SIZE_T>
+void Max_flow<FLOW_T, SIZE_T>::set_drain(SIZE_T drain)
+{
+    this->drain = drain;
+}
+
 
 template<typename FLOW_T, typename SIZE_T>
  void Max_flow<FLOW_T, SIZE_T>::connect(SIZE_T n1, SIZE_T n2, FLOW_T max_flow)
