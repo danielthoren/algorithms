@@ -80,20 +80,6 @@ public:
     void dijkstras(long unsigned start_node);
     
 private:
-    // struct Edge
-    // {
-    // 	long unsigned end_node;
-    // 	T cost;
-    // };
-
-    // struct Node
-    // {
-    // 	long unsigned index;
-    // 	T min_cost;
-    // 	bool visited;
-    // 	long unsigned parent;
-    // 	std::vector<Edge> edges;
-    // };
 
     /**
      * Comparator used in min queue
@@ -101,10 +87,16 @@ private:
     class Queue_comparator
     {
     public:
-	bool operator() (Node n1, Node n2)
+	Queue_comparator(std::vector<Node> const& graph) : graph{graph}
+	    {}
+	
+	bool operator() (long unsigned n1, long unsigned n2)
 	    {
-		return n1.min_cost > n2.min_cost;
+		return graph[n1].min_cost > graph[n2].min_cost;
 	    }
+
+    private:
+	std::vector<Node> const& graph;
     };
 
     /**
@@ -118,7 +110,7 @@ private:
      * node_index: The index of the current node
      */
     void update_distance(long unsigned node_index,
-			 std::priority_queue<Node, std::vector<Node>, Queue_comparator>& min_queue);
+			 std::priority_queue<long unsigned, std::vector<long unsigned>, Queue_comparator>& min_queue);
 
     
     std::vector<Node> graph{};

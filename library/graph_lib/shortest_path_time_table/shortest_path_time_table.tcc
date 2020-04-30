@@ -1,4 +1,7 @@
 
+#include <functional>
+#include <limits.h>
+#include <algorithm>
 
 template <typename COST_T, typename INDEX_T>
 struct Shortest_path_time_table<COST_T, INDEX_T>::Edge
