@@ -11,7 +11,7 @@ int main()
     scanf(" %ld", &source);
     scanf(" %ld", &sink);
 
-    Max_flow<long, long> max_flow(n, source, sink);
+    Max_flow<long> max_flow(n, source, sink);
 
     for (long e{0}; e < m; e++)
     {

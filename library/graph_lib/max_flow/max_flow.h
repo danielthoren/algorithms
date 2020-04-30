@@ -10,7 +10,7 @@
  * Class that solves the max flow problem. Implementation based on
  * Dinics Algorithm
  */
-template<typename FLOW_T, typename SIZE_T = int>
+template<typename FLOW_T, typename SIZE_T = long>
 class Max_flow
 {
 public:
