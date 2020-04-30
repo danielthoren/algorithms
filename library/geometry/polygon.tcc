@@ -1,14 +1,14 @@
 
 
 template<typename T>
-Polygon<T>::Polygon(std::vector<point<T>> const& points)
+Polygon<T>::Polygon(std::vector<Point<T>> const& points)
 {
     if (points.size() >= 2)
     {
 	LineSegment first(points[0], points[1]);
 	segments.push_back(first);
     
-	for (int i{2}; i < points.size(); i++)
+	for (unsigned i{2}; i < points.size(); i++)
 	{
 	    LineSegment seg(segments[segments.size()-1].get_end_point(), points[i]);
 	    segments.push_back(seg);
@@ -20,10 +20,10 @@ Polygon<T>::Polygon(std::vector<point<T>> const& points)
 }
 
 template<typename T>
-void Polygon<T>::add_point(point<T> const& pt, T position)
+void Polygon<T>::add_point(Point<T> const& pt, T position)
 {
-    point<T> start = segments[position].get_start_point();
-    point<T> end = segments[position].get_end_point();
+    Point<T> start = segments[position].get_start_point();
+    Point<T> end = segments[position].get_end_point();
 
     LineSegment<T> pt_line(start, pt);
     segments[position] = pt_line;
@@ -47,11 +47,11 @@ F Polygon<T>::polygon_area() const
 {
     F area{0};
 
-    point<T> p1 = segments[0].get_start_point();
+    Point<T> p1 = segments[0].get_start_point();
     
-    for (T p{0}; p < segments.size(); p++)
+    for (unsigned p{0}; p < segments.size(); p++)
     {
-	point<T> p2 = segments[p].get_end_point();
+	Point<T> p2 = segments[p].get_end_point();
 	
 	area += cross(p1, p2);
 
@@ -62,16 +62,16 @@ F Polygon<T>::polygon_area() const
 }
 
 template <typename T>
-std::pair<point<T>, point<T>>
+std::pair<Point<T>, Point<T>>
 Polygon<T>::min_distance(LineSegment<T> const& linseg) const
 {
     T smallest_dist{std::numeric_limits<T>::max()};
     
-    std::pair<point<T>, point<T>> closest{};
+    std::pair<Point<T>, Point<T>> closest{};
 
     for (LineSegment<T> const& lseg : segments)
     {
-	std::pair<point<T>, point<T>> cl = linseg.closest_points(lseg);
+	std::pair<Point<T>, Point<T>> cl = linseg.closest_points(lseg);
 	T dist = cl.first.distance(cl.second);
 	if (dist < smallest_dist)
 	{
@@ -88,16 +88,16 @@ Polygon<T>::min_distance(LineSegment<T> const& linseg) const
  * segments needs to be compared instead of comparing all of them
  */
 template <typename T>
-std::pair<point<T>, point<T>>
+std::pair<Point<T>, Point<T>>
 Polygon<T>::min_distance(Polygon<T> const& other) const
 {
     T smallest_dist{std::numeric_limits<T>::max()};
     
-    std::pair<point<T>, point<T>> closest{};
+    std::pair<Point<T>, Point<T>> closest{};
     
     for (LineSegment<T> const& lseg : other.segments)
     {
-	std::pair<point<T>, point<T>> cl{ min_distance(lseg) };
+	std::pair<Point<T>, Point<T>> cl{ min_distance(lseg) };
 	T dist = cl.first.distance(cl.second);
 	
 	if (dist < smallest_dist)

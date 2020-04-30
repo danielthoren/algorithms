@@ -15,7 +15,7 @@ template <typename T>
 class Line
 {
 public:
-    Line(point<T> p0, point<T> p1)
+    Line(Point<T> p0, Point<T> p1)
 	: p0{p0}, u{p1 - p0}
 	{}
     
@@ -31,7 +31,7 @@ public:
 
     bool is_parallel(Line<T> const& other) const;
 
-    point<T> orthogonal_projection(point<T> const& pt) const;
+    Point<T> orthogonal_projection(Point<T> const& pt) const;
 
     /*
      * Returns the point where this Line and other intersects
@@ -48,12 +48,12 @@ public:
      * Then we obtain the actual intersection point from the following:
      * p_inter = p + t * U
      */
-    point<T> intersection(Line<T> const& other) const;
+    Point<T> intersection(Line<T> const& other) const;
 
 protected:
     //p(s) = p0 + su
-    point<T> p0;
-    point<T> u;    // u = p1 - p0
+    Point<T> p0;
+    Point<T> u;    // u = p1 - p0
 };
 
 /*************************************************************/
@@ -80,25 +80,25 @@ bool Line<T>::operator!=(Line<T> const& other) const
 }
 
 template <typename T>
-point<T> Line<T>::orthogonal_projection(point<T> const& pt) const
+Point<T> Line<T>::orthogonal_projection(Point<T> const& pt) const
 {
     return ((pt * u) / (u * u)) * u;
 }
 
 
 template <typename T>
-point<T> Line<T>::intersection(Line<T> const& other) const
+Point<T> Line<T>::intersection(Line<T> const& other) const
 {
     T t = other.u.determinant( (other.p0 - p0) ) / other.u.determinant(u);
 
     //No solution
     if (t == 0)
     {
-	return point<T>(std::numeric_limits<T>::min(),
+	return Point<T>(std::numeric_limits<T>::min(),
 			std::numeric_limits<T>::min());
     }
 
-    point<T> inter{ p0 + (t * u) };
+    Point<T> inter{ p0 + (t * u) };
     return inter;
 }   
 

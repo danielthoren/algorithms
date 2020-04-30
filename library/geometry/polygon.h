@@ -21,13 +21,13 @@ public:
     /**
      * Constructs polygon from points
      */
-    Polygon(std::vector<point<T>> const& points);
+    Polygon(std::vector<Point<T>> const& points);
 
     /**
      * Adds a new point between the given point and the one in front
      * of it. Defaults to the end of the segments array
      */
-    void add_point(point<T> const& pt, T position = 0);
+    void add_point(Point<T> const& pt, T position = 0);
     
 
     std::vector<LineSegment<T>>& get_segments();
@@ -55,7 +55,7 @@ public:
      *         pair<point on polygon, point on segment>
      *
      */
-    std::pair<point<T>, point<T>>
+    std::pair<Point<T>, Point<T>>
 	      min_distance(LineSegment<T> const& linseg) const;
 
 
@@ -66,7 +66,7 @@ public:
      *
      * return: The closest points on the two polygons
      */
-    std::pair<point<T>, point<T>>
+    std::pair<Point<T>, Point<T>>
 	      min_distance(Polygon<T> const& other) const;
     
     

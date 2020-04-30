@@ -11,10 +11,10 @@ using namespace std;
 
 bool constructor()
 {
-    point<int> p1(0, 0);
-    point<int> p2(1, 1);
-    point<int> p3(1, -1);
-    std::vector<point<int>> pts{p1, p2, p3};
+    Point<int> p1(0, 0);
+    Point<int> p2(1, 1);
+    Point<int> p3(1, -1);
+    std::vector<Point<int>> pts{p1, p2, p3};
 
     Polygon poly(pts);
 
@@ -31,7 +31,7 @@ bool constructor()
 	return false;
     }
 
-    point<int> p4(4,0);
+    Point<int> p4(4,0);
 
     poly.add_point(p4, 1);
 
@@ -53,11 +53,11 @@ bool constructor()
 bool area()
 {
     {
-	point<int> p1(0, 0);
-	point<int> p2(1, 1);	
-	point<int> p3(4, 0);
-	point<int> p4(1, -1);
-	std::vector<point<int>> pts{p1, p2, p3, p4};
+	Point<int> p1(0, 0);
+	Point<int> p2(1, 1);	
+	Point<int> p3(4, 0);
+	Point<int> p4(1, -1);
+	std::vector<Point<int>> pts{p1, p2, p3, p4};
 
 	Polygon poly(pts);
     
@@ -69,11 +69,11 @@ bool area()
     }
 
     {
-	point<int> p1(0, 0);
-	point<int> p2(10, 0);
-	point<int> p3(0, 10);
+	Point<int> p1(0, 0);
+	Point<int> p2(10, 0);
+	Point<int> p3(0, 10);
 	
-	std::vector<point<int>> pts{p1, p2, p3};
+	std::vector<Point<int>> pts{p1, p2, p3};
 
 	Polygon poly(pts);
 
@@ -85,13 +85,13 @@ bool area()
     }
 
     {
-	point<int> p1(41, -6);
-	point<int> p2(-24, -74);
-	point<int> p3(-51, -6);
-	point<int> p4(73, 17);
-	point<int> p5(-30, -34);
+	Point<int> p1(41, -6);
+	Point<int> p2(-24, -74);
+	Point<int> p3(-51, -6);
+	Point<int> p4(73, 17);
+	Point<int> p5(-30, -34);
 	
-	std::vector<point<int>> pts{p1, p2, p3, p4, p5};
+	std::vector<Point<int>> pts{p1, p2, p3, p4, p5};
 
 	Polygon poly(pts);
 
@@ -108,16 +108,16 @@ bool area()
 bool min_distance()
 {
     {
-	point<double> p1(0, 0);
-	point<double> p2(1, 1);	
-	point<double> p3(4, 0);
-	point<double> p4(1, -1);
-	std::vector<point<double>> pts{p1, p2, p3, p4};
+	Point<double> p1(0, 0);
+	Point<double> p2(1, 1);	
+	Point<double> p3(4, 0);
+	Point<double> p4(1, -1);
+	std::vector<Point<double>> pts{p1, p2, p3, p4};
 
 	Polygon poly(pts);
 
-	point<double> pt1(0.5, 2);
-	point<double> pt2(1.5, 2);
+	Point<double> pt1(0.5, 2);
+	Point<double> pt2(1.5, 2);
 	LineSegment<double> seg(pt1, pt2);
 
 	auto res = poly.min_distance(seg);
@@ -132,20 +132,20 @@ bool min_distance()
     }
 
     {
-	point<double> ip1(-5, -5);
-	point<double> ip2(5, -5);	
-	point<double> ip3(5, 5);
-	point<double> ip4(-5, 5);
+	Point<double> ip1(-5, -5);
+	Point<double> ip2(5, -5);	
+	Point<double> ip3(5, 5);
+	Point<double> ip4(-5, 5);
 
-	std::vector<point<double>> ipts{ip1, ip2, ip3, ip4};
+	std::vector<Point<double>> ipts{ip1, ip2, ip3, ip4};
 	Polygon inner(ipts);
 
-	point<double> op1(-10, -10);
-	point<double> op2(-10, 10);	
-	point<double> op3(10, 10);
-	point<double> op4(10, -10);
+	Point<double> op1(-10, -10);
+	Point<double> op2(-10, 10);	
+	Point<double> op3(10, 10);
+	Point<double> op4(10, -10);
 
-	std::vector<point<double>> opts{op1, op2, op3, op4};
+	std::vector<Point<double>> opts{op1, op2, op3, op4};
 	Polygon outer(opts);
 
 	auto res = inner.min_distance(outer);
@@ -160,20 +160,20 @@ bool min_distance()
     }
 
     {
-	point<double> ip1(0,0);
-	point<double> ip2(1,0);	
-	point<double> ip3(1,1);
+	Point<double> ip1(0,0);
+	Point<double> ip2(1,0);	
+	Point<double> ip3(1,1);
 
-	std::vector<point<double>> ipts{ip1, ip2, ip3};
+	std::vector<Point<double>> ipts{ip1, ip2, ip3};
 	Polygon inner(ipts);
 
-	point<double> op1(3, -3);
-	point<double> op2(3, 3);	
-	point<double> op3(-4, 2);
-	point<double> op4(-1, -1);
-	point<double> op5(-2, -2);
+	Point<double> op1(3, -3);
+	Point<double> op2(3, 3);	
+	Point<double> op3(-4, 2);
+	Point<double> op4(-1, -1);
+	Point<double> op5(-2, -2);
 
-	std::vector<point<double>> opts{op1, op2, op3, op4, op5};
+	std::vector<Point<double>> opts{op1, op2, op3, op4, op5};
 	Polygon outer(opts);
 
 	auto res = inner.min_distance(outer);

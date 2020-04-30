@@ -21,14 +21,14 @@
  * return: The area of the polygon
  */
 template <typename T>
-long double polygon_area(std::vector<point<T>>& pts);
+long double polygon_area(std::vector<Point<T>>& pts);
 
 /*************************************************************/
 /* Should be in tcc file, temporarily here for kattis        */
 /*************************************************************/
 
 template <typename T>
-long double polygon_area(std::vector<point<T>>& pts)
+long double polygon_area(std::vector<Point<T>>& pts)
 {
     long double area{0};
     for (long unsigned int p{0}; p < pts.size(); p++)

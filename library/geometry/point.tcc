@@ -2,15 +2,15 @@
 #include <cmath>
 
 template <typename T>
-point<T> point<T>::operator+(point<T> const& other) const
+Point<T> Point<T>::operator+(Point<T> const& other) const
 {
-    point<T> tmp{*this};
+    Point<T> tmp{*this};
     tmp += other;
     return tmp;
 }
 
 template <typename T>
-point<T>& point<T>::operator+=(point<T> const& other)
+Point<T>& Point<T>::operator+=(Point<T> const& other)
 {
     x += other.x;
     y += other.y;
@@ -18,15 +18,15 @@ point<T>& point<T>::operator+=(point<T> const& other)
 }
 
 template <typename T>
-point<T> point<T>::operator-(point<T> const& other) const
+Point<T> Point<T>::operator-(Point<T> const& other) const
 {
-    point<T> tmp{*this};
+    Point<T> tmp{*this};
     tmp -= other;
     return tmp;
 }
 
 template <typename T>
-point<T>& point<T>::operator-=(point<T> const& other)
+Point<T>& Point<T>::operator-=(Point<T> const& other)
 {
     x -= other.x;
     y -= other.y;
@@ -34,7 +34,7 @@ point<T>& point<T>::operator-=(point<T> const& other)
 }
 
 template <typename T>
-point<T>& point<T>::operator=(point const& other)
+Point<T>& Point<T>::operator=(Point const& other)
 {
     x = other.x;
     y = other.y;
@@ -42,19 +42,19 @@ point<T>& point<T>::operator=(point const& other)
 }
 
 template <typename T>
-bool point<T>::operator==(point<T> const& other) const
+bool Point<T>::operator==(Point<T> const& other) const
 {
     return x == other.x && y == other.y;
 }
 
 template <typename T>
-bool point<T>::operator!=(point<T> const& other) const
+bool Point<T>::operator!=(Point<T> const& other) const
 {
     return !( *this == other );
 }
 
 template <typename T>
-T point<T>::distance(point<T> const& other) const
+T Point<T>::distance(Point<T> const& other) const
 {
     T x_dist = std::abs(x - other.x);
     T y_dist = std::abs(y - other.y);
@@ -63,16 +63,16 @@ T point<T>::distance(point<T> const& other) const
 }
 
 template <typename T>
-point<T> point<T>::distance_vec(point<T> const& other) const
+Point<T> Point<T>::distance_vec(Point<T> const& other) const
 {
     T x_dist = std::abs(x - other.x);
     T y_dist = std::abs(y - other.y);
 
-    return point<T>{x_dist, y_dist};
+    return Point<T>{x_dist, y_dist};
 }
 
 template <typename T>
-double point<T>::length() const
+double Point<T>::length() const
 {
     return std::sqrt( dot(*this, *this) );
 }
@@ -82,13 +82,13 @@ double point<T>::length() const
 /************************/
 
 template <typename T>
-point<T> operator*(T scalar, point<T> const& pt)
+Point<T> operator*(T scalar, Point<T> const& pt)
 {
-    return point<T>{pt.x * scalar, pt.y * scalar};
+    return Point<T>{pt.x * scalar, pt.y * scalar};
 }
 
 template <typename T>
-point<T> operator*(point<T> const& pt, T scalar)
+Point<T> operator*(Point<T> const& pt, T scalar)
 {
-    return point<T>{pt.x * scalar, pt.y * scalar};
+    return Point<T>{pt.x * scalar, pt.y * scalar};
 }

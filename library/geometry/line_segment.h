@@ -14,7 +14,7 @@ template<typename T>
 class LineSegment
 {
 public:
-    LineSegment(point<T> p0, point<T> p1)
+    LineSegment(Point<T> p0, Point<T> p1)
      	: p0{p0}, u{p1 - p0}
 	{}
     
@@ -37,7 +37,7 @@ public:
      * pt    : The point to measure distance to
      * return: The closest point on this line
      */
-    point<T> closest_point(point<T> const& pt) const;
+    Point<T> closest_point(Point<T> const& pt) const;
 
     /**
      * Calculates the points on the line segments that are the closest
@@ -47,13 +47,13 @@ public:
      * return: The closest points on the line segments
      *         std::pair<on this, on lseg>
      */
-    std::pair<point<T>, point<T>> closest_points(LineSegment<T> const& lseg) const;    
+    std::pair<Point<T>, Point<T>> closest_points(LineSegment<T> const& lseg) const;    
 
     /**
      * Returns true if this linesegment contains the given point,
      * otherwise false
      */
-    bool contains(point<T> const& pt) const;
+    bool contains(Point<T> const& pt) const;
 
     /**
      * Returns the point where this Line and other intersects If they
@@ -63,22 +63,22 @@ public:
      * return: The intersection point. If there is non then return point with
      *         std::numeric_limits<T>::min() as its values
      */
-    std::variant<std::monostate, point<T>, LineSegment<T>>
+    std::variant<std::monostate, Point<T>, LineSegment<T>>
      intersection(LineSegment<T> const& other) const;
 
     /**
      * returns p0 + u
      */
-    point<T> get_end_point() const;
+    Point<T> get_end_point() const;
 
     /**
      * Returns p0
      */
-    point<T> get_start_point() const;
+    Point<T> get_start_point() const;
     
     //p(s) = p0 + su
-    point<T> p0;
-    point<T> u;    // u = p1 - p0
+    Point<T> p0;
+    Point<T> u;    // u = p1 - p0
     
 };
 

@@ -14,7 +14,7 @@ bool LineSegment<T>::operator!=(LineSegment<T> const& other) const
 }
 
 template <typename T>
-bool LineSegment<T>::contains(point<T> const& pt) const
+bool LineSegment<T>::contains(Point<T> const& pt) const
 {
     //This is a point, check if both points are the same
     if (u.x == 0 && u.y == 0)
@@ -65,10 +65,10 @@ bool LineSegment<T>::contains(point<T> const& pt) const
  * return: The resulting point R
  */
 template <typename T>
-point<T> LineSegment<T>::closest_point(point<T> const& x) const
+Point<T> LineSegment<T>::closest_point(Point<T> const& x) const
 {
     //Move coordinate system if the line does not go through origo
-    point<T> xt = x - p0;
+    Point<T> xt = x - p0;
 
     T u2 = dot(u, u);
     
@@ -84,13 +84,13 @@ point<T> LineSegment<T>::closest_point(point<T> const& x) const
     //If 0 <= c <= 1 then the point is on the line segment
     if (c <= 1 && c >= 0)
     {
-	point<T> res = c * u + p0;
+	Point<T> res = c * u + p0;
 	return res;
     }
 
     //Otherwise one of the line segments endpoints is closest
-    point<T> v1{p0 - x};
-    point<T> v2{(p0 + u) - x};
+    Point<T> v1{p0 - x};
+    Point<T> v2{(p0 + u) - x};
 
     if (v1.length() < v2.length())
     {
@@ -111,12 +111,12 @@ point<T> LineSegment<T>::closest_point(point<T> const& x) const
  *         std::pair<closest on this, closest on lseg>
  */
 template <typename T>
-std::pair<point<T>, point<T>> LineSegment<T>::closest_points(LineSegment<T> const& lseg) const
+std::pair<Point<T>, Point<T>> LineSegment<T>::closest_points(LineSegment<T> const& lseg) const
 {    
-    point<T> p_res      { closest_point(lseg.p0) };
-    point<T> u_res      { closest_point(lseg.p0 + lseg.u) };
-    point<T> p_res_other{ lseg.closest_point(p0) };
-    point<T> u_res_other{ lseg.closest_point(p0 + u) };
+    Point<T> p_res      { closest_point(lseg.p0) };
+    Point<T> u_res      { closest_point(lseg.p0 + lseg.u) };
+    Point<T> p_res_other{ lseg.closest_point(p0) };
+    Point<T> u_res_other{ lseg.closest_point(p0 + u) };
 
     T p_len       = p_res.distance(lseg.p0);
     T u_len       = u_res.distance(lseg.p0 + lseg.u);
@@ -227,17 +227,17 @@ std::pair<point<T>, point<T>> LineSegment<T>::closest_points(LineSegment<T> cons
  *         std::numeric_limits<T>::min() as its values
  */
 template <typename T>
-std::variant<std::monostate, point<T>, LineSegment<T>>
+std::variant<std::monostate, Point<T>, LineSegment<T>>
 LineSegment<T>::intersection(LineSegment<T> const& other) const
 {
-    point<T> u = this->u;
-    point<T> p = this->p0;
+    Point<T> u = this->u;
+    Point<T> p = this->p0;
     
-    point<T> v = other.u;
-    point<T> q = other.p0;
+    Point<T> v = other.u;
+    Point<T> q = other.p0;
     
     //t = ( (q - p) x V ) / U x V
-    point<T> qp = q - p;
+    Point<T> qp = q - p;
     T uv = cross(u, v);
 
     T u2 = dot(u, u);
@@ -278,8 +278,8 @@ LineSegment<T>::intersection(LineSegment<T> const& other) const
 	    //the line segments overlap otherwise there is no solution
 	    if (t_max <= 1 && t_max >= 0 && t_min <= 1 && t_min >= 0)
 	    {
-		point<T> p_start(p + t_min * u);
-		point<T> p_end(p + t_max * u);
+		Point<T> p_start(p + t_min * u);
+		Point<T> p_end(p + t_max * u);
 
 		//If p_start and p_end are the same then the lines
 		//only intersect in one point, return that point
@@ -306,7 +306,7 @@ LineSegment<T>::intersection(LineSegment<T> const& other) const
 	//Check if s and t are valid, if not then they do not intersect
 	if (t <= 1 && t >= 0 && s <= 1 && s >= 0)
 	{
-	    return point<T>{ p + (t * u) };
+	    return Point<T>{ p + (t * u) };
 	}
     }
 
@@ -314,13 +314,13 @@ LineSegment<T>::intersection(LineSegment<T> const& other) const
 }
 
 template<typename T>
-point<T> LineSegment<T>::get_end_point() const
+Point<T> LineSegment<T>::get_end_point() const
 {
     return p0 + u;
 }
 
 template<typename T>
-point<T> LineSegment<T>::get_start_point() const
+Point<T> LineSegment<T>::get_start_point() const
 {
     return p0;
 }
