@@ -4,7 +4,7 @@
 #include <functional>
 #include <limits.h>
 
-#include "shortest_path.h"
+#include "shortest_path_non_negative.h"
 
 using namespace std;
 

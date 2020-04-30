@@ -4,8 +4,8 @@
 #include <functional>
 #include <limits.h>
 
-#ifndef SHORTEST_PATH
-#define SHORTEST_PATH
+#ifndef SHORTEST_PATH_NON_NEGATIVE
+#define SHORTEST_PATH_NON_NEGATIVE
 
 /**
  * Author: Daniel Thorén
@@ -125,6 +125,6 @@ private:
     long unsigned start;
 };
 
-#include "shortest_path.tcc"
+#include "shortest_path_non_negative.tcc"
 
 #endif
