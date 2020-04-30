@@ -49,7 +49,7 @@ public:
      * index: The index to update
      * val  : The value to update with
      */
-    void update(T index, T val);
+    void update(long unsigned index, T val);
 
     /**
      * Returns the prefix sum up until the given index. This is done
@@ -63,7 +63,7 @@ public:
      *
      * index: The index where the cumulative sum stops
      */
-    T sum(T index);
+    T sum(long unsigned index);
 
     /**
      * Returns the sum between the given indexes
@@ -71,7 +71,7 @@ public:
      * from: The start index of the range
      * to  : The end index of the range
      */
-    T ranged_sum(T from, T to);
+    T ranged_sum(long unsigned from, long unsigned to);
 
 private:
     std::vector<T> tree;
