@@ -87,16 +87,12 @@ private:
     class Queue_comparator
     {
     public:
-	Queue_comparator(std::vector<Node> const& graph) : graph{graph}
-	    {}
+	Queue_comparator() = default;
 	
-	bool operator() (long unsigned n1, long unsigned n2)
+	bool operator() (std::pair<long unsigned, T> n1, std::pair<long unsigned, T> n2)
 	    {
-		return graph[n1].min_cost > graph[n2].min_cost;
+		return n1.second > n2.second;
 	    }
-
-    private:
-	std::vector<Node> const& graph;
     };
 
     /**
@@ -110,7 +106,10 @@ private:
      * node_index: The index of the current node
      */
     void update_distance(long unsigned node_index,
-			 std::priority_queue<long unsigned, std::vector<long unsigned>, Queue_comparator>& min_queue);
+			 std::priority_queue
+			 <std::pair<long unsigned, T>,
+			 std::vector<std::pair<long unsigned, T>>,
+			 Shortest_path_non_negative<T>::Queue_comparator>& min_queue);
 
     
     std::vector<Node> graph{};

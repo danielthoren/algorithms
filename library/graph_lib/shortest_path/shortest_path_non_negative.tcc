@@ -79,22 +79,19 @@ void Shortest_path_non_negative<T>::dijkstras(long unsigned start_node)
 {
     resetGraph();
 
-    graph.at(start_node).min_cost = 0;
-
-    //Slow solution since it stores copies in the priority
-    //queue. Does not compile with references and gets wrong
-    //awnswer with pointers
-    Shortest_path_non_negative<T>::Queue_comparator comp(graph);
-	
-    std::priority_queue
-	<long unsigned, std::vector<long unsigned>, Shortest_path_non_negative<T>::Queue_comparator>
-	min_queue( comp );
+    graph.at(start_node).min_cost = 0;  
     
-    min_queue.push(start_node);
+    //each pair stores {index, cost when inserted}
+    std::priority_queue
+	<std::pair<long unsigned, T>,
+	 std::vector<std::pair<long unsigned, T>>,
+	 Shortest_path_non_negative<T>::Queue_comparator> min_queue;
+    
+    min_queue.push( std::pair<long unsigned, T>{start_node, graph[start_node].min_cost} );
 
     while (!min_queue.empty())
     {
-	long unsigned min_node = min_queue.top();
+	long unsigned min_node = min_queue.top().first;
 	min_queue.pop();
 
 	if (! graph.at(min_node).visited)
@@ -107,8 +104,9 @@ void Shortest_path_non_negative<T>::dijkstras(long unsigned start_node)
 
 template <typename T>
 void Shortest_path_non_negative<T>::update_distance(long unsigned node_index,
-						    std::priority_queue<long unsigned,
-						    std::vector<long unsigned>,
+						    std::priority_queue
+						    <std::pair<long unsigned, T>,
+						    std::vector<std::pair<long unsigned, T>>,
 						    Shortest_path_non_negative<T>::Queue_comparator>& min_queue)
 {
     Node& node = graph.at(node_index);
@@ -122,7 +120,7 @@ void Shortest_path_non_negative<T>::update_distance(long unsigned node_index,
 	    {
 		graph.at(edge.end_node).min_cost = tmp;
 
-		min_queue.push(edge.end_node);
+		min_queue.push( {edge.end_node, graph[edge.end_node].min_cost} );
 		//Enable backtracking of path
 		graph.at(edge.end_node).parent = node_index;
 	    }
