@@ -81,94 +81,6 @@ T dot(point<T> const& u, point<T> const& v)
     return u.x * v.x + u.y * v.y;
 }
 
-/*************************************************************/
-/* Should be in tcc file, temporarily here for kattis        */
-/*************************************************************/
-
-
-/**********************/
-/* Member functions   */
-/**********************/
-
-#include <cmath>
-
-template <typename T>
-point<T> point<T>::operator+(point<T> const& other) const
-{
-    point<T> tmp{*this};
-    tmp += other;
-    return tmp;
-}
-
-template <typename T>
-point<T>& point<T>::operator+=(point<T> const& other)
-{
-    x += other.x;
-    y += other.y;
-    return *this;
-}
-
-template <typename T>
-point<T> point<T>::operator-(point<T> const& other) const
-{
-    point<T> tmp{*this};
-    tmp -= other;
-    return tmp;
-}
-
-template <typename T>
-point<T>& point<T>::operator-=(point<T> const& other)
-{
-    x -= other.x;
-    y -= other.y;
-    return *this;
-}
-
-template <typename T>
-point<T>& point<T>::operator=(point const& other)
-{
-    x = other.x;
-    y = other.y;
-    return *this;
-}
-
-template <typename T>
-bool point<T>::operator==(point<T> const& other) const
-{
-    return x == other.x && y == other.y;
-}
-
-template <typename T>
-bool point<T>::operator!=(point<T> const& other) const
-{
-    return !( *this == other );
-}
-
-template <typename T>
-T point<T>::distance(point<T> const& other) const
-{
-    T x_dist = std::abs(x - other.x);
-    T y_dist = std::abs(y - other.y);
-
-    return std::sqrt( std::pow(x_dist, 2) + std::pow(y_dist, 2) );
-}
-
-template <typename T>
-point<T> point<T>::distance_vec(point<T> const& other) const
-{
-    T x_dist = std::abs(x - other.x);
-    T y_dist = std::abs(y - other.y);
-
-    return point<T>{x_dist, y_dist};
-}
-
-template <typename T>
-double point<T>::length() const
-{
-    return std::sqrt( dot(*this, *this) );
-}
-
-
 /************************/
 /* Non-Member functions */
 /************************/
@@ -177,15 +89,11 @@ double point<T>::length() const
  * Scalar multiplication between two points
  */
 template <typename T>
-point<T> operator*(T scalar, point<T> const& pt)
-{
-    return point<T>{pt.x * scalar, pt.y * scalar};
-}
+point<T> operator*(T scalar, point<T> const& pt);
 
 template <typename T>
-point<T> operator*(point<T> const& pt, T scalar)
-{
-    return point<T>{pt.x * scalar, pt.y * scalar};
-}
+point<T> operator*(point<T> const& pt, T scalar);
+
+#include "point.tcc"
 
 #endif

@@ -4,8 +4,8 @@
 #include <iostream>
 
 #include "point.h"
-#include "Line.h"
-#include "Polygon.h"
+#include "line.h"
+#include "polygon.h"
 
 using namespace std;
 
