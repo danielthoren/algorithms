@@ -1,5 +1,5 @@
 #include "point.h"
-#include "LineSegment.h"
+#include "line_segment.h"
 #include <cstdio>
 #include <variant>
 

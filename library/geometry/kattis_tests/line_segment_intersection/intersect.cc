@@ -1,5 +1,5 @@
 #include "point.h"
-#include "LineSegment.h"
+#include "line_segment.h"
 #include <cstdio>
 #include <variant>
 
@@ -36,16 +36,16 @@ int main()
 	{
 	    printf("none\n");
 	}
-	else if (std::holds_alternative<point<double>>(res))
+	else if (std::holds_alternative<Point<double>>(res))
 	{
-	    point<double> pt = std::get<point<double>>(res);
+	    Point<double> pt = std::get<Point<double>>(res);
 	    printf("%.2lf %.2lf\n", pt.x, pt.y);
 	}
 	else if (std::holds_alternative<LineSegment<double>>(res))
 	{
 	    LineSegment<double> lseg = std::get<LineSegment<double>>(res);
-	    point p1(lseg.p0);
-	    point p2(lseg.u + lseg.p0);
+	    Point p1(lseg.p0);
+	    Point p2(lseg.u + lseg.p0);
 
 	    if (p1.x < p2.x || (p1.x == p2.x && p1.y < p2.y))
 		printf("%.2lf %.2lf %.2lf %.2lf\n", p1.x, p1.y, p2.x, p2.y);

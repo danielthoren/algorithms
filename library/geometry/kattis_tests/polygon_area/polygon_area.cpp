@@ -1,6 +1,8 @@
-#include "polygon_ops.h"
+
 #include <iostream>
 #include <iomanip>
+
+#include "polygon.h"
 
 using namespace std;
 
@@ -13,21 +15,23 @@ int main()
 
     while (count != 0)
     {
-	vector<point<long double>> polygon;
-	
+	vector<Point<long double>> points;
+    
 	for (int v{0}; v < count; v++)
 	{
 	    long double x, y;
 	    cin >> x >> y;
-	    polygon.push_back( point<long double>{x,y} );
+	    points.push_back( Point<long double>{x,y} );
 	}
-	long double area = polygon_area(polygon);
+	Polygon<long double> poly(points);
+	long double area = poly.get_area();
 
 	if (area <= 0)
 	    cout << "CW ";
 	else
 	    cout << "CCW ";
-	
+    
+	//double area = (int)(polygon_area(polygon) * 10.0) / 10.0; //truncating at one decimal
 	cout << fixed << setprecision(1) << std::abs(area) << endl;
 
 	cin >> count;
@@ -35,3 +39,4 @@ int main()
 
     return 0;
 }
+

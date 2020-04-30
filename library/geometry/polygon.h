@@ -39,10 +39,12 @@ public:
      * Template F: Type of the area calculated, should usually be of
      *             float type
      *
+     * Time complexity: O(n) n = points
+     *
      * return : The area of the polygon
      */
     template <typename F = double>
-    F polygon_area() const;
+    F get_area() const;
 	
     /**
      * Calculates the point on this polygon and the given line segment

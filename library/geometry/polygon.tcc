@@ -43,7 +43,7 @@ std::vector<LineSegment<T>>& Polygon<T>::get_segments()
 
 template <typename T>
 template <typename F>
-F Polygon<T>::polygon_area() const
+F Polygon<T>::get_area() const
 {
     F area{0};
 
@@ -58,7 +58,7 @@ F Polygon<T>::polygon_area() const
 	p1 = p2;
     }
 	    
-    return std::abs(area/2);
+    return area/2;
 }
 
 template <typename T>
