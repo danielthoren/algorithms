@@ -32,7 +32,7 @@ T Prime_sieve<T>::get_prime_count()
 template<typename T>
 std::vector<T> Prime_sieve<T>::get_prime_factors(T num)
 {
-    if (num > upper)
+    if (num > upper * upper)
     {
 	return {};
     }
