@@ -1,5 +1,8 @@
 #include <sstream>
-#include <iostream>
+
+#ifndef SATISFIABILITY
+#error 'satisfiability.tcc' is not supposed to be included directly. Include 'satisfiability.h' instead.
+#endif
 
 template<int SIZE>
 bool Satisfiability<SIZE>::all_satisfied(std::bitset<SIZE> const& vars)

@@ -1,6 +1,10 @@
 
 #include <algorithm>
 
+#ifndef LINE_SEG
+#error 'line_segment.tcc' is not supposed to be included directly. Include 'line_segment.h' instead.
+#endif
+
 template <typename T>
 bool LineSegment<T>::operator==(LineSegment<T> const& other) const
 {

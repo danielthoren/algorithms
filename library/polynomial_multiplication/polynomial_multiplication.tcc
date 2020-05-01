@@ -2,6 +2,10 @@
 #include <cmath>
 #include <algorithm>
 
+#ifndef POLYNOMIAL_MULTIPLICATION
+#error 'polynomial_multiplication.tcc' is not supposed to be included directly. Include 'polynomial_multiplication.h' instead.
+#endif
+
 template<typename T>
 std::vector<std::complex<T>> FFT(std::vector<std::complex<T>> poly, int w)
 {

@@ -1,3 +1,8 @@
+
+#ifndef SUBSET_SUM
+#error 'subset_sum.tcc' is not supposed to be included directly. Include 'subset_sum.h' instead.
+#endif
+
 template <typename T>
 void help_subset_sum(std::vector<T> const& numbers,
 		     T target,

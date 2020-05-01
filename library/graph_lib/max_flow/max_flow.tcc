@@ -4,6 +4,10 @@
 #include <queue>
 #include <sstream>
 
+#ifndef MAX_FLOW
+#error 'max_flow.tcc' is not supposed to be included directly. Include 'max_flow.h' instead.
+#endif
+
 
 template<typename FLOW_T, typename SIZE_T>
 void Max_flow<FLOW_T, SIZE_T>::resetGraph()

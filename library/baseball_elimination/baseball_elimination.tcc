@@ -1,5 +1,9 @@
 
 
+#ifndef BASEBALL_ELIMINATION
+#error 'baseball_elimination.tcc' is not supposed to be included directly. Include 'baseball_elimination.h' instead.
+#endif
+
 template<typename T>
 bool Baseball_elimination<T>::is_eliminated()
 {        

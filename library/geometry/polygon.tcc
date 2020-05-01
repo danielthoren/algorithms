@@ -1,5 +1,9 @@
 
 
+#ifndef POLYGON
+#error 'polygon.tcc' is not supposed to be included directly. Include 'polygon.h' instead.
+#endif
+
 template<typename T>
 Polygon<T>::Polygon(std::vector<Point<T>> const& points)
 {

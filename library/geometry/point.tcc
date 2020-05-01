@@ -1,6 +1,10 @@
 
 #include <cmath>
 
+#ifndef POINT_2D
+#error 'point.tcc' is not supposed to be included directly. Include 'point.h' instead.
+#endif
+
 template <typename T>
 Point<T> Point<T>::operator+(Point<T> const& other) const
 {

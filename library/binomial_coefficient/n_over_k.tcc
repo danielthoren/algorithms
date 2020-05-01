@@ -1,3 +1,8 @@
+
+#ifndef N_OVER_K
+#error 'n_over_k.tcc' is not supposed to be included directly. Include 'n_over_k.h' instead.
+#endif
+
 template <typename T>
 T n_over_k(T n, T k, std::vector<std::vector<T>>& triag)
 {

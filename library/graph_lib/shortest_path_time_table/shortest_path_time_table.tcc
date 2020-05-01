@@ -3,6 +3,10 @@
 #include <limits.h>
 #include <algorithm>
 
+#ifndef SHORTEST_PATH_TIME_TABLE
+#error 'shortest_path_time_table.tcc' is not supposed to be included directly. Include 'shortest_path_time_table.h' instead.
+#endif
+
 template <typename COST_T, typename INDEX_T>
 struct Shortest_path_time_table<COST_T, INDEX_T>::Edge
 {

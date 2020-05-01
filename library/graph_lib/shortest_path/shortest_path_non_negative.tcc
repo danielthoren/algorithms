@@ -2,6 +2,10 @@
 #include <algorithm>
 #include <functional>
 
+#ifndef SHORTEST_PATH_NON_NEGATIVE
+#error 'shortest_path_non_negative.tcc' is not supposed to be included directly. Include 'shortest_path_non_negative.h' instead.
+#endif
+
 template <typename T>
 struct Shortest_path_non_negative<T>::Edge
 {

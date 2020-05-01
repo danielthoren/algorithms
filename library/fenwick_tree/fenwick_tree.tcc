@@ -1,4 +1,8 @@
 
+#ifndef FENWICK_TREE
+#error 'fenwick_tree.tcc' is not supposed to be included directly. Include 'fenwick_tree.h' instead.
+#endif
+
 template <typename T>
 FenwickTree<T>::FenwickTree(std::vector<T>& startValues) :
     tree(startValues.size() + 1)

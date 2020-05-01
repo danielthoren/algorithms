@@ -1,5 +1,9 @@
 #include <limits>
 
+#ifndef INTERVAL_COVER
+#error 'interval_cover.tcc' is not supposed to be included directly. Include 'interval_cover.h' instead.
+#endif
+
 template <typename T>
 bool Interval_cover<T>::interval_sort::operator()(std::pair<T,T> const& i1, std::pair<T,T> const& i2)
 {

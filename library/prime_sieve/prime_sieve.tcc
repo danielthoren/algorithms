@@ -5,7 +5,9 @@
 #include <sstream>
 #include <cmath>
 
-#include <iostream>
+#ifndef PRIEME_SIEVE
+#error 'prime_sieve.tcc' is not supposed to be included directly. Include 'prime_sieve.h' instead.
+#endif
 
 template<typename T>
 std::vector<bool>& Prime_sieve<T>::get_sieve()

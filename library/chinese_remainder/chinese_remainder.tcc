@@ -1,4 +1,8 @@
 
+#ifndef CHINESE_REMAINDER
+#error 'chinese_remainder.tcc' is not supposed to be included directly. Include 'chinese_remainder.h' instead.
+#endif
+
 template<typename T>
 std::pair<T,T> merge_crt(T a1, T m1, T a2, T m2)
 {
