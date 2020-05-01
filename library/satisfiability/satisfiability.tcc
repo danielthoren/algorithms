@@ -26,7 +26,7 @@ bool Satisfiability<SIZE>::check_satisfiability()
 
 
 template<int SIZE>
-bool Satisfiability<SIZE>::help_satisfiability(int pos, std::bitset<SIZE>& vars)
+bool Satisfiability<SIZE>::help_satisfiability(unsigned pos, std::bitset<SIZE>& vars)
 {
     if (all_satisfied(vars))
     {
@@ -48,7 +48,7 @@ bool Satisfiability<SIZE>::help_satisfiability(int pos, std::bitset<SIZE>& vars)
 template<int SIZE>
 void Satisfiability<SIZE>::init_vars()
 {
-    for (int v{1}; v < var_map.size()*2; v+=2)
+    for (unsigned v{1}; v < var_map.size()*2; v+=2)
     {
 	vars[v] = 1;
     }
@@ -88,10 +88,10 @@ void Satisfiability<SIZE>::add_clause(std::string const& clause)
 
     while (stream >> next)
     {
-	if (next != "v")
+	if (next[0] != or_sign)
 	{
 	    bool neg{false};
-	    if (next[0] == '~')
+	    if (next[0] == negation)
 	    {
 		neg = true;
 		next.erase(next.begin());
@@ -115,7 +115,7 @@ void Satisfiability<SIZE>::add_clause(std::string const& clause)
 template<int SIZE>
 void Satisfiability<SIZE>::add_clauses(std::vector<std::string> const& clauses)
 {
-    for (int pos{0}; pos < clauses.size(); pos++)
+    for (unsigned pos{0}; pos < clauses.size(); pos++)
     {
 	add_clause(clauses[pos]);
     }

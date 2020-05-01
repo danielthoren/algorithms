@@ -27,9 +27,27 @@ template<int SIZE = 40>
 class Satisfiability
 {
 public:
-    Satisfiability() : vars{}, result{}, clauses{}
+    Satisfiability(char negation = '~', char or_sign = 'v') :
+	vars{},
+	result{},
+	clauses{},
+	negation{negation},
+	or_sign{or_sign}
+	
 	{
 	    init_vars();
+	}
+
+    Satisfiability(std::vector<std::string> const& clauses, char negation = '~', char or_sign = 'v') :
+	vars{},
+	result{},
+	clauses{},
+	negation{negation},
+	or_sign{or_sign}
+	
+	{
+	    init_vars();
+	    add_clauses(clauses);
 	}
 
     /**
@@ -100,7 +118,7 @@ private:
      * return: True if clause is satisfied, otherwise false. If true then
      *         a solution is stored in result
      */
-    bool help_satisfiability(int pos, std::bitset<SIZE>& vars);
+    bool help_satisfiability(unsigned pos, std::bitset<SIZE>& vars);
 
     /**
      * Initializes the variables so that all variables start at 0 and
@@ -114,6 +132,9 @@ private:
 
     //Mapps between variable strings and positions in vars
     std::map<std::string, int> var_map;
+
+    char negation;
+    char or_sign;
 };
 
 #include "satisfiability.tcc"
