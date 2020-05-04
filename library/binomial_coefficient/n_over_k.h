@@ -1,7 +1,10 @@
-#include <vector>
-
 #ifndef N_OVER_K
 #define N_OVER_K
+
+#include <vector>
+
+namespace dalg
+{
 
 /**
  * Calculates the binomial coefficient n over k using the pascal
@@ -15,8 +18,8 @@
  * k    : The k in n over k
  * triag: The saved pascal triangle, should be used multiple times
  */
-template <typename T>
-T n_over_k(T n, T k, std::vector<std::vector<T>>& triag);
+    template <typename T>
+    T n_over_k(T n, T k, std::vector<std::vector<T>>& triag);
 
 
 /**
@@ -31,9 +34,10 @@ T n_over_k(T n, T k, std::vector<std::vector<T>>& triag);
  * n    : The n in n over k
  * k    : The k in n over k
  */	   
-template <typename T>
-T n_over_k(T n, T k);
+    template <typename T>
+    T n_over_k(T n, T k);
 
 #include "n_over_k.tcc"
+}
 
 #endif

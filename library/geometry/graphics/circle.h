@@ -1,0 +1,10 @@
+
+namespace g
+{
+
+    class Circle
+    {
+	
+    };
+
+}
