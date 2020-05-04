@@ -143,7 +143,8 @@ namespace dalg
 	std::vector<Node> trie;
 	std::vector<T> patterns;
     };
+}
 
 #include "multimatch.tcc"
-}
+
 #endif

@@ -20,8 +20,8 @@ int main()
 	scanf(" %d", &num2);
 	scanf(" %d", &denum2);
 	
-	Rational<long long int> r1{num1, denum1};
-	Rational<long long int> r2{num2, denum2};
+	dalg::Rational<long long int> r1{num1, denum1};
+	dalg::Rational<long long int> r2{num2, denum2};
 
 	if (op == '+')
 	    r1 += r2;

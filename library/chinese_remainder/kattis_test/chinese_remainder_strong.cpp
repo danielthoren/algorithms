@@ -18,7 +18,7 @@ int main()
 	scanf(" %lld", &m);
 
 	std::pair<__int128, __int128> res =
-	    merge_crt_strong((__int128) a, (__int128) n, (__int128) b, (__int128) m);
+	    dalg::merge_crt_strong((__int128) a, (__int128) n, (__int128) b, (__int128) m);
 
 	if (res.first == 0 && res.second == 0)
 	{

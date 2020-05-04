@@ -79,7 +79,8 @@ namespace dalg
     private:
 	std::vector<T> tree;
     };
+}
 
 #include "fenwick_tree.tcc"
-}
+
 #endif

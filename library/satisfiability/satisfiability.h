@@ -140,7 +140,8 @@ namespace dalg
 	char negation;
 	char or_sign;
     };
+}
 
 #include "satisfiability.tcc"
-}
+
 #endif

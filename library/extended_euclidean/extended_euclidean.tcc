@@ -9,7 +9,7 @@
 #endif
 
 template<typename T>
-T true_mod(T num, T mod)
+T dalg::true_mod(T num, T mod)
 {
     T res = num % mod;
     if (res < 0)
@@ -18,7 +18,7 @@ T true_mod(T num, T mod)
 }
 
 template<typename T>
-std::tuple<T, T, T> extended_euclidean(T a, T b)
+std::tuple<T, T, T> dalg::extended_euclidean(T a, T b)
 {
     // Remainders, last remainder rk is the gcd
     T r{b};
@@ -56,7 +56,7 @@ std::tuple<T, T, T> extended_euclidean(T a, T b)
 }
 
 template<typename T>
-T get_modular_inverse(T num, T mod)
+T dalg::get_modular_inverse(T num, T mod)
 {
     std::tuple<int, int, int> res = extended_euclidean(num, mod);
     

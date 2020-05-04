@@ -166,7 +166,8 @@ namespace dalg
  */
     template<typename T>
     std::istream& operator>>(std::istream& is, Rational<T>& r);
+}
 
 #include "rational.tcc"
-}
+
 #endif

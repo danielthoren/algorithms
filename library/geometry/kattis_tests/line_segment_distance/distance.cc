@@ -7,7 +7,7 @@
 
 using namespace std;
 
-LineSegment<double> read_line()
+dalg::LineSegment<double> read_line()
 {
     double x1, y1, x2, y2;
     scanf(" %lf", &x1);
@@ -15,7 +15,7 @@ LineSegment<double> read_line()
     scanf(" %lf", &x2);
     scanf(" %lf", &y2);
     
-    LineSegment<double> l1{x1, y1, x2, y2};
+    dalg::LineSegment<double> l1{x1, y1, x2, y2};
 
     return l1;
 }
@@ -28,8 +28,8 @@ int main()
 
     for (int i{0}; i < cases; i++)
     {	
-    	LineSegment<double> l1 = read_line();
-    	LineSegment<double> l2 = read_line();
+    	dalg::LineSegment<double> l1 = read_line();
+    	dalg::LineSegment<double> l2 = read_line();
 
 	auto res = l1.intersection(l2);
 	if (std::holds_alternative<std::monostate>(res))

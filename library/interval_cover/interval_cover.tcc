@@ -5,7 +5,7 @@
 #endif
 
 template <typename T>
-bool Interval_cover<T>::interval_sort::operator()(std::pair<T,T> const& i1, std::pair<T,T> const& i2)
+bool dalg::Interval_cover<T>::interval_sort::operator()(std::pair<T,T> const& i1, std::pair<T,T> const& i2)
 {
     if (i1.first == i2.first)
 	return i1.second > i2.second;
@@ -13,7 +13,7 @@ bool Interval_cover<T>::interval_sort::operator()(std::pair<T,T> const& i1, std:
 }
 
 template <typename T>
-void Interval_cover<T>::add_interval(std::pair<T, T> const& interval)
+void dalg::Interval_cover<T>::add_interval(std::pair<T, T> const& interval)
 {
     auto it = std::lower_bound<std::pair<T,T>>(intervals.begin(), intervals.end(), interval, interval_sort());
     
@@ -21,7 +21,7 @@ void Interval_cover<T>::add_interval(std::pair<T, T> const& interval)
 }
 
 template <typename T>
-std::pair<T,T> Interval_cover<T>::cover_point(T target)
+std::pair<T,T> dalg::Interval_cover<T>::cover_point(T target)
 {	    
     for (auto it = intervals.begin(); it != intervals.end(); it++)
     {
@@ -34,7 +34,7 @@ std::pair<T,T> Interval_cover<T>::cover_point(T target)
 }
 
 template <typename T>
-std::vector<std::pair<T,T>> Interval_cover<T>::cover_interval(std::pair<T, T> const& target)
+std::vector<std::pair<T,T>> dalg::Interval_cover<T>::cover_interval(std::pair<T, T> const& target)
 {
     if (intervals.size() == 0)
 	return {};

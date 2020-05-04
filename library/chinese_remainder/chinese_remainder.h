@@ -93,7 +93,8 @@ namespace dalg
      */
     template<typename T>
     std::pair<T, T> merge_mod_eq_strong(std::vector<std::pair<T,T>> equations);
+}
 
 #include "chinese_remainder.tcc"
-}
+
 #endif

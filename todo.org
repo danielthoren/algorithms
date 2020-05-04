@@ -3,4 +3,6 @@
 - [ ] Polygon (min distance): Implement quad and use to only look at the necessary line segments
 - [X] Add error message to all tcc files
 - [ ] Fix all w-signed warnings
-- [ ] Put library in a namespace
+- [X] Put library in a namespace
+- [ ] Write tests for subset sum
+- [ ] add kattis test for baseball elimination

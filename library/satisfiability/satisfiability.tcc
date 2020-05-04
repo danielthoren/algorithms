@@ -5,7 +5,7 @@
 #endif
 
 template<int SIZE>
-bool Satisfiability<SIZE>::all_satisfied(std::bitset<SIZE> const& vars)
+bool dalg::Satisfiability<SIZE>::all_satisfied(std::bitset<SIZE> const& vars)
 {
     bool all_satisfied{true};
     for (std::bitset<SIZE> const& clause : clauses)
@@ -18,7 +18,7 @@ bool Satisfiability<SIZE>::all_satisfied(std::bitset<SIZE> const& vars)
 
 
 template<int SIZE>
-bool Satisfiability<SIZE>::check_satisfiability()
+bool dalg::Satisfiability<SIZE>::check_satisfiability()
 {
     init_vars();
     return help_satisfiability(0, vars);
@@ -26,7 +26,7 @@ bool Satisfiability<SIZE>::check_satisfiability()
 
 
 template<int SIZE>
-bool Satisfiability<SIZE>::help_satisfiability(unsigned pos, std::bitset<SIZE>& vars)
+bool dalg::Satisfiability<SIZE>::help_satisfiability(unsigned pos, std::bitset<SIZE>& vars)
 {
     if (all_satisfied(vars))
     {
@@ -46,7 +46,7 @@ bool Satisfiability<SIZE>::help_satisfiability(unsigned pos, std::bitset<SIZE>& 
 }
 
 template<int SIZE>
-void Satisfiability<SIZE>::init_vars()
+void dalg::Satisfiability<SIZE>::init_vars()
 {
     for (unsigned v{1}; v < var_map.size()*2; v+=2)
     {
@@ -55,13 +55,13 @@ void Satisfiability<SIZE>::init_vars()
 }
 
 template<int SIZE>
-std::bitset<SIZE> Satisfiability<SIZE>::get_solution() const
+std::bitset<SIZE> dalg::Satisfiability<SIZE>::get_solution() const
 {
     return result;
 }
 
 template<int SIZE>
-std::string Satisfiability<SIZE>::get_str_solution() const
+std::string dalg::Satisfiability<SIZE>::get_str_solution() const
 {
     std::stringstream stream{};
     for (auto it = var_map.begin(); it != var_map.end(); it++)
@@ -79,7 +79,7 @@ std::string Satisfiability<SIZE>::get_str_solution() const
 }
 
 template<int SIZE>
-void Satisfiability<SIZE>::add_clause(std::string const& clause)
+void dalg::Satisfiability<SIZE>::add_clause(std::string const& clause)
 {
     std::stringstream stream(clause);
     std::string next{};
@@ -113,7 +113,7 @@ void Satisfiability<SIZE>::add_clause(std::string const& clause)
 }
 
 template<int SIZE>
-void Satisfiability<SIZE>::add_clauses(std::vector<std::string> const& clauses)
+void dalg::Satisfiability<SIZE>::add_clauses(std::vector<std::string> const& clauses)
 {
     for (unsigned pos{0}; pos < clauses.size(); pos++)
     {

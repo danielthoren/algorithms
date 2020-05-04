@@ -28,7 +28,7 @@ int main()
 	    intervals.push_back(interval);
 	}
 
-	Interval_cover<double> cover(intervals);
+	dalg::Interval_cover<double> cover(intervals);
 
 	vector<pair<double,double>> res = cover.cover_interval(target_interval);
     

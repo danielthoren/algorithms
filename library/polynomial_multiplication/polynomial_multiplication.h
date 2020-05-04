@@ -67,8 +67,8 @@ namespace dalg
     template<typename T>
     std::vector<int> polynomial_multiplication(std::vector<T> poly1_r,
 					       std::vector<T> poly2_r);
-
+}
 
 #include "polynomial_multiplication.tcc"
-}
+
 #endif

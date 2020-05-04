@@ -10,13 +10,13 @@
 #endif
 
 template<typename T>
-std::vector<bool>& Prime_sieve<T>::get_sieve()
+std::vector<bool>& dalg::Prime_sieve<T>::get_sieve()
 {
     return sieve;
 }
 
 template<typename T>
-std::vector<T>& Prime_sieve<T>::get_primes()
+std::vector<T>& dalg::Prime_sieve<T>::get_primes()
 {
     if (primes.size() == 0)
     {
@@ -26,13 +26,13 @@ std::vector<T>& Prime_sieve<T>::get_primes()
 }
 
 template<typename T>
-T Prime_sieve<T>::get_prime_count()
+T dalg::Prime_sieve<T>::get_prime_count()
 {
     return prime_count;
 }
 
 template<typename T>
-std::vector<T> Prime_sieve<T>::get_prime_factors(T num)
+std::vector<T> dalg::Prime_sieve<T>::get_prime_factors(T num)
 {
     if (num > upper * upper)
     {
@@ -65,7 +65,7 @@ std::vector<T> Prime_sieve<T>::get_prime_factors(T num)
 }
 
 template<typename T>
-std::vector<T> Prime_sieve<T>::get_unique_prime_factors(T num)
+std::vector<T> dalg::Prime_sieve<T>::get_unique_prime_factors(T num)
 {
     std::vector<T> primes{ get_prime_factors(num) };
 
@@ -88,7 +88,7 @@ std::vector<T> Prime_sieve<T>::get_unique_prime_factors(T num)
  * Prints all elements in the given vector
  */
 template<typename T>
-std::string Prime_sieve<T>::print_primes()
+std::string dalg::Prime_sieve<T>::print_primes()
 {
     if (primes.size() == 0)
     {
@@ -106,7 +106,7 @@ std::string Prime_sieve<T>::print_primes()
 }
 
 template<typename T>
-void Prime_sieve<T>::prime_sieve()
+void dalg::Prime_sieve<T>::prime_sieve()
 {
     std::vector<bool> nums(upper + 1);
 
@@ -149,7 +149,7 @@ void Prime_sieve<T>::prime_sieve()
 }
 
 template<typename T>
-void Prime_sieve<T>::calc_primes()
+void dalg::Prime_sieve<T>::calc_primes()
 {
     for (unsigned i{2}; i <= sieve.size(); i++)
     {

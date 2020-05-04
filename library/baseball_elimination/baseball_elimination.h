@@ -99,7 +99,8 @@ namespace dalg
 	const int WIN_SCORE = 2;
 	const int TIE_SCORE = 1;
     };
+}
 
 #include "baseball_elimination.tcc"
-}
+
 #endif

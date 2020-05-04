@@ -9,7 +9,7 @@ int main()
     scanf(" %ld", &arr_length);
     scanf(" %ld", &num_ops);
     
-    FenwickTree<long> tree(arr_length);
+    dalg::FenwickTree<long> tree(arr_length);
     long index, num, res;
     for (int i = 0; i < num_ops; i++)
     {

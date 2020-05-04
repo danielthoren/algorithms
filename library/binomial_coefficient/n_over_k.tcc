@@ -4,7 +4,7 @@
 #endif
 
 template <typename T>
-T n_over_k(T n, T k, std::vector<std::vector<T>>& triag)
+T dalg::n_over_k(T n, T k, std::vector<std::vector<T>>& triag)
 {
     if (triag.size() > n)
 	return triag[n][k];
@@ -33,7 +33,7 @@ T n_over_k(T n, T k, std::vector<std::vector<T>>& triag)
 }
 
 template <typename T>
-T n_over_k(T n, T k)
+T dalg::n_over_k(T n, T k)
 {
     T curr = 1;
     for (T column{1}; column <= k; column++)

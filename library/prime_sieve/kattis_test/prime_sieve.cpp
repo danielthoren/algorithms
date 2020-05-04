@@ -9,7 +9,7 @@ int main()
     scanf(" %ld", &n);
     scanf(" %ld", &q);
 
-    Prime_sieve<long> sieve(n);
+    dalg::Prime_sieve<long> sieve(n);
 
     printf("%ld\n", sieve.get_prime_count());
 

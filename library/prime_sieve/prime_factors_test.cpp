@@ -13,7 +13,7 @@ void print_vec(std::vector<long> const& vec)
 
 void test(long num, vector<long> const& correct)
 {
-    Prime_sieve<long> sieve(num);
+    dalg::Prime_sieve<long> sieve(num);
 
     std::vector<long> factors{ sieve.get_prime_factors(num) };
 

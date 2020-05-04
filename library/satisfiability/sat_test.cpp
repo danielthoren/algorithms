@@ -8,7 +8,7 @@ using namespace std;
 
 bool is_satisfiable(std::vector<std::string> const& clauses, char negation = '~', char or_sign = 'v')
 {
-    Satisfiability sat(clauses, negation, or_sign);
+    dalg::Satisfiability sat(clauses, negation, or_sign);
 
     return sat.check_satisfiability();
 }

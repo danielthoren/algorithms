@@ -7,16 +7,16 @@
 #endif
 
 template<typename T>
-Rational<T> Rational<T>::operator+(Rational<T> const& other) const
+dalg::Rational<T> dalg::Rational<T>::operator+(dalg::Rational<T> const& other) const
 {
-    Rational tmp{*this};
+    dalg::Rational tmp{*this};
     tmp += other;
     tmp.format();
     return tmp;
 }
 
 template<typename T>
-Rational<T>& Rational<T>::operator+=(Rational<T> const& other)
+dalg::Rational<T>& dalg::Rational<T>::operator+=(dalg::Rational<T> const& other)
 {
     T lcd{ lowest_common_denominator(std::abs(other.denominator),
 				     std::abs(denominator)) };
@@ -35,7 +35,7 @@ Rational<T>& Rational<T>::operator+=(Rational<T> const& other)
  * Post-increment
  */
 template<typename T>
-Rational<T>& Rational<T>::operator++()
+dalg::Rational<T>& dalg::Rational<T>::operator++()
 {
     numerator += denominator;
     format();
@@ -46,25 +46,25 @@ Rational<T>& Rational<T>::operator++()
  * Pre-increment
  */
 template<typename T>
-Rational<T> Rational<T>::operator++(int)
+dalg::Rational<T> dalg::Rational<T>::operator++(int)
 {
-    Rational<T> tmp{*this};
+    dalg::Rational<T> tmp{*this};
     tmp++;
     tmp.format();
     return tmp;
 }
 
 template<typename T>
-Rational<T> Rational<T>::operator-(Rational const& other) const
+dalg::Rational<T> dalg::Rational<T>::operator-(dalg::Rational<T> const& other) const
 {
-    Rational tmp{*this};
+    dalg::Rational tmp{*this};
     tmp += other;
     tmp.format();
     return tmp;
 }
 
 template<typename T>
-Rational<T>& Rational<T>::operator-=(Rational const& other)
+dalg::Rational<T>& dalg::Rational<T>::operator-=(dalg::Rational<T> const& other)
 {    
     T lcd{ lowest_common_denominator(std::abs(other.denominator),
 				     std::abs(denominator)) };
@@ -81,7 +81,7 @@ Rational<T>& Rational<T>::operator-=(Rational const& other)
  * Post-decrement
  */
 template<typename T>
-Rational<T>& Rational<T>::operator--()
+dalg::Rational<T>& dalg::Rational<T>::operator--()
 {
     numerator -= denominator;
     format();
@@ -92,24 +92,24 @@ Rational<T>& Rational<T>::operator--()
  * Pre-decrement
  */
 template<typename T>
-Rational<T> Rational<T>::operator--(int)
+dalg::Rational<T> dalg::Rational<T>::operator--(int)
 {
-    Rational tmp{*this};
+    dalg::Rational tmp{*this};
     tmp--;
     return tmp;
 }
 
 template<typename T>
-Rational<T> Rational<T>::operator/(Rational<T> const& other) const
+dalg::Rational<T> dalg::Rational<T>::operator/(dalg::Rational<T> const& other) const
 {
-    Rational tmp{*this};
+    dalg::Rational tmp{*this};
     tmp /= other;
     tmp.format();
     return tmp;
 }
 
 template<typename T>
-Rational<T>& Rational<T>::operator/=(Rational<T> const& other)
+dalg::Rational<T>& dalg::Rational<T>::operator/=(dalg::Rational<T> const& other)
 {
     T num = numerator * other.denominator;
     denominator *= other.numerator;
@@ -119,7 +119,7 @@ Rational<T>& Rational<T>::operator/=(Rational<T> const& other)
 }
 
 template<typename T>
-Rational<T>& Rational<T>::operator*=(Rational<T> const& other)
+dalg::Rational<T>& dalg::Rational<T>::operator*=(dalg::Rational<T> const& other)
 {
     numerator *= other.numerator;
     denominator *= other.denominator;
@@ -128,22 +128,22 @@ Rational<T>& Rational<T>::operator*=(Rational<T> const& other)
 }
 
 template<typename T>
-Rational<T> Rational<T>::operator*(Rational<T> const& other) const
+dalg::Rational<T> dalg::Rational<T>::operator*(dalg::Rational<T> const& other) const
 {    
-    Rational<T> tmp{numerator * other.numerator, denominator * other.denominator};
+    dalg::Rational<T> tmp{numerator * other.numerator, denominator * other.denominator};
     tmp.format();
     return tmp;
 }
 
 template<typename T>
 template<typename FT>
-FT Rational<T>::operator*() const
+FT dalg::Rational<T>::operator*() const
 {
     return static_cast<FT>(numerator) / static_cast<FT>(denominator);
 }
 
 template<typename T>
-Rational<T>& Rational<T>::operator=(Rational<T> const& other)
+dalg::Rational<T>& dalg::Rational<T>::operator=(dalg::Rational<T> const& other)
 {
     numerator = other.numerator;
     denominator = other.denominator;
@@ -151,44 +151,44 @@ Rational<T>& Rational<T>::operator=(Rational<T> const& other)
 }
 
 template<typename T>
-bool Rational<T>::operator==(Rational<T> const& other) const
+bool dalg::Rational<T>::operator==(dalg::Rational<T> const& other) const
 {
     return numerator == other.numerator &&
 	denominator == other.denominator;
 }
 
 template<typename T>
-bool Rational<T>::operator!=(Rational<T> const& other) const
+bool dalg::Rational<T>::operator!=(dalg::Rational<T> const& other) const
 {
     return !(other == *this);
 }
 
 template<typename T>
-bool Rational<T>::operator<(Rational<T> const& other) const
+bool dalg::Rational<T>::operator<(dalg::Rational<T> const& other) const
 {
     return (numerator / denominator) < (other.numerator / other.denominator);
 }
 
 template<typename T>
-bool Rational<T>::operator<=(Rational<T> const& other) const
+bool dalg::Rational<T>::operator<=(dalg::Rational<T> const& other) const
 {
     return (numerator / denominator) <= (other.numerator / other.denominator);
 }
 
 template<typename T>
-bool Rational<T>::operator>(Rational<T> const& other) const
+bool dalg::Rational<T>::operator>(dalg::Rational<T> const& other) const
 {
     return !(*this <= other);
 }
 
 template<typename T>
-bool Rational<T>::operator>=(Rational<T> const& other) const
+bool dalg::Rational<T>::operator>=(dalg::Rational<T> const& other) const
 {
     return !(*this < other);
 }
 
 template<typename T>
-std::string Rational<T>::str() const
+std::string dalg::Rational<T>::str() const
 {
     std::stringstream ss;
     ss << numerator << " / " << denominator;
@@ -196,7 +196,7 @@ std::string Rational<T>::str() const
 }
 
 template<typename T>
-T Rational<T>::greatest_common_denominator(T x, T y) const
+T dalg::Rational<T>::greatest_common_denominator(T x, T y) const
 {
     if (y == 0)
 	return x;
@@ -207,13 +207,13 @@ T Rational<T>::greatest_common_denominator(T x, T y) const
 }
 
 template<typename T>
-T Rational<T>::lowest_common_denominator(T x, T y) const
+T dalg::Rational<T>::lowest_common_denominator(T x, T y) const
 {
     return (x*y) / greatest_common_denominator(x, y);
 }
 
 template<typename T>
-void Rational<T>::format()
+void dalg::Rational<T>::format()
 {
     if (numerator == 0)
     {
@@ -237,14 +237,14 @@ void Rational<T>::format()
 }
 
 template<typename T>
-std::ostream& operator<<(std::ostream& os, Rational<T> const& r)
+std::ostream& operator<<(std::ostream& os, dalg::Rational<T> const& r)
 {
     os << r.str();
     return os;
 }
 
 template<typename T>
-std::istream& operator>>(std::istream& is, Rational<T>& r)
+std::istream& operator>>(std::istream& is, dalg::Rational<T>& r)
 {
     T numerator;
     T denominator;
@@ -268,7 +268,7 @@ std::istream& operator>>(std::istream& is, Rational<T>& r)
 	return is;
     }
 
-    Rational<T> rat(numerator, denominator);
+    dalg::Rational<T> rat(numerator, denominator);
     r = rat;
 
     return is;

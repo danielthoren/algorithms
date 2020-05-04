@@ -4,7 +4,7 @@
 #endif
 
 template <typename T>
-void help_subset_sum(std::vector<T> const& numbers,
+void dalg::help_subset_sum(std::vector<T> const& numbers,
 		     T target,
 		     std::vector<std::vector<T>>& result,
 		     std::vector<T> subset,
@@ -33,7 +33,7 @@ void help_subset_sum(std::vector<T> const& numbers,
 }
 
 template <typename T>
-std::vector<std::vector<T>> subset_sum(std::vector<T>& numbers,
+std::vector<std::vector<T>> dalg::subset_sum(std::vector<T>& numbers,
 				       T target,
 				       T min_elems,
 				       T max_elems)
@@ -52,7 +52,7 @@ std::vector<std::vector<T>> subset_sum(std::vector<T>& numbers,
 }
 
 template <typename T>
-std::string print_subsets(std::vector<std::vector<T>> const& subset)
+std::string dalg::print_subsets(std::vector<std::vector<T>> const& subset)
 {
     std::stringstream stream{};
     

@@ -33,8 +33,8 @@ int main()
 	std::string text{};
 	std::getline(std::cin, text);
 	    
-	Multimatch<std::string> matcher(patterns);
-	auto res = matcher.string_multi_matching<Multimatch<std::string>::insert_vec<int>>(text);
+	dalg::Multimatch<std::string> matcher(patterns);
+	auto res = matcher.string_multi_matching<dalg::Multimatch<std::string>::insert_vec<int>>(text);
 
 	for (unsigned p{0}; p < res.size(); p++)
 	{

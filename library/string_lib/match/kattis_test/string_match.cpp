@@ -15,7 +15,7 @@ int main()
     {
 	std::getline(std::cin, data);
 
-	Match match(pattern);
+	dalg::Match match(pattern);
 	
 	std::vector<unsigned> matches{ match.match(data) };
 	

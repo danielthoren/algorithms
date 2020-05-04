@@ -36,8 +36,8 @@ namespace dalg
  */	   
     template <typename T>
     T n_over_k(T n, T k);
+}
 
 #include "n_over_k.tcc"
-}
 
 #endif

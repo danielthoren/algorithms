@@ -79,7 +79,8 @@ namespace dalg
 
 	std::vector<LineSegment<T>> segments{};
     };
+}
 
 #include "polygon.tcc"
-}
+
 #endif

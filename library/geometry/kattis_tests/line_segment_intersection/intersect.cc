@@ -5,7 +5,7 @@
 
 using namespace std;
 
-LineSegment<double> read_line()
+dalg::LineSegment<double> read_line()
 {
     double x1, y1, x2, y2;
     scanf(" %lf", &x1);
@@ -13,7 +13,7 @@ LineSegment<double> read_line()
     scanf(" %lf", &x2);
     scanf(" %lf", &y2);
     
-    LineSegment<double> l1{x1, y1, x2, y2};
+    dalg::LineSegment<double> l1{x1, y1, x2, y2};
 
     return l1;
 }
@@ -26,8 +26,8 @@ int main()
 
     for (int i{0}; i < cases; i++)
     {	
-	LineSegment<double> l1 = read_line();
-	LineSegment<double> l2 = read_line();
+	dalg::LineSegment<double> l1 = read_line();
+	dalg::LineSegment<double> l2 = read_line();
 
 	auto res = l1.intersection(l2);
 
@@ -36,16 +36,16 @@ int main()
 	{
 	    printf("none\n");
 	}
-	else if (std::holds_alternative<Point<double>>(res))
+	else if (std::holds_alternative<dalg::Point<double>>(res))
 	{
-	    Point<double> pt = std::get<Point<double>>(res);
+	    dalg::Point<double> pt = std::get<dalg::Point<double>>(res);
 	    printf("%.2lf %.2lf\n", pt.x, pt.y);
 	}
-	else if (std::holds_alternative<LineSegment<double>>(res))
+	else if (std::holds_alternative<dalg::LineSegment<double>>(res))
 	{
-	    LineSegment<double> lseg = std::get<LineSegment<double>>(res);
-	    Point p1(lseg.p0);
-	    Point p2(lseg.u + lseg.p0);
+	    dalg::LineSegment<double> lseg = std::get<dalg::LineSegment<double>>(res);
+	    dalg::Point p1(lseg.p0);
+	    dalg::Point p2(lseg.u + lseg.p0);
 
 	    if (p1.x < p2.x || (p1.x == p2.x && p1.y < p2.y))
 		printf("%.2lf %.2lf %.2lf %.2lf\n", p1.x, p1.y, p2.x, p2.y);

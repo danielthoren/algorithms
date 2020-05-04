@@ -4,7 +4,7 @@
 #endif
 
 template <typename T>
-FenwickTree<T>::FenwickTree(std::vector<T>& startValues) :
+dalg::FenwickTree<T>::FenwickTree(std::vector<T>& startValues) :
     tree(startValues.size() + 1)
 {
     for (int i{0}; i < startValues.size(); i++)
@@ -14,7 +14,7 @@ FenwickTree<T>::FenwickTree(std::vector<T>& startValues) :
 }
 
 template <typename T>
-void FenwickTree<T>::update(long unsigned index, T val)
+void dalg::FenwickTree<T>::update(long unsigned index, T val)
 {
     index += 1;
     while (index < tree.size())
@@ -26,7 +26,7 @@ void FenwickTree<T>::update(long unsigned index, T val)
 
 
 template <typename T>
-T FenwickTree<T>::sum(long unsigned index)
+T dalg::FenwickTree<T>::sum(long unsigned index)
 {
     T res = 0;
     while (index > 0)
@@ -38,7 +38,7 @@ T FenwickTree<T>::sum(long unsigned index)
 }
 
 template <typename T>
-T FenwickTree<T>::ranged_sum(long unsigned from, long unsigned to)
+T dalg::FenwickTree<T>::ranged_sum(long unsigned from, long unsigned to)
 {
     T f = sum(from);
     T t = sum(to);

@@ -83,9 +83,8 @@ namespace dalg
 	Point<T> u;    // u = p1 - p0
     
     };
+}
 
 #include "line_segment.tcc"
-
-}
 
 #endif

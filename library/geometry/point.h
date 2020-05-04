@@ -96,7 +96,8 @@ namespace dalg
 
     template <typename T>
     Point<T> operator*(Point<T> const& pt, T scalar);
+}
 
 #include "point.tcc"
-}
+
 #endif

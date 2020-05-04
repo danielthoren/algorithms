@@ -4,7 +4,7 @@
 #endif
 
 template<typename T>
-std::pair<T,T> merge_crt(T a1, T m1, T a2, T m2)
+std::pair<T,T> dalg::merge_crt(T a1, T m1, T a2, T m2)
 {
     //Extended euclidean gives <GCD(m1, m2), S, T
     std::tuple<T, T, T> euclid = extended_euclidean(m1, m2);
@@ -16,7 +16,7 @@ std::pair<T,T> merge_crt(T a1, T m1, T a2, T m2)
 }
 
 template<typename T>
-std::pair<T,T> merge_crt_weak(T a1, T m1, T a2, T m2)
+std::pair<T,T> dalg::merge_crt_weak(T a1, T m1, T a2, T m2)
 {
     //Extended euclidean gives <GCD(m1, m2), S, T
     std::tuple<T, T, T> euclid = extended_euclidean(m1, m2);
@@ -34,7 +34,7 @@ std::pair<T,T> merge_crt_weak(T a1, T m1, T a2, T m2)
 }
 
 template<typename T>
-std::pair<T,T> merge_crt_strong(T a1, T m1, T a2, T m2)
+std::pair<T,T> dalg::merge_crt_strong(T a1, T m1, T a2, T m2)
 {
 
     //Calculating GCD(m1, m2) to check if there is a solution
@@ -70,7 +70,7 @@ std::pair<T,T> merge_crt_strong(T a1, T m1, T a2, T m2)
 
 
 template<typename T>
-std::pair<T, T> merge_mod_eq_strong(std::vector<std::pair<T,T>> equations)
+std::pair<T, T> dalg::merge_mod_eq_strong(std::vector<std::pair<T,T>> equations)
 {
     std::pair<T,T> result = merge_crt_strong(equations[0].first, equations[0].second,
 					     equations[1].first, equations[1].second);    

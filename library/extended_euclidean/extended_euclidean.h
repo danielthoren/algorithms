@@ -56,7 +56,8 @@ namespace dalg
      */
     template<typename T>
     T get_modular_inverse(T num, T mod);
+}
 
 #include "extended_euclidean.tcc"
-}
+
 #endif

@@ -5,7 +5,7 @@
 #endif
 
 template<typename T>
-std::vector<unsigned> Match<T>::generate_prefix(T& pattern)
+std::vector<unsigned> dalg::Match<T>::generate_prefix(T& pattern)
 {
     std::vector<unsigned> prefix{0};
     unsigned i{0};
@@ -23,7 +23,7 @@ std::vector<unsigned> Match<T>::generate_prefix(T& pattern)
 }
 
 template<typename T>
-std::vector<unsigned> Match<T>::match(T& data)
+std::vector<unsigned> dalg::Match<T>::match(T& data)
 {
     std::vector<unsigned> matches{};
 

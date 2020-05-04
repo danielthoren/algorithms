@@ -116,7 +116,8 @@ namespace dalg
 	T prime_count;
 	T upper;
     };
+}
 
 #include "prime_sieve.tcc"
-}
+
 #endif

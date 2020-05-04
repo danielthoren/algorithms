@@ -15,15 +15,15 @@ int main()
 
     while (count != 0)
     {
-	vector<Point<long double>> points;
+	vector<dalg::Point<long double>> points;
     
 	for (int v{0}; v < count; v++)
 	{
 	    long double x, y;
 	    cin >> x >> y;
-	    points.push_back( Point<long double>{x,y} );
+	    points.push_back( dalg::Point<long double>{x,y} );
 	}
-	Polygon<long double> poly(points);
+	dalg::Polygon<long double> poly(points);
 	long double area = poly.get_area();
 
 	if (area <= 0)

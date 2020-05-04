@@ -7,7 +7,7 @@
 #endif
 
 template<typename T>
-std::vector<std::complex<T>> FFT(std::vector<std::complex<T>> poly, int w)
+std::vector<std::complex<T>> dalg::FFT(std::vector<std::complex<T>> poly, int w)
 {
     if (poly.size() <= 1)
 	return poly;
@@ -42,7 +42,7 @@ std::vector<std::complex<T>> FFT(std::vector<std::complex<T>> poly, int w)
 }
 
 
-int next_power_of_two(int n)
+int dalg::next_power_of_two(int n)
 {
     n |= n >> 16;
     n |= n >> 8;
@@ -56,7 +56,7 @@ int next_power_of_two(int n)
 
 
 template<typename T>
-void pad_zeroes(std::vector<std::complex<T>>& poly, unsigned target_size)
+void dalg::pad_zeroes(std::vector<std::complex<T>>& poly, unsigned target_size)
 {
     long unsigned orig_size{poly.size()};
     for (long unsigned i{0}; i < (target_size - orig_size); i++)
@@ -65,7 +65,7 @@ void pad_zeroes(std::vector<std::complex<T>>& poly, unsigned target_size)
 
 
 template<typename T>
-std::vector<std::complex<T>> join_poly(std::vector<std::complex<T>>& poly1_c,
+std::vector<std::complex<T>> dalg::join_poly(std::vector<std::complex<T>>& poly1_c,
 				       std::vector<std::complex<T>> poly2_c,
 				       int target_size)
 {
@@ -79,7 +79,7 @@ std::vector<std::complex<T>> join_poly(std::vector<std::complex<T>>& poly1_c,
 
 
 template<typename T>
-std::vector<int> polynomial_multiplication(std::vector<T> poly1_r, std::vector<T> poly2_r)
+std::vector<int> dalg::polynomial_multiplication(std::vector<T> poly1_r, std::vector<T> poly2_r)
 {
     std::vector<std::complex<T>> poly1;
     for (T elem : poly1_r)

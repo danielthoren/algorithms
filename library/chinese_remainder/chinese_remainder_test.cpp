@@ -1,4 +1,5 @@
 #include<iostream>
+#include<utility>
 
 #include "chinese_remainder.h"
 
@@ -12,7 +13,7 @@ void test_merge_strong()
     eq.push_back( {2, 3} );
     eq.push_back( {3, 5} );
 
-    std::pair<T, T> res = merge_mod_eq_strong(eq);
+    std::pair<T, T> res = dalg::merge_mod_eq_strong(eq);
     if (res.first != 8)
 	cout << "Failed 'test_merge_strong' test 1 got " << res.first << " expected 8" << endl;
 
@@ -22,14 +23,14 @@ void test_merge_strong()
     eq.push_back( {1, 9} );
     eq.push_back( {0, 11} );
 
-    res = merge_mod_eq_strong(eq);
+    res = dalg::merge_mod_eq_strong(eq);
     if (res.first != 1243)
 	cout << "Failed 'test_merge_strong' test 2 got " << res.first << " expected 1243" << endl;	
 }
 
 void test_merge_crt_strong()
 {
-    pair<T,T> res = merge_crt_strong<T>(10000,23000,9000,23000);
+    std::pair<T,T> res = dalg::merge_crt_strong<T>(10000,23000,9000,23000);
     if (res.first != 0 || res.second != 0)
     {
 	cout << "Failed 'test_merge_crt_strong' test 1 got " <<
@@ -40,7 +41,7 @@ void test_merge_crt_strong()
 	    endl;
     }
 
-    res = merge_crt_strong<T>(10000 ,23000 ,10000 ,23000);
+    res = dalg::merge_crt_strong<T>(10000 ,23000 ,10000 ,23000);
     if (res.first != 10000 || res.second != 23000)
     {
 	cout << "Failed 'test_merge_crt_strong' test 2 got " <<
@@ -51,7 +52,7 @@ void test_merge_crt_strong()
 	    endl;
     }
 
-    res = merge_crt_strong<T>(1234 ,2000 ,746 ,2002);
+    res = dalg::merge_crt_strong<T>(1234 ,2000 ,746 ,2002);
     if (res.first != 489234 || res.second != 2002000)
     {
 	cout << "Failed 'test_merge_crt_strong' test 3 got " <<

@@ -29,7 +29,7 @@ int main()
 	    poly2.push_back(in);
 	}
 
-	std::vector<int> result{polynomial_multiplication(poly1, poly2)};
+	std::vector<int> result{dalg::polynomial_multiplication(poly1, poly2)};
 
 	cout << (order + order2) << endl;
 

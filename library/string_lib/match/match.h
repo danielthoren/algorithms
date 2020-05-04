@@ -54,7 +54,8 @@ namespace dalg
 	std::vector<unsigned> prefix;
 	T pattern;
     };
+}
 
 #include "match.tcc"
-}
+
 #endif

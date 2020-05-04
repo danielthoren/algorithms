@@ -11,7 +11,7 @@
 
 template<typename T>
 template<typename IT>
-struct  Multimatch<T>::insert_vec{
+struct  dalg::Multimatch<T>::insert_vec{
     using res_type = std::vector<std::vector<IT>>;
 
     insert_vec(IT initial_size = 0):
@@ -29,7 +29,7 @@ struct  Multimatch<T>::insert_vec{
 
 template<typename T>
 template<typename IT>
-struct Multimatch<T>::insert_pair{
+struct dalg::Multimatch<T>::insert_pair{
     using res_type = std::vector<std::pair<IT, IT>>;
 
     insert_pair(IT initial_size = 0):
@@ -46,7 +46,7 @@ struct Multimatch<T>::insert_pair{
 
 template<typename T>
 template<typename CONTAINER>
-auto Multimatch<T>::string_multi_matching(T const& text)
+auto dalg::Multimatch<T>::string_multi_matching(T const& text)
     -> decltype( std::declval<CONTAINER>().insert(10, 10),
     	         typename CONTAINER::res_type{})
 {
@@ -96,9 +96,9 @@ auto Multimatch<T>::string_multi_matching(T const& text)
 }
 
 template<typename T>
-std::vector<typename Multimatch<T>::Node> Multimatch<T>::build_trie(std::vector<T> const& patterns)
+std::vector<typename dalg::Multimatch<T>::Node> dalg::Multimatch<T>::build_trie(std::vector<T> const& patterns)
 {
-    std::vector<typename Multimatch<T>::Node> trie{ Node{{}, -1, 0, {}, -1} };
+    std::vector<typename dalg::Multimatch<T>::Node> trie{ Node{{}, -1, 0, {}, -1} };
     int curr{0};
     
     for (unsigned p{0}; p < patterns.size(); p++)
@@ -136,7 +136,7 @@ std::vector<typename Multimatch<T>::Node> Multimatch<T>::build_trie(std::vector<
 }
 
 template<typename T>
-int Multimatch<T>::search_backward_error(std::vector<typename Multimatch<T>::Node>& trie, int curr)
+int dalg::Multimatch<T>::search_backward_error(std::vector<typename dalg::Multimatch<T>::Node>& trie, int curr)
 {
     char ch = trie[curr].letter;
 
@@ -166,7 +166,7 @@ int Multimatch<T>::search_backward_error(std::vector<typename Multimatch<T>::Nod
 
 
 template<typename T>
-void Multimatch<T>::build_automaton()
+void dalg::Multimatch<T>::build_automaton()
 {
     //initialize root and its direct neighbours
     trie[0].reset = 0;

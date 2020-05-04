@@ -5,7 +5,7 @@
 #endif
 
 template<typename T>
-bool Baseball_elimination<T>::is_eliminated()
+bool dalg::Baseball_elimination<T>::is_eliminated()
 {        
     //Connect all match nodes to source
     for (T m{0}; m < matches.size(); m++)
@@ -68,7 +68,7 @@ bool Baseball_elimination<T>::is_eliminated()
 }
 
 template<typename T>
-void Baseball_elimination<T>::gen_result()
+void dalg::Baseball_elimination<T>::gen_result()
 {
     std::vector<typename Max_flow<T,T>::Node> orig_graph = max_flow.get_orig_graph();
 
