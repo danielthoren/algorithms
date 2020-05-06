@@ -254,7 +254,7 @@ bool project_test()
 	result &= res == Vec2d<double>(8.0/5.0, 16.0/5.0);
 
 	if (DEBUG && !result)
-	    std::cout << "Cross test 1 falied" << std::endl;
+	    std::cout << "Project test 1 falied" << std::endl;
 
 	global_result &= result;
     }
@@ -269,7 +269,7 @@ bool project_test()
 	result &= res == Vec2d<double>(-3.0/5.0, -9.0/5.0);
 
 	if (DEBUG && !result)
-	    std::cout << "Cross test 2 falied" << std::endl;
+	    std::cout << "Project test 2 falied" << std::endl;
 
 	global_result &= result;
     }
@@ -284,7 +284,23 @@ bool project_test()
 	result &= res == Vec2d<double>(1, 1);
 
 	if (DEBUG && !result)
-	    std::cout << "Cross test 3 falied" << std::endl;
+	    std::cout << "Project test 3 falied" << std::endl;
+
+	global_result &= result;
+    }
+
+    {
+	bool result = true;
+
+	Vec2d<int> p1{0, -2};
+	Vec2d<int> p2{1, 3};
+
+	Vec2d<double> res = dalg::project<int, double>(p1, p2);
+	res.prec = 0.1; //Set precision quite high since get precision error
+	result &= res == Vec2d<double>(-3.0/5.0, -9.0/5.0);
+
+	if (DEBUG && !result)
+	    std::cout << "Project test 4 falied" << std::endl;
 
 	global_result &= result;
     }
@@ -306,7 +322,7 @@ bool scalar_test()
 	result &= p1.x == 2.0 && p1.x == 2.0;
 	
 	if (DEBUG && !result)
-	    std::cout << "Cross test 1 falied" << std::endl;
+	    std::cout << "scalar test 1 falied" << std::endl;
 
 	global_result &= result;
     }

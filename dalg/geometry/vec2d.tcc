@@ -119,12 +119,15 @@ T dalg::dot(dalg::Vec2d<T> const& u, dalg::Vec2d<T> const& v)
  * b     : The line to project a on to
  * return: The projection onto the given line
  */
-template <typename T>
-dalg::Vec2d<T> dalg::project(dalg::Vec2d<T> const& v, dalg::Vec2d<T> const& s)
+template <typename T, typename FL>
+dalg::Vec2d<FL> dalg::project(dalg::Vec2d<T> const& v, dalg::Vec2d<T> const& s)
 {
-    T div = dot(v, s) / dot(s, s);
+    FL div = static_cast<FL>( dot(v, s) ) / static_cast<FL>( dot(s, s) );
     
-    dalg::Vec2d<T> projection{ s };
+    dalg::Vec2d<FL> projection{ static_cast<FL>(s.x),
+				static_cast<FL>(s.y),
+				static_cast<FL>(s.prec) };
+    
     projection = projection * div;
 
     return projection;

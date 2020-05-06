@@ -96,12 +96,15 @@ namespace dalg
      * Projects this line segment onto the given line (treats the
      * given line segment as a line)
      *
+     * Template type FL can be used to specify precision, especially
+     * useful if this Vec2d is of integer type
+     *
      * a     : The line to project
      * b     : The line to project a on to
      * return: The projection onto the given line
      */
-    template<typename T>
-    Vec2d<T> project(Vec2d<T> const& v, Vec2d<T> const& s);
+    template<typename T, typename FL = T>
+    Vec2d<FL> project(Vec2d<T> const& v, Vec2d<T> const& s);
 
     /**
      * Scalar multiplication between an integer and a vec2d
