@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <type_traits>
 
 namespace dalg
 {
@@ -17,7 +18,22 @@ namespace dalg
     template <typename T>
     class Vec2d
     {
-    public:
+    private:
+
+	/**
+	 * Takes care of comparisons of Integer template types. 
+	 */
+	bool equals(Vec2d const& other, std::true_type is_floating_point ) const;
+
+	/**
+	 * Takes care of comparisons of Floating point template
+	 * types. Uses prec vairable in comparison in the following way:
+	 *
+	 * abs( this.x - other.x ) < prec
+	 */
+	bool equals(Vec2d const& other, std::false_type is_floating_point ) const;
+	
+    public:	
 	Vec2d(T x = 0, T y = 0, T prec = 0.05) :
 	    x{x}, y{y}, prec{prec}
 	    {}
@@ -36,7 +52,7 @@ namespace dalg
 
 	Vec2d& operator=(Vec2d const& other);
 
-	bool operator==(Vec2d const& other) const;
+	bool operator==(Vec2d const& other) const;	
 	bool operator!=(Vec2d const& other) const;
     
 	/*
@@ -47,17 +63,15 @@ namespace dalg
 	//double angle(Point const&other) const;
 
 	double length() const;
-    
+
 	T x;
 	T y;
 	T prec;
     };
 
-    template<typename T>
-    Vec2d<T> operator*(T scalar, Vec2d<T> const& pt);
-
-    template<typename T>
-    Vec2d<T> operator*(Vec2d<T> const& pt, T scalar);
+    /************************/
+    /* Non-Member functions */
+    /************************/
 
     template<typename T>
     std::ostream& operator<<(std::ostream& os, Vec2d<T> const& pt)
@@ -66,31 +80,32 @@ namespace dalg
 	return os;
     }
 
-/*
- * Returns the cross product of the two vectors which is defined as
- * the Determinant of the two vectors. 
- *(The area of the surface that the two vectors
- * create when drawing a square with two of each of the vectors)
- */
+    /*
+     * Returns the cross product of the two vectors which is defined as
+     * the Determinant of the two vectors. 
+     * (The area of the surface that the two vectors
+     * create when drawing a square with two of each of the vectors)
+     */
     template<typename T>
-    T cross(Vec2d<T> const& u, Vec2d<T> const& v)
-    {
-	return u.x * v.y - u.y * v.x;
-    }
+    T cross(Vec2d<T> const& u, Vec2d<T> const& v);
 
     template<typename T>
-    T dot(Vec2d<T> const& u, Vec2d<T> const& v)
-    {
-	return u.x * v.x + u.y * v.y;
-    }
+    T dot(Vec2d<T> const& u, Vec2d<T> const& v);
 
-/************************/
-/* Non-Member functions */
-/************************/
+    /**
+     * Projects this line segment onto the given line (treats the
+     * given line segment as a line)
+     *
+     * a     : The line to project
+     * b     : The line to project a on to
+     * return: The projection onto the given line
+     */
+    template<typename T>
+    Vec2d<T> project(Vec2d<T> const& v, Vec2d<T> const& s);
 
-/**
- * Scalar multiplication between two Vec2ds
- */
+    /**
+     * Scalar multiplication between an integer and a vec2d
+     */
     template <typename T>
     Vec2d<T> operator*(T scalar, Vec2d<T> const& pt);
 

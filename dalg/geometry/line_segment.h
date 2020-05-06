@@ -17,7 +17,11 @@ namespace dalg
     class LineSegment
     {
     public:
-	LineSegment(Vec2d<T> p0, Vec2d<T> p1)
+	LineSegment(LineSegment<T> const& other)
+	    :  p0{other.p0}, u{other.u}
+	    {}
+	
+	LineSegment(Vec2d<T> const& p0, Vec2d<T> const& p1)
 	    : p0{p0}, u{p1 - p0}
 	    {}
     
@@ -31,8 +35,6 @@ namespace dalg
 	 */
 	bool operator==(LineSegment<T> const& other) const;
 	bool operator!=(LineSegment<T> const& other) const;
-
-	//T segment_distance(LineSegment<T> const& other) const;
 
 	/**
 	 * Calculates the point on the line that is closest to the given pt
@@ -78,12 +80,15 @@ namespace dalg
 	 * Returns p0
 	 */
 	Vec2d<T> get_start_point() const;
-    
+
+    private:
 	//p(s) = p0 + su
 	Vec2d<T> p0;
 	Vec2d<T> u;    // u = p1 - p0
     
     };
+
+    //TODO: implement scalar product operator
 }
 
 #include "line_segment.tcc"
