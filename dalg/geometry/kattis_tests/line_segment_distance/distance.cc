@@ -1,4 +1,4 @@
-#include "point.h"
+#include "vec2d.h"
 #include "line_segment.h"
 #include <cstdio>
 #include <variant>

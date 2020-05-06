@@ -1,7 +1,7 @@
 #ifndef LINE_
 #define LINE_
 
-#include "point.h"
+#include "vec2d.h"
 
 #include <limits>
 
@@ -18,7 +18,7 @@ namespace dalg
     class Line
     {
     public:
-	Line(Point<T> p0, Point<T> p1)
+	Line(Vec2d<T> p0, Vec2d<T> p1)
 	    : p0{p0}, u{p1 - p0}
 	    {}
     
@@ -34,7 +34,7 @@ namespace dalg
 
 	bool is_parallel(Line<T> const& other) const;
 
-	Point<T> orthogonal_projection(Point<T> const& pt) const;
+	Vec2d<T> orthogonal_projection(Vec2d<T> const& pt) const;
 
 	/*
 	 * Returns the point where this Line and other intersects
@@ -51,12 +51,12 @@ namespace dalg
 	 * Then we obtain the actual intersection point from the following:
 	 * p_inter = p + t * U
 	 */
-	Point<T> intersection(Line<T> const& other) const;
+	Vec2d<T> intersection(Line<T> const& other) const;
 
     protected:
 	//p(s) = p0 + su
-	Point<T> p0;
-	Point<T> u;    // u = p1 - p0
+	Vec2d<T> p0;
+	Vec2d<T> u;    // u = p1 - p0
     };
 
 /*************************************************************/
@@ -83,25 +83,25 @@ namespace dalg
     }
 
     template <typename T>
-    Point<T> Line<T>::orthogonal_projection(Point<T> const& pt) const
+    Vec2d<T> Line<T>::orthogonal_projection(Vec2d<T> const& pt) const
     {
 	return ((pt * u) / (u * u)) * u;
     }
 
 
     template <typename T>
-    Point<T> Line<T>::intersection(Line<T> const& other) const
+    Vec2d<T> Line<T>::intersection(Line<T> const& other) const
     {
 	T t = other.u.determinant( (other.p0 - p0) ) / other.u.determinant(u);
 
 	//No solution
 	if (t == 0)
 	{
-	    return Point<T>(std::numeric_limits<T>::min(),
+	    return Vec2d<T>(std::numeric_limits<T>::min(),
 			    std::numeric_limits<T>::min());
 	}
 
-	Point<T> inter{ p0 + (t * u) };
+	Vec2d<T> inter{ p0 + (t * u) };
 	return inter;
     }
 

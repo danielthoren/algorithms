@@ -1,4 +1,4 @@
-#include "point.h"
+#include "vec2d.h"
 #include "line_segment.h"
 #include <cstdio>
 #include <variant>
@@ -36,16 +36,16 @@ int main()
 	{
 	    printf("none\n");
 	}
-	else if (std::holds_alternative<dalg::Point<double>>(res))
+	else if (std::holds_alternative<dalg::Vec2d<double>>(res))
 	{
-	    dalg::Point<double> pt = std::get<dalg::Point<double>>(res);
+	    dalg::Vec2d<double> pt = std::get<dalg::Vec2d<double>>(res);
 	    printf("%.2lf %.2lf\n", pt.x, pt.y);
 	}
 	else if (std::holds_alternative<dalg::LineSegment<double>>(res))
 	{
 	    dalg::LineSegment<double> lseg = std::get<dalg::LineSegment<double>>(res);
-	    dalg::Point p1(lseg.p0);
-	    dalg::Point p2(lseg.u + lseg.p0);
+	    dalg::Vec2d p1(lseg.p0);
+	    dalg::Vec2d p2(lseg.u + lseg.p0);
 
 	    if (p1.x < p2.x || (p1.x == p2.x && p1.y < p2.y))
 		printf("%.2lf %.2lf %.2lf %.2lf\n", p1.x, p1.y, p2.x, p2.y);

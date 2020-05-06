@@ -1,6 +1,6 @@
 
-#ifndef POINT_2D
-#define POINT_2D
+#ifndef VEC_2D
+#define VEC_2D
 
 #include <iostream>
 #include <cmath>
@@ -15,35 +15,35 @@ namespace dalg
      * expected operations including calculating gcd and lcm.
      */
     template <typename T>
-    class Point
+    class Vec2d
     {
     public:
-	Point(T x = 0, T y = 0, T prec = 0.05) :
+	Vec2d(T x = 0, T y = 0, T prec = 0.05) :
 	    x{x}, y{y}, prec{prec}
 	    {}
     
-	Point(Point const& pt, T prec = 0.05) :
+	Vec2d(Vec2d const& pt, T prec = 0.05) :
 	    x{pt.x}, y{pt.y}, prec{prec}
 	    {}
 
-	~Point() = default;
+	~Vec2d() = default;
 
-	Point operator+(Point const& other) const;
-	Point& operator+=(Point const& other);
+	Vec2d operator+(Vec2d const& other) const;
+	Vec2d& operator+=(Vec2d const& other);
 
-	Point operator-(Point const& other) const;
-	Point& operator-=(Point const& other);
+	Vec2d operator-(Vec2d const& other) const;
+	Vec2d& operator-=(Vec2d const& other);
 
-	Point& operator=(Point const& other);
+	Vec2d& operator=(Vec2d const& other);
 
-	bool operator==(Point const& other) const;
-	bool operator!=(Point const& other) const;
+	bool operator==(Vec2d const& other) const;
+	bool operator!=(Vec2d const& other) const;
     
 	/*
 	 * Distance calculated using pythagorean theorem
 	 */
-	T distance(Point const& other) const;
-	Point distance_vec(Point const& other) const;
+	T distance(Vec2d const& other) const;
+	Vec2d distance_vec(Vec2d const& other) const;
 	//double angle(Point const&other) const;
 
 	double length() const;
@@ -54,32 +54,32 @@ namespace dalg
     };
 
     template<typename T>
-    Point<T> operator*(T scalar, Point<T> const& pt);
+    Vec2d<T> operator*(T scalar, Vec2d<T> const& pt);
 
     template<typename T>
-    Point<T> operator*(Point<T> const& pt, T scalar);
+    Vec2d<T> operator*(Vec2d<T> const& pt, T scalar);
 
     template<typename T>
-    std::ostream& operator<<(std::ostream& os, Point<T> const& pt)
+    std::ostream& operator<<(std::ostream& os, Vec2d<T> const& pt)
     {
 	os << "(" << pt.x << ", " << pt.y << ")";
 	return os;
     }
 
 /*
- * Returns the cross product of the two Points which is defined as
- * the Determinant of the two Points. 
+ * Returns the cross product of the two vectors which is defined as
+ * the Determinant of the two vectors. 
  *(The area of the surface that the two vectors
  * create when drawing a square with two of each of the vectors)
  */
     template<typename T>
-    T cross(Point<T> const& u, Point<T> const& v)
+    T cross(Vec2d<T> const& u, Vec2d<T> const& v)
     {
 	return u.x * v.y - u.y * v.x;
     }
 
     template<typename T>
-    T dot(Point<T> const& u, Point<T> const& v)
+    T dot(Vec2d<T> const& u, Vec2d<T> const& v)
     {
 	return u.x * v.x + u.y * v.y;
     }
@@ -89,15 +89,15 @@ namespace dalg
 /************************/
 
 /**
- * Scalar multiplication between two Points
+ * Scalar multiplication between two Vec2ds
  */
     template <typename T>
-    Point<T> operator*(T scalar, Point<T> const& pt);
+    Vec2d<T> operator*(T scalar, Vec2d<T> const& pt);
 
     template <typename T>
-    Point<T> operator*(Point<T> const& pt, T scalar);
+    Vec2d<T> operator*(Vec2d<T> const& pt, T scalar);
 }
 
-#include "point.tcc"
+#include "vec2d.tcc"
 
 #endif

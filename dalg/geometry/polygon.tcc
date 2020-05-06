@@ -3,7 +3,7 @@
 #endif
 
 template<typename T>
-dalg::Polygon<T>::Polygon(std::vector<dalg::Point<T>> const& points)
+dalg::Polygon<T>::Polygon(std::vector<dalg::Vec2d<T>> const& points)
 {
     if (points.size() >= 2)
     {
@@ -22,10 +22,10 @@ dalg::Polygon<T>::Polygon(std::vector<dalg::Point<T>> const& points)
 }
 
 template<typename T>
-void dalg::Polygon<T>::add_point(dalg::Point<T> const& pt, T position)
+void dalg::Polygon<T>::add_point(dalg::Vec2d<T> const& pt, T position)
 {
-    dalg::Point<T> start = segments[position].get_start_point();
-    dalg::Point<T> end = segments[position].get_end_point();
+    dalg::Vec2d<T> start = segments[position].get_start_point();
+    dalg::Vec2d<T> end = segments[position].get_end_point();
 
     dalg::LineSegment<T> pt_line(start, pt);
     segments[position] = pt_line;
@@ -49,11 +49,11 @@ F dalg::Polygon<T>::get_area() const
 {
     F area{0};
 
-    dalg::Point<T> p1 = segments[0].get_start_point();
+    dalg::Vec2d<T> p1 = segments[0].get_start_point();
     
     for (unsigned p{0}; p < segments.size(); p++)
     {
-	dalg::Point<T> p2 = segments[p].get_end_point();
+	dalg::Vec2d<T> p2 = segments[p].get_end_point();
 	
 	area += cross(p1, p2);
 
@@ -64,16 +64,16 @@ F dalg::Polygon<T>::get_area() const
 }
 
 template <typename T>
-std::pair<dalg::Point<T>, dalg::Point<T>>
+std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>>
 dalg::Polygon<T>::min_distance(dalg::LineSegment<T> const& linseg) const
 {
     T smallest_dist{std::numeric_limits<T>::max()};
     
-    std::pair<dalg::Point<T>, dalg::Point<T>> closest{};
+    std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>> closest{};
 
     for (dalg::LineSegment<T> const& lseg : segments)
     {
-	std::pair<dalg::Point<T>, dalg::Point<T>> cl = linseg.closest_points(lseg);
+	std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>> cl = linseg.closest_points(lseg);
 	T dist = cl.first.distance(cl.second);
 	if (dist < smallest_dist)
 	{
@@ -90,16 +90,16 @@ dalg::Polygon<T>::min_distance(dalg::LineSegment<T> const& linseg) const
  * segments needs to be compared instead of comparing all of them
  */
 template <typename T>
-std::pair<dalg::Point<T>, dalg::Point<T>>
+std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>>
 dalg::Polygon<T>::min_distance(dalg::Polygon<T> const& other) const
 {
     T smallest_dist{std::numeric_limits<T>::max()};
     
-    std::pair<dalg::Point<T>, dalg::Point<T>> closest{};
+    std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>> closest{};
     
     for (dalg::LineSegment<T> const& lseg : other.segments)
     {
-	std::pair<dalg::Point<T>, dalg::Point<T>> cl{ min_distance(lseg) };
+	std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>> cl{ min_distance(lseg) };
 	T dist = cl.first.distance(cl.second);
 	
 	if (dist < smallest_dist)

@@ -3,7 +3,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "point.h"
+#include "vec2d.h"
 #include "line.h"
 #include "polygon.h"
 
@@ -11,10 +11,10 @@ using namespace std;
 
 bool constructor()
 {
-    dalg::Point<int> p1(0, 0);
-    dalg::Point<int> p2(1, 1);
-    dalg::Point<int> p3(1, -1);
-    std::vector<dalg::Point<int>> pts{p1, p2, p3};
+    dalg::Vec2d<int> p1(0, 0);
+    dalg::Vec2d<int> p2(1, 1);
+    dalg::Vec2d<int> p3(1, -1);
+    std::vector<dalg::Vec2d<int>> pts{p1, p2, p3};
 
     dalg::Polygon poly(pts);
 
@@ -31,7 +31,7 @@ bool constructor()
 	return false;
     }
 
-    dalg::Point<int> p4(4,0);
+    dalg::Vec2d<int> p4(4,0);
 
     poly.add_point(p4, 1);
 
@@ -44,7 +44,7 @@ bool constructor()
 	  segments[3].get_start_point() == p3 &&
 	  segments[3].get_end_point() == p1))
     {
-	cout << "dalg::Point not inserted correctly in polygon" << endl;
+	cout << "dalg::Vec2d not inserted correctly in polygon" << endl;
 	return false;
     }
     return true;
@@ -53,11 +53,11 @@ bool constructor()
 bool area()
 {
     {
-	dalg::Point<int> p1(0, 0);
-	dalg::Point<int> p2(1, 1);	
-	dalg::Point<int> p3(4, 0);
-	dalg::Point<int> p4(1, -1);
-	std::vector<dalg::Point<int>> pts{p1, p2, p3, p4};
+	dalg::Vec2d<int> p1(0, 0);
+	dalg::Vec2d<int> p2(1, 1);	
+	dalg::Vec2d<int> p3(4, 0);
+	dalg::Vec2d<int> p4(1, -1);
+	std::vector<dalg::Vec2d<int>> pts{p1, p2, p3, p4};
 
 	dalg::Polygon poly(pts);
 	if (4 - std::abs(poly.get_area<long double>()) > 0.01)
@@ -68,11 +68,11 @@ bool area()
     }
 
     {
-	dalg::Point<int> p1(0, 0);
-	dalg::Point<int> p2(10, 0);
-	dalg::Point<int> p3(0, 10);
+	dalg::Vec2d<int> p1(0, 0);
+	dalg::Vec2d<int> p2(10, 0);
+	dalg::Vec2d<int> p3(0, 10);
 	
-	std::vector<dalg::Point<int>> pts{p1, p2, p3};
+	std::vector<dalg::Vec2d<int>> pts{p1, p2, p3};
 
 	dalg::Polygon poly(pts);
 
@@ -84,13 +84,13 @@ bool area()
     }
 
     {
-	dalg::Point<int> p1(41, -6);
-	dalg::Point<int> p2(-24, -74);
-	dalg::Point<int> p3(-51, -6);
-	dalg::Point<int> p4(73, 17);
-	dalg::Point<int> p5(-30, -34);
+	dalg::Vec2d<int> p1(41, -6);
+	dalg::Vec2d<int> p2(-24, -74);
+	dalg::Vec2d<int> p3(-51, -6);
+	dalg::Vec2d<int> p4(73, 17);
+	dalg::Vec2d<int> p5(-30, -34);
 	
-	std::vector<dalg::Point<int>> pts{p1, p2, p3, p4, p5};
+	std::vector<dalg::Vec2d<int>> pts{p1, p2, p3, p4, p5};
 
 	dalg::Polygon poly(pts);
 
@@ -107,16 +107,16 @@ bool area()
 bool min_distance()
 {
     {
-	dalg::Point<double> p1(0, 0);
-	dalg::Point<double> p2(1, 1);	
-	dalg::Point<double> p3(4, 0);
-	dalg::Point<double> p4(1, -1);
-	std::vector<dalg::Point<double>> pts{p1, p2, p3, p4};
+	dalg::Vec2d<double> p1(0, 0);
+	dalg::Vec2d<double> p2(1, 1);	
+	dalg::Vec2d<double> p3(4, 0);
+	dalg::Vec2d<double> p4(1, -1);
+	std::vector<dalg::Vec2d<double>> pts{p1, p2, p3, p4};
 
 	dalg::Polygon poly(pts);
 
-	dalg::Point<double> pt1(0.5, 2);
-	dalg::Point<double> pt2(1.5, 2);
+	dalg::Vec2d<double> pt1(0.5, 2);
+	dalg::Vec2d<double> pt2(1.5, 2);
 	dalg::LineSegment<double> seg(pt1, pt2);
 
 	auto res = poly.min_distance(seg);
@@ -131,20 +131,20 @@ bool min_distance()
     }
 
     {
-	dalg::Point<double> ip1(-5, -5);
-	dalg::Point<double> ip2(5, -5);	
-	dalg::Point<double> ip3(5, 5);
-	dalg::Point<double> ip4(-5, 5);
+	dalg::Vec2d<double> ip1(-5, -5);
+	dalg::Vec2d<double> ip2(5, -5);	
+	dalg::Vec2d<double> ip3(5, 5);
+	dalg::Vec2d<double> ip4(-5, 5);
 
-	std::vector<dalg::Point<double>> ipts{ip1, ip2, ip3, ip4};
+	std::vector<dalg::Vec2d<double>> ipts{ip1, ip2, ip3, ip4};
 	dalg::Polygon inner(ipts);
 
-	dalg::Point<double> op1(-10, -10);
-	dalg::Point<double> op2(-10, 10);	
-	dalg::Point<double> op3(10, 10);
-	dalg::Point<double> op4(10, -10);
+	dalg::Vec2d<double> op1(-10, -10);
+	dalg::Vec2d<double> op2(-10, 10);	
+	dalg::Vec2d<double> op3(10, 10);
+	dalg::Vec2d<double> op4(10, -10);
 
-	std::vector<dalg::Point<double>> opts{op1, op2, op3, op4};
+	std::vector<dalg::Vec2d<double>> opts{op1, op2, op3, op4};
 	dalg::Polygon outer(opts);
 
 	auto res = inner.min_distance(outer);
@@ -159,20 +159,20 @@ bool min_distance()
     }
 
     {
-	dalg::Point<double> ip1(0,0);
-	dalg::Point<double> ip2(1,0);	
-	dalg::Point<double> ip3(1,1);
+	dalg::Vec2d<double> ip1(0,0);
+	dalg::Vec2d<double> ip2(1,0);	
+	dalg::Vec2d<double> ip3(1,1);
 
-	std::vector<dalg::Point<double>> ipts{ip1, ip2, ip3};
+	std::vector<dalg::Vec2d<double>> ipts{ip1, ip2, ip3};
 	dalg::Polygon inner(ipts);
 
-	dalg::Point<double> op1(3, -3);
-	dalg::Point<double> op2(3, 3);	
-	dalg::Point<double> op3(-4, 2);
-	dalg::Point<double> op4(-1, -1);
-	dalg::Point<double> op5(-2, -2);
+	dalg::Vec2d<double> op1(3, -3);
+	dalg::Vec2d<double> op2(3, 3);	
+	dalg::Vec2d<double> op3(-4, 2);
+	dalg::Vec2d<double> op4(-1, -1);
+	dalg::Vec2d<double> op5(-2, -2);
 
-	std::vector<dalg::Point<double>> opts{op1, op2, op3, op4, op5};
+	std::vector<dalg::Vec2d<double>> opts{op1, op2, op3, op4, op5};
 	dalg::Polygon outer(opts);
 
 	auto res = inner.min_distance(outer);
