@@ -94,7 +94,7 @@ bool min_max_test()
 
 	Vec2d<int> c1(0,1);
 	Vec2d<int> c2(1,0);
-	Vec2d<int> c3(1,1);
+	Vec2d<int> c3(1,2);
 	Vec2d<int> c4(2,1);
 
 	Rectangle<int> r1(c1, c2, c3, c4);
@@ -103,7 +103,7 @@ bool min_max_test()
 	ret.first.prec = 0.1;
 	ret.second.prec = 0.1;
 
-	result &= ret.first.length() < 0.01 && std::abs( ret.second.length() - std::sqrt(4 - 1) ) < 0.01;
+	result &= ret.first == Vec2d<double>(0,0) && ret.second == Vec2d<double>(2,0);
 
 	if (DEBUG && !result)
 	    std::cout << "min_max Test 1 failed" << std::endl;	
