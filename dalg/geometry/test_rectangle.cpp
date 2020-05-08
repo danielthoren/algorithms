@@ -58,7 +58,7 @@ bool constructor_test()
 	res = res & result;
     }
 
-    //--------------------Test copy constructor---------------------------
+    //--------------------Test copy constructor---------------------------    
     {
 	bool result{true};
 
@@ -87,8 +87,7 @@ bool constructor_test()
 bool min_max_test()
 {
     bool res{true};
-
-    //--------------------Test Vec2d constructor---------------------------
+    
     {
 	bool result{true};
 
@@ -114,6 +113,33 @@ bool min_max_test()
     return res;
 }
 
+bool center_point_test()
+{
+    bool res{true};
+
+    {
+	bool result{true};
+
+	Vec2d<double> c1(0,0);
+	Vec2d<double> c2(1,0);
+	Vec2d<double> c3(1,1);
+	Vec2d<double> c4(0,1);
+
+	Rectangle<double> r1(c1, c2, c3, c4);
+
+	Vec2d<double> ret = r1.get_center_point();
+	ret.prec = 0.01;
+
+	result &= ret == Vec2d<double>(0.5, 0.5);
+
+	if (DEBUG && !result)
+	    std::cout << "min_max Test 1 failed" << std::endl;	
+
+	res = res & result;
+    }
+    return res;
+}
+
 
 int main()
 {
@@ -126,6 +152,10 @@ int main()
     {
 	std::cout << "min_max test failed" << std::endl;
     }    
-
+    if (!center_point_test())
+    {
+	std::cout << "center_point test failed" << std::endl;
+    }
+    
     return 0;
 }
