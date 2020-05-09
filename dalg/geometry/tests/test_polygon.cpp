@@ -3,9 +3,9 @@
 #include <cmath>
 #include <iostream>
 
-#include "vec2d.h"
-#include "line.h"
-#include "polygon.h"
+#include "../vec2d.h"
+#include "../line.h"
+#include "../polygon.h"
 
 using namespace dalg;
 
