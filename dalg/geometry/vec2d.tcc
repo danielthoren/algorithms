@@ -98,14 +98,22 @@ dalg::Vec2d<T> dalg::Vec2d<T>::distance_vec(dalg::Vec2d<T> const& other) const
  * angle = acos(b/a) * 2
  */
 template <typename T>
+double dalg::Vec2d<T>::rad_angle(dalg::Vec2d<T> const& other) const
+{
+    // dalg::Vec2d<T> p = (*this - other) / 2;
+
+    // T a = p.length();
+    // T b = (*this - p).length();
+    
+    // return std::acos(b/a) * 2;
+
+    return std::acos( dot(*this, other) / (length() * other.length()) );
+}
+
+template <typename T>
 double dalg::Vec2d<T>::angle(dalg::Vec2d<T> const& other) const
 {
-    dalg::Vec2d<T> p = (*this - other) / 2;
-
-    T a = p.length();
-    T b = (*this - p).length();
-
-    return std::acos(b/a) * 2;
+    return rad_angle(other) * (180.0 / PI);
 }
 
 template <typename T>

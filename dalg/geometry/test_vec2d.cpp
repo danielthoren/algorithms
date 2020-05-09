@@ -36,7 +36,7 @@ bool constructor_test()
     return res;
 }
 
-bool test_addition()
+bool addition_test()
 {
     bool res{true};
 
@@ -79,7 +79,7 @@ bool test_addition()
     return res;
 }
 
-bool test_substraction()
+bool substraction_test()
 {
     bool res{true};
 
@@ -92,8 +92,8 @@ bool test_substraction()
 	
 	Vec2d<int> p3{p1 - p2};
 
-	result &= (p3.x == p1.x + p2.x &&
-		  p3.y == p1.y + p2.y);
+	result &= (p3.x == p1.x - p2.x &&
+		  p3.y == p1.y - p2.y);
 
 	if (DEBUG && !result)
 	    std::cout << "Substraction test 1 failed" << std::endl;
@@ -110,7 +110,7 @@ bool test_substraction()
 	
 	p2 -= p1;
 
-	result &= (p2.x == 2 && p2.y == 2);
+	result &= (p2.x == 0 && p2.y == 0);
 	result &= (p1.x == 1 && p1.y == 1);
 
 	if (DEBUG && !result)
@@ -158,7 +158,9 @@ bool length_test()
     }
 
     //--------------------Test edge cases length ---------------------------
-    {    
+    {
+	bool result = true;
+	
 	Vec2d<int> p1{0,0};
 	
 	result &= (p1.length() == 0);
@@ -213,7 +215,7 @@ bool scalar_mult_test()
 	
 	Vec2d<double> p1{1,1};
 
-	result &= (p1 * 2) == Vec2d<double>{2,2};
+	result &= (p1 * 2.0) == Vec2d<double>{2,2};
 
 	if (DEBUG && !result)
 	    std::cout << "Scalar product test 1 falied" << std::endl;    
@@ -239,7 +241,7 @@ bool scalar_mult_test()
 	
 	Vec2d<double> p1{1,1};
 
-	result &= (p1 * 0) == Vec2d<double>{0,0};
+	result &= (p1 * 0.0) == Vec2d<double>{0,0};
 
 	if (DEBUG && !result)
 	    std::cout << "Scalar product test 1 falied" << std::endl;    
@@ -260,7 +262,7 @@ bool scalar_div_test()
 	
 	Vec2d<double> p1{1,1};
 
-	result &= (p1 / 2) == Vec2d<double>{0.5, 0.5};
+	result &= (p1 / 2.0) == Vec2d<double>{0.5, 0.5};
 	result &= (p1 / 0.5) == Vec2d<double>{2, 2};
 
 	if (DEBUG && !result)
@@ -291,7 +293,7 @@ bool cross_test()
 	result &= (cross(p3, p4) == 0);
 
 	if (DEBUG && !result)
-	    cout << "Cross test 1 falied" << endl;
+	    std::cout << "Cross test 1 falied" << std::endl;
 	
 	res &= result;
     }
@@ -304,20 +306,30 @@ bool cross_test()
 	Vec2d<double> p1{0,1};
 	Vec2d<double> p2{1,0};
 	
-	result &= (cross(p1, p2) == 1);
+	result &= (cross(p1, p2) == -1);
 
+	if (DEBUG && !result)
+	    std::cout << "cross test 2 falied" << std::endl;
+	
+	res &= result;
+    }
+
+    {
+	bool result = true;
+	
 	Vec2d<double> p1{10.5, 1.56};
 	Vec2d<double> p2{-13.8, 34.2};
 	
 	result &= (cross(p1, p2) == (10.5 * 34.2) - (1.56*-13.8));	
 
 	if (DEBUG && !result)
-	    cout << "cross test 2 falied" << endl;
+	    std::cout << "cross test 3 falied" << std::endl;
 	
 	res &= result;
-    }
+    }    
+    
 
-        {
+    {
 	bool result = true;
 
 	Vec2d<int> p1{1, 0};
@@ -327,7 +339,7 @@ bool cross_test()
 	result &= res == 3;
 
 	if (DEBUG && !result)
-	    std::cout << "Cross test 3 falied" << std::endl;
+	    std::cout << "Cross test 4 falied" << std::endl;
 
 	res &= result;
     }
@@ -342,7 +354,7 @@ bool cross_test()
 	result &= res == -2;
 
 	if (DEBUG &&!result)
-	    std::cout << "Cross test 4 falied" << std::endl;
+	    std::cout << "Cross test 5 falied" << std::endl;
 
 	res &= result;
     }
@@ -357,7 +369,7 @@ bool cross_test()
 	result &= res == 7;
 
 	if (DEBUG && !result)
-	    std::cout << "Cross test 5 falied" << std::endl;
+	    std::cout << "Cross test 6 falied" << std::endl;
 
 	res &= result;
     }
@@ -379,7 +391,7 @@ bool dot_test()
 	result &= (dot(p1, p2) == 2);
 
 	if (DEBUG && !result)
-	    cout << "dot test 1 falied" << endl;
+	    std::cout << "dot test 1 falied" << std::endl;
 	
 	res &= result;
     }
@@ -393,7 +405,7 @@ bool dot_test()
 	result &= (dot(p3, p4) == (10.10 * 10.10) + (10.10 * 10.10) );
 
 	if (DEBUG && !result)
-	    cout << "dot test 2 falied" << endl;
+	    std::cout << "dot test 2 falied" << std::endl;
 	
 	res &= result;
     }
@@ -404,10 +416,10 @@ bool dot_test()
     	Vec2d<double> p3{1,0};
 	Vec2d<double> p4{0,1};
 	
-	result &= (dot(p3, p4) == 1);
+	result &= (dot(p3, p4) == 0);
 
 	if (DEBUG && !result)
-	    cout << "dot test 3 falied" << endl;
+	    std::cout << "dot test 3 falied" << std::endl;
 	
 	res &= result;
     }
@@ -418,10 +430,10 @@ bool dot_test()
     	Vec2d<double> p3{0,1};
 	Vec2d<double> p4{1,0};
 	
-	result &= (dot(p3, p4) == -1);
+	result &= (dot(p3, p4) == 0);
 
 	if (DEBUG && !result)
-	    cout << "dot test 4 falied" << endl;
+	    std::cout << "dot test 4 falied" << std::endl;
 	
 	res &= result;
     }
@@ -435,7 +447,7 @@ bool dot_test()
 	result &= (dot(p3, p4) == 0);
 
 	if (DEBUG && !result)
-	    cout << "dot test 5 falied" << endl;
+	    std::cout << "dot test 5 falied" << std::endl;
 	
 	res &= result;
     }
@@ -459,7 +471,7 @@ bool dot_test()
 
 bool project_test()
 {
-    bool global_result{true};
+    bool res{true};
 
     {
 	bool result = true;
@@ -467,13 +479,13 @@ bool project_test()
 	Vec2d<double> p1{2, 3};
 	Vec2d<double> p2{1, 2};
 
-	Vec2d<double> res = dalg::project(p1, p2);
-	result &= res == Vec2d<double>(8.0/5.0, 16.0/5.0);
+	Vec2d<double> tmp = dalg::project(p1, p2);
+	result &= tmp == Vec2d<double>(8.0/5.0, 16.0/5.0);
 
 	if (DEBUG && !result)
 	    std::cout << "Project test 1 falied" << std::endl;
 
-	global_result &= result;
+	res &= result;
     }
 
     {
@@ -482,13 +494,13 @@ bool project_test()
 	Vec2d<double> p1{0, -2};
 	Vec2d<double> p2{1, 3};
 
-	Vec2d<double> res = dalg::project(p1, p2);
-	result &= res == Vec2d<double>(-3.0/5.0, -9.0/5.0);
+	Vec2d<double> tmp = dalg::project(p1, p2);
+	result &= tmp == Vec2d<double>(-3.0/5.0, -9.0/5.0);
 
 	if (DEBUG && !result)
 	    std::cout << "Project test 2 falied" << std::endl;
 
-	global_result &= result;
+	res &= result;
     }
 
     {
@@ -497,13 +509,13 @@ bool project_test()
 	Vec2d<double> p1{1, 1};
 	Vec2d<double> p2{1, 1};
 
-	Vec2d<double> res = dalg::project(p1, p2);
-	result &= res == Vec2d<double>(1, 1);
+	Vec2d<double> tmp = dalg::project(p1, p2);
+	result &= tmp == Vec2d<double>(1, 1);
 
 	if (DEBUG && !result)
 	    std::cout << "Project test 3 falied" << std::endl;
 
-	global_result &= result;
+	res &= result;
     }
 
     {
@@ -512,17 +524,86 @@ bool project_test()
 	Vec2d<int> p1{0, -2};
 	Vec2d<int> p2{1, 3};
 
-	Vec2d<double> res = dalg::project<int, double>(p1, p2);
-	res.prec = 0.1; //Set precision quite high since get precision error
-	result &= res == Vec2d<double>(-3.0/5.0, -9.0/5.0);
+	Vec2d<double> tmp = dalg::project<int, double>(p1, p2);
+	tmp.prec = 0.1; //Set precision quite high since get precision error
+	result &= tmp == Vec2d<double>(-3.0/5.0, -9.0/5.0);
 
 	if (DEBUG && !result)
 	    std::cout << "Project test 4 falied" << std::endl;
 
-	global_result &= result;
+	res &= result;
     }
 
-    return global_result;
+    return res;
+}
+
+bool angle_test()
+{
+    bool res{true};
+
+    //--------------------Test p.angle(p) ---------------------------
+    {
+	bool result = true;
+
+	Vec2d<double> p1{1, 1};
+
+	result &= p1.angle(p1) == 0;
+	result &= p1.rad_angle(p1) == 0;
+
+	if (DEBUG && !result)
+	    std::cout << "angle test 1 falied" << std::endl;
+
+	res &= result;
+    }
+
+    //--------------------Test 90 degree ---------------------------
+    {
+	bool result = true;
+
+	Vec2d<double> p1{0, 1};
+	Vec2d<double> p2{1, 0};
+
+	result &= 90 - p1.angle(p2) < 0.01;
+	result &= (Vec2d<double>::PI / 2) - p1.rad_angle(p2) < 0.01;
+
+	if (DEBUG && !result)
+	    std::cout << "angle test 2 falied" << std::endl;
+
+	res &= result;
+    }
+
+    //--------------------Test 45 degree ---------------------------
+    {
+	bool result = true;
+
+	Vec2d<double> p1{1, 1};
+	Vec2d<double> p2{1, 0};
+
+	result &= 45 - p1.angle(p2) < 0.01;
+	result &= (Vec2d<double>::PI / 4) - p1.rad_angle(p2) < 0.01;
+
+	if (DEBUG && !result)
+	    std::cout << "angle test 3 falied" << std::endl;
+
+	res &= result;
+    }
+
+    //--------------------Test random ---------------------------
+    {
+	bool result = true;
+
+	Vec2d<double> p1{2, 5};
+	Vec2d<double> p2{10, -2};
+
+	result &= 0.18208926018230745 - p1.rad_angle(p2) < 0.01;
+
+	if (DEBUG && !result)
+	    std::cout << "angle test 4 falied" << std::endl;
+
+	res &= result;
+    }
+
+    return res;
 }
 
 

@@ -68,6 +68,7 @@ namespace dalg
 	 *
 	 * return: The angle in degrees
 	 */
+	double rad_angle(Vec2d const& other) const;
 	double angle(Vec2d const& other) const;
 
 	/**
@@ -78,6 +79,8 @@ namespace dalg
 	T x;
 	T y;
 	T prec;
+
+	constexpr static double PI = 3.141592653589793;
     };
 
     /************************/
