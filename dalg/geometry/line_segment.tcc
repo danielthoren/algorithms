@@ -18,6 +18,13 @@ bool dalg::LineSegment<T>::operator!=(dalg::LineSegment<T> const& other) const
 }
 
 template <typename T>
+void dalg::LineSegment<T>::operator=(dalg::LineSegment<T> const& other)
+{
+    p0 = other.p0;
+    u = other.u;
+}
+
+template <typename T>
 bool dalg::LineSegment<T>::contains(dalg::Vec2d<T> const& pt) const
 {
     //This is a point, check if both points are the same

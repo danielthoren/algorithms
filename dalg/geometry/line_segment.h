@@ -36,6 +36,8 @@ namespace dalg
 	bool operator==(LineSegment<T> const& other) const;
 	bool operator!=(LineSegment<T> const& other) const;
 
+	void operator=(LineSegment<T> const& other);
+
 	/**
 	 * Calculates the point on the line that is closest to the given pt
 	 *
