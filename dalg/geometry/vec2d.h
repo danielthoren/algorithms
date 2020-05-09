@@ -60,8 +60,19 @@ namespace dalg
 	 */
 	T distance(Vec2d const& other) const;
 	Vec2d distance_vec(Vec2d const& other) const;
-	//double angle(Point const&other) const;
 
+	/**
+	 * Returns the angle between this and the given vector
+	 *
+	 * other : The vector to compare to
+	 *
+	 * return: The angle in degrees
+	 */
+	double angle(Vec2d const& other) const;
+
+	/**
+	 * Returns the length of this vector
+	 */
 	double length() const;
 
 	T x;
@@ -107,13 +118,22 @@ namespace dalg
     Vec2d<FL> project(Vec2d<T> const& v, Vec2d<T> const& s);
 
     /**
-     * Scalar multiplication between an integer and a vec2d
+     * Scalar multiplication between a scalar and a vec2d
      */
     template <typename T>
     Vec2d<T> operator*(T scalar, Vec2d<T> const& pt);
 
     template <typename T>
     Vec2d<T> operator*(Vec2d<T> const& pt, T scalar);
+
+    /**
+     * Scalar division between a scalar and vec2d
+     */
+    template <typename T>
+    Vec2d<T> operator/(T scalar, Vec2d<T> const& pt);
+
+    template <typename T>
+    Vec2d<T> operator/(Vec2d<T> const& pt, T scalar);
 }
 
 #include "vec2d.tcc"

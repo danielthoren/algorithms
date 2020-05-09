@@ -19,8 +19,8 @@ bool point_test()
     
     bool result{true};
     
-    point<int> p1{1,1};
-    point<int> p2{p1};
+    Vec2d<int> p1{1,1};
+    Vec2d<int> p2{p1};
 
     result = (p2.x == p1.x && p2.y == p1.y);
     result = (p2 == p1);
@@ -34,7 +34,7 @@ bool point_test()
     //------------- Test Addition ------------- 
 
     result = true;
-    point<int> p3{p1 + p2};
+    Vec2d<int> p3{p1 + p2};
 
     result = (p3.x == p1.x + p2.x &&
 	      p3.y == p1.y + p2.y);
@@ -47,7 +47,7 @@ bool point_test()
     //------------- Test substraction -------------
 
     result = true;
-    point<int> p4{p1 - p2};
+    Vec2d<int> p4{p1 - p2};
 
     result = (p4.x == p1.x - p2.x &&
 	      p4.y == p1.y - p2.y);
@@ -116,8 +116,8 @@ bool line_test()
     bool result{true};
 
     //------------- Constructor Test -------------
-    point<int> p1{0,0};
-    point<int> p2{1,1};
+    Vec2d<int> p1{0,0};
+    Vec2d<int> p2{1,1};
 
     Line<int> l1{p1, p2};
 

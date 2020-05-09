@@ -87,6 +87,27 @@ dalg::Vec2d<T> dalg::Vec2d<T>::distance_vec(dalg::Vec2d<T> const& other) const
     return dalg::Vec2d<T>{x_dist, y_dist};
 }
 
+/**
+ * Calculates the angle using pythagoras
+ *      /|
+ *     / |
+ *    /  | b
+ *   /   |
+ *  /____|
+ *    a
+ * angle = acos(b/a) * 2
+ */
+template <typename T>
+double dalg::Vec2d<T>::angle(dalg::Vec2d<T> const& other) const
+{
+    dalg::Vec2d<T> p = (*this - other) / 2;
+
+    T a = p.length();
+    T b = (*this - p).length();
+
+    return std::acos(b/a) * 2;
+}
+
 template <typename T>
 double dalg::Vec2d<T>::length() const
 {
@@ -145,4 +166,14 @@ dalg::Vec2d<T> dalg::operator*(dalg::Vec2d<T> const& pt, T scalar)
     return dalg::Vec2d<T>{pt.x * scalar, pt.y * scalar};
 }
 
+template <typename T>
+dalg::Vec2d<T> dalg::operator/(T scalar, dalg::Vec2d<T> const& pt)
+{
+    return dalg::Vec2d<T>{pt.x / scalar, pt.y / scalar};
+}
 
+template <typename T>
+dalg::Vec2d<T> dalg::operator/(dalg::Vec2d<T> const& pt, T scalar)
+{
+    return dalg::Vec2d<T>{pt.x / scalar, pt.y / scalar};
+}
