@@ -36,9 +36,9 @@ namespace dalg
 	    {}
 
 	/**
-	 * Returns the min and max value of all possible projections
-	 * onto the given vec. This is done by projecting each corner
-	 * onto vec and comparing them.
+	 * Returns the min and max projection of the foud points of
+	 * the box onto the given vec. This is done by projecting each
+	 * corner onto vec and comparing them.
 	 *
 	 * Time Complexity: O(1)
 	 *
@@ -51,7 +51,7 @@ namespace dalg
 	 *         pair<min, max>
 	 */
 	template<typename FL = double>
-	std::pair<Vec2d<FL>, Vec2d<FL>> get_min_max_projection(Vec2d<T> const& vec)
+	std::pair<Vec2d<FL>, Vec2d<FL>> get_min_max_projection(Vec2d<T> const& vec) const
 	    {
 		double min { std::numeric_limits<double>::max() };		
 		Vec2d<FL> min_vec{};
@@ -78,21 +78,55 @@ namespace dalg
 
 		return {min_vec, max_vec};
 	    }
-       
-	Vec2d<T> get_center_point()
+
+	/**
+	 * Returns the point at the center of the box
+	 *
+	 * return: Vector containing the center point
+	 */
+	Vec2d<T> get_center_point() const
 	    {
 		return Vec2d<T>( (corners[0].x + corners[2].x) / 2, (corners[0].y + corners[2].y) / 2 );
 	    }
 
+	/**
+	 * Checks if the rectangles are colliding. This is done by
+	 * calculating the projections of all points of both
+	 * rectangles onto the vector between the centers of the
+	 * rectangle then comparing them to each other. This shows if
+	 * there is any space between the rectangles.
+	 *
+	 * Time complexity: O(1)
+	 * 
+	 * other : The other rectangle to check collision with
+	 *
+	 * return: true if they collide, otherwise false
+	 */
 	bool collision(Rectangle<T> const& other) const
 	    {
-		Vec2d<T> center_diff = 
+		Vec2d<T> center_diff = get_center_point() - other.get_center_point();
 		
-		std::pair<Vec2d<T>, Vec2d<T>> res1 =
-		    get_min_max_projection();
+		std::pair<Vec2d<T>, Vec2d<T>> min_max_1 =
+		    get_min_max_projection(center_diff);
 
-		std::pair<Vec2d<T>, Vec2d<T>> res1 =
-		    other.get_min_max_projection();
+		std::pair<Vec2d<T>, Vec2d<T>> min_max_2 =
+		    other.get_min_max_projection(center_diff);
+
+
+		T min_1 = min_max_1.first.length();
+		T max_1 = min_max_1.second.length();
+
+		T min_2 = min_max_2.first.length();
+		T max_2 = min_max_2.second.length();
+
+		if (max_1 < min_2 || max_2 < min_1)
+		{
+		    return false;
+		}
+		else
+		{
+		    return true;
+		}
 	    }
 
 	std::vector<Vec2d<T>>& get_corners()
