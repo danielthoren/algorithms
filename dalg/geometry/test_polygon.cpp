@@ -7,7 +7,7 @@
 #include "line.h"
 #include "polygon.h"
 
-using namespace std;
+using namespace dalg;
 
 bool constructor()
 {
@@ -27,7 +27,7 @@ bool constructor()
 	segments[2].get_start_point() == p3 &&
 	  segments[2].get_end_point() == p1))
     {
-	cout << "Error when constructing polygon" << endl;
+	std::cout << "Error when constructing polygon" << std::endl;
 	return false;
     }
 
@@ -44,7 +44,7 @@ bool constructor()
 	  segments[3].get_start_point() == p3 &&
 	  segments[3].get_end_point() == p1))
     {
-	cout << "dalg::Vec2d not inserted correctly in polygon" << endl;
+	std::cout << "dalg::Vec2d not inserted correctly in polygon" << std::endl;
 	return false;
     }
     return true;
@@ -52,7 +52,7 @@ bool constructor()
 
 bool area()
 {
-    bool res{true};
+    bool global_res{true};
     
     {
 	dalg::Vec2d<int> p1(0, 0);
@@ -64,8 +64,8 @@ bool area()
 	dalg::Polygon poly(pts);
 	if (4 - std::abs(poly.get_area<long double>()) > 0.01)
 	{
-	    cout << "area test 1 failed" << endl;
-	    res = false;
+	    std::cout << "area test 1 failed" << std::endl;
+	    global_res = false;
 	}
     }
 
@@ -80,8 +80,8 @@ bool area()
 
 	if (50 - std::abs(poly.get_area<long double>()) > 0.01)
 	{
-	    cout << "area test 2 failed" << endl;
-	    res = false;
+	    std::cout << "area test 2 failed" << std::endl;
+	    global_res = false;
 	}	
     }
 
@@ -98,17 +98,17 @@ bool area()
 
 	if (3817.5 - std::abs(poly.get_area<long double>()) > 0.01)
 	{
-	    cout << "area test 3 failed" << endl;
-	    res = false;
+	    std::cout << "area test 3 failed" << std::endl;
+	    global_res = false;
 	}	
     }
     
-    return res;
+    return global_res;
 }
 
 bool min_distance()
 {
-    bool res{true};
+    bool global_res{true};
     
     {
 	dalg::Vec2d<double> p1(0, 0);
@@ -125,12 +125,12 @@ bool min_distance()
 
 	auto res = poly.min_distance(seg);
 
-	double dist = res.first.distance(res.second);
+	double dist = (res.first - res.second).length();
 
 	if (1 - dist > 0.01)
 	{
-	    cout << "min distance test 1 failed" << endl;
-	    res = false;
+	    std::cout << "min distance test 1 failed" << std::endl;
+	    global_res = false;
 	}
     }
 
@@ -153,12 +153,12 @@ bool min_distance()
 
 	auto res = inner.min_distance(outer);
 
-	double dist = res.first.distance(res.second);
+	double dist = (res.first - res.second).length();
 
 	if (2.5 - dist > 0.01)
 	{
-	    cout << "min distance test 2 failed" << endl;
-	    res = false;
+	    std::cout << "min distance test 2 failed" << std::endl;
+	    global_res = false;
 	}
     }
 
@@ -181,17 +181,16 @@ bool min_distance()
 
 	auto res = inner.min_distance(outer);
 
-	double dist = res.first.distance(res.second);
+	double dist = (res.first - res.second).length();
 
 	if (0.70710678 - dist > 0.01)
 	{
-	    cout << "min distance test 3 failed" << endl;
-	    res = false;
+	    std::cout << "min distance test 3 failed" << std::endl;
+	    global_res = false;
 	}
     }
     
-
-    return true;
+    return global_res;
 }
 
 int main()
@@ -203,11 +202,11 @@ int main()
     }
     if (!area())
     {
-	cout << "--------------------Area test failed------------------------------------" << endl << endl;
+	std::cout << "--------------------Area test failed--------------------------------" << std::endl;
     }
     if (!min_distance())
     {
-	cout << "--------------------min_distance test failed----------------------------" << endl << endl;
+	std::cout << "--------------------min_distance test failed------------------------" << std::endl;
     }    
 
     return 0;

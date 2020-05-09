@@ -93,6 +93,12 @@ double dalg::Vec2d<T>::rad_angle(dalg::Vec2d<T> const& other) const
 }
 
 template <typename T>
+double dalg::Vec2d<T>::distance(dalg::Vec2d<T> const& other) const
+{
+    return std::abs( (other - *this).length() );
+}
+
+template <typename T>
 double dalg::Vec2d<T>::angle(dalg::Vec2d<T> const& other) const
 {
     return rad_angle(other) * (180.0 / PI);

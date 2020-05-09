@@ -26,7 +26,7 @@ namespace dalg
 	bool equals(Vec2d const& other, std::true_type is_floating_point ) const;
 
 	/**
-	 * Takes care of comparisons of Floating point template
+	 * Takes care of comparisons of Floating fpoint template
 	 * types. Uses prec vairable in comparison in the following way:
 	 *
 	 * abs( this.x - other.x ) < prec
@@ -63,12 +63,18 @@ namespace dalg
 	 * return: The angle in degrees
 	 */
 	double rad_angle(Vec2d const& other) const;
-	double angle(Vec2d const& other) const;
+	double angle(Vec2d const& other) const;	
 
 	/**
 	 * Returns the length of this vector
 	 */
 	double length() const;
+
+	/*
+	 * Convenience method for calculating the distance between the
+	 * tips of the vectors
+	 */
+	double distance(Vec2d const& other) const;
 
 	T x;
 	T y;

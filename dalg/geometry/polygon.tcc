@@ -74,7 +74,7 @@ dalg::Polygon<T>::min_distance(dalg::LineSegment<T> const& linseg) const
     for (dalg::LineSegment<T> const& lseg : segments)
     {
 	std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>> cl = linseg.closest_points(lseg);
-	T dist = cl.first.distance(cl.second);
+	T dist = (cl.first - cl.second).length();
 	if (dist < smallest_dist)
 	{
 	    smallest_dist = dist;
@@ -100,7 +100,7 @@ dalg::Polygon<T>::min_distance(dalg::Polygon<T> const& other) const
     for (dalg::LineSegment<T> const& lseg : other.segments)
     {
 	std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>> cl{ min_distance(lseg) };
-	T dist = cl.first.distance(cl.second);
+	T dist = (cl.first - cl.second).length();
 	
 	if (dist < smallest_dist)
 	{
