@@ -53,13 +53,7 @@ namespace dalg
 	Vec2d& operator=(Vec2d const& other);
 
 	bool operator==(Vec2d const& other) const;	
-	bool operator!=(Vec2d const& other) const;
-    
-	/*
-	 * Distance calculated using pythagorean theorem
-	 */
-	T distance(Vec2d const& other) const;
-	Vec2d distance_vec(Vec2d const& other) const;
+	bool operator!=(Vec2d const& other) const;   
 
 	/**
 	 * Returns the angle between this and the given vector

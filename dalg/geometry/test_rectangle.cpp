@@ -659,19 +659,20 @@ int main()
 
     if (!constructor_test())
     {
-	std::cout << "Constructor test failed" << std::endl;
+	std::cout << "--------------------Constructor test failed------------------------" << std::endl;
+	return -1;
     }
     if (!min_max_test())
     {
-	std::cout << "min_max test failed" << std::endl;
+	std::cout << "--------------------min_max test failed----------------------------" << std::endl;
     }    
     if (!center_point_test())
     {
-	std::cout << "center_point test failed" << std::endl;
+	std::cout << "--------------------center_point test failed-----------------------" << std::endl;
     }
     if (!collision_test())
     {
-	std::cout << "collision test failed" << std::endl;
+	std::cout << "--------------------collision test failed--------------------------" << std::endl;
     }    
     
     return 0;

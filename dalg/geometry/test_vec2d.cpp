@@ -547,8 +547,8 @@ bool angle_test()
 
 	Vec2d<double> p1{1, 1};
 
-	result &= p1.angle(p1) == 0;
-	result &= p1.rad_angle(p1) == 0;
+	result &= p1.angle(p1) < 0.01;
+	result &= p1.rad_angle(p1) < 0.01;
 
 	if (DEBUG && !result)
 	    std::cout << "angle test 1 falied" << std::endl;
@@ -613,6 +613,7 @@ int main()
     if (!constructor_test())
     {
 	std::cout << "--------------------Constructor test failed------------------------" << std::endl;
+	return -1;
     }
     if (!addition_test())
     {
@@ -649,6 +650,10 @@ int main()
     if (!project_test())
     {
 	std::cout << "--------------------project test failed--------------------------" << std::endl;
+    }
+    if (!angle_test())
+    {
+	std::cout << "--------------------angle test failed----------------------------" << std::endl;
     }    
     
     return 0;

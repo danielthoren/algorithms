@@ -69,24 +69,6 @@ bool dalg::Vec2d<T>::operator!=(dalg::Vec2d<T> const& other) const
     return !( *this == other );
 }
 
-template <typename T>
-T dalg::Vec2d<T>::distance(dalg::Vec2d<T> const& other) const
-{
-    T x_dist = std::abs(x - other.x);
-    T y_dist = std::abs(y - other.y);
-
-    return std::sqrt( std::pow(x_dist, 2) + std::pow(y_dist, 2) );
-}
-
-template <typename T>
-dalg::Vec2d<T> dalg::Vec2d<T>::distance_vec(dalg::Vec2d<T> const& other) const
-{
-    T x_dist = std::abs(x - other.x);
-    T y_dist = std::abs(y - other.y);
-
-    return dalg::Vec2d<T>{x_dist, y_dist};
-}
-
 /**
  * Calculates the angle using pythagoras
  *      /|

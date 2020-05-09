@@ -52,6 +52,8 @@ bool constructor()
 
 bool area()
 {
+    bool res{true};
+    
     {
 	dalg::Vec2d<int> p1(0, 0);
 	dalg::Vec2d<int> p2(1, 1);	
@@ -62,8 +64,8 @@ bool area()
 	dalg::Polygon poly(pts);
 	if (4 - std::abs(poly.get_area<long double>()) > 0.01)
 	{
-	    cout << "Failed first area test polygon!" << endl;
-	    return false;
+	    cout << "area test 1 failed" << endl;
+	    res = false;
 	}
     }
 
@@ -78,8 +80,8 @@ bool area()
 
 	if (50 - std::abs(poly.get_area<long double>()) > 0.01)
 	{
-	    cout << "Failed second area test polygon!" << endl;
-	    return false;
+	    cout << "area test 2 failed" << endl;
+	    res = false;
 	}	
     }
 
@@ -96,16 +98,18 @@ bool area()
 
 	if (3817.5 - std::abs(poly.get_area<long double>()) > 0.01)
 	{
-	    cout << "Failed third area test polygon!" << endl;
-	    return false;
+	    cout << "area test 3 failed" << endl;
+	    res = false;
 	}	
     }
     
-    return true;	
+    return res;
 }
 
 bool min_distance()
 {
+    bool res{true};
+    
     {
 	dalg::Vec2d<double> p1(0, 0);
 	dalg::Vec2d<double> p2(1, 1);	
@@ -125,8 +129,8 @@ bool min_distance()
 
 	if (1 - dist > 0.01)
 	{
-	    cout << "Failed min_distance 1" << endl;
-	    return false;
+	    cout << "min distance test 1 failed" << endl;
+	    res = false;
 	}
     }
 
@@ -153,8 +157,8 @@ bool min_distance()
 
 	if (2.5 - dist > 0.01)
 	{
-	    cout << "Failed min_distance 2" << endl;
-	    return false;
+	    cout << "min distance test 2 failed" << endl;
+	    res = false;
 	}
     }
 
@@ -181,8 +185,8 @@ bool min_distance()
 
 	if (0.70710678 - dist > 0.01)
 	{
-	    cout << "Failed min_distance 2" << endl;
-	    return false;
+	    cout << "min distance test 3 failed" << endl;
+	    res = false;
 	}
     }
     
@@ -194,18 +198,17 @@ int main()
 {
     if (!constructor())
     {
-	cout << "Constructor test failed!" << endl << endl;
+	std::cout << "--------------------Constructor test failed------------------------" << std::endl;
 	return -1;
     }
     if (!area())
     {
-	cout << "Area test failed!" << endl << endl;
+	cout << "--------------------Area test failed------------------------------------" << endl << endl;
     }
     if (!min_distance())
     {
-	cout << "min_distance test failed!" << endl << endl;
-    }
-    
+	cout << "--------------------min_distance test failed----------------------------" << endl << endl;
+    }    
 
     return 0;
 }
