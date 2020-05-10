@@ -2,12 +2,30 @@
 #include <utility>
 #include <vector>
 #include <limits>
+#include <sstream>
 
 #include "vec2d.h"
 #include "line_segment.h"
 
 namespace dalg
 {
+    struct BadArgumentException : public std::exception
+    {
+	BadArgumentException(std::string msg)
+	    {
+		std::stringstream stream("Bad arguments given: ");
+		stream << msg << std::endl;
+		this->msg = stream.str();
+	    }
+	    
+	const char * what () const throw ()
+	    {
+		return msg.c_str();
+	    }
+
+	std::string msg;
+    };
+    
     /**
      * Author: Daniel Thorén
      *
@@ -21,15 +39,38 @@ namespace dalg
 	/**
 	 * The input points are expected to be in either clockwise or
 	 * counter clockwise order, thus the pairs (c1, c3) (c2,c4)
-	 * must be furthest from each other (opposing)
+	 * must be furthest from each other (opposing). The vectors
+	 * between the points must have an angle of 90 degrees
 	 */
 	Rectangle(Vec2d<T> const& c1, Vec2d<T> const& c2, Vec2d<T> const& c3, Vec2d<T> const& c4) :
 	    corners{c1, c2, c3, c4}
-	    {}
+	    {
+		if (90 - angle( c1 - c2, c2 - c3) > 0.01 ||
+		    90 - angle( c2 - c3, c3 - c4) > 0.01 ||
+		    90 - angle(c3 - c4, c4 - c1) > 0.01 ||
+		    90 - angle(c4 - c1, c1 - c2) > 0.01)
+		{
+		    throw BadArgumentException("Rectangle point constructor: points not 90 degrees");
+		}
 
-	Rectangle(LineSegment<T> const& l1, LineSegment<T> const& l2) :
-	    corners{l1.get_start_point(), l1.get_end_point(), l2.get_start_point(), l2.get_end_point()}
-	    {}
+		if ( (c1 - c3).length() < (c1 - c2).length())
+		{
+		    throw BadArgumentException("Rectangle point constructor: points not given in correct order");
+		}
+	    }
+
+	/**
+	 * Constructs a rectangle by using the "top_left" variable as
+	 * the top left corner then expanding along the x and y axis
+	 * with width and height
+	 */
+	Rectangle(Vec2d<T> const& top_left, T width_x, T height_y)
+	    {
+		corners[0] = top_left;
+		corners[1] = top_left + Vec2d<T>(width_x, 0);
+		corners[2] = top_left + Vec2d<T>(width_x, height_y);
+		corners[3] = top_left + Vec2d<T>(width_x, 0);
+	    }
 
 	Rectangle(Rectangle<T> const& other) :
 	    corners{ other.corners }

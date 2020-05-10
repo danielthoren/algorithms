@@ -69,39 +69,10 @@ bool dalg::Vec2d<T>::operator!=(dalg::Vec2d<T> const& other) const
     return !( *this == other );
 }
 
-/**
- * Calculates the angle using pythagoras
- *      /|
- *     / |
- *    /  | b
- *   /   |
- *  /____|
- *    a
- * angle = acos(b/a) * 2
- */
-template <typename T>
-double dalg::Vec2d<T>::rad_angle(dalg::Vec2d<T> const& other) const
-{
-    // dalg::Vec2d<T> p = (*this - other) / 2;
-
-    // T a = p.length();
-    // T b = (*this - p).length();
-    
-    // return std::acos(b/a) * 2;
-
-    return std::acos( dot(*this, other) / (length() * other.length()) );
-}
-
 template <typename T>
 double dalg::Vec2d<T>::distance(dalg::Vec2d<T> const& other) const
 {
     return std::abs( (other - *this).length() );
-}
-
-template <typename T>
-double dalg::Vec2d<T>::angle(dalg::Vec2d<T> const& other) const
-{
-    return rad_angle(other) * (180.0 / PI);
 }
 
 template <typename T>
@@ -124,6 +95,28 @@ template<typename T>
 T dalg::dot(dalg::Vec2d<T> const& u, dalg::Vec2d<T> const& v)
 {
     return u.x * v.x + u.y * v.y;
+}
+
+/**
+ * Calculates the angle using pythagoras
+ *      /|
+ *     / |
+ *    /  | b
+ *   /   |
+ *  /____|
+ *    a
+ * angle = acos(b/a) * 2
+ */
+template <typename T>
+double dalg::rad_angle(Vec2d<T> const& v1, Vec2d<T> const& v2)
+{
+    return std::acos( dot(v1, v2) / (v1.length() * v2.length()) );
+}
+
+template <typename T>
+double dalg::angle(Vec2d<T> const& v1, Vec2d<T> const& v2)
+{
+    return rad_angle(v1, v2) * (180.0 / dalg::Vec2d<T>::PI);
 }
 
 /**

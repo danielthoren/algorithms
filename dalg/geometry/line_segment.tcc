@@ -336,3 +336,25 @@ dalg::Vec2d<T> dalg::LineSegment<T>::get_start_point() const
     return p0;
 }
 
+template<typename T>
+dalg::Vec2d<T> dalg::LineSegment<T>::get_vector() const
+{
+    return u;
+}
+
+/************************/
+/* Non-Member functions */
+/************************/
+
+
+template <typename T>
+double dalg::rad_angle(dalg::LineSegment<T> const& l1, dalg::LineSegment<T> const& l2)
+{
+    return dalg::rad_angle(l1.get_vector(), l2.get_vector());
+}
+
+template <typename T>
+double dalg::angle(dalg::LineSegment<T> const& l1, dalg::LineSegment<T> const& l2)
+{
+    return rad_angle(l1, l2) * (180.0 / dalg::Vec2d<T>::PI);
+}

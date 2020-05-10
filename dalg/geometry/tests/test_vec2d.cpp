@@ -3,9 +3,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "../rectangle.h"
 #include "../vec2d.h"
-#include "../line_segment.h"
 
 #define DEBUG 1
 
@@ -547,8 +545,8 @@ bool angle_test()
 
 	Vec2d<double> p1{1, 1};
 
-	result &= p1.angle(p1) < 0.01;
-	result &= p1.rad_angle(p1) < 0.01;
+	result &= angle(p1,p1) < 0.01;
+	result &= rad_angle(p1,p1) < 0.01;
 
 	if (DEBUG && !result)
 	    std::cout << "angle test 1 falied" << std::endl;
@@ -563,8 +561,8 @@ bool angle_test()
 	Vec2d<double> p1{0, 1};
 	Vec2d<double> p2{1, 0};
 
-	result &= 90 - p1.angle(p2) < 0.01;
-	result &= (Vec2d<double>::PI / 2) - p1.rad_angle(p2) < 0.01;
+	result &= 90 - angle(p1,p2) < 0.01;
+	result &= (Vec2d<double>::PI / 2) - rad_angle(p1,p2) < 0.01;
 
 	if (DEBUG && !result)
 	    std::cout << "angle test 2 falied" << std::endl;
@@ -579,8 +577,8 @@ bool angle_test()
 	Vec2d<double> p1{1, 1};
 	Vec2d<double> p2{1, 0};
 
-	result &= 45 - p1.angle(p2) < 0.01;
-	result &= (Vec2d<double>::PI / 4) - p1.rad_angle(p2) < 0.01;
+	result &= 45 - angle(p1,p2) < 0.01;
+	result &= (Vec2d<double>::PI / 4) - rad_angle(p1,p2) < 0.01;
 
 	if (DEBUG && !result)
 	    std::cout << "angle test 3 falied" << std::endl;
@@ -595,7 +593,7 @@ bool angle_test()
 	Vec2d<double> p1{2, 5};
 	Vec2d<double> p2{10, -2};
 
-	result &= 0.18208926018230745 - p1.rad_angle(p2) < 0.01;
+	result &= 0.18208926018230745 - rad_angle(p1,p2) < 0.01;
 
 	if (DEBUG && !result)
 	    std::cout << "angle test 4 falied" << std::endl;

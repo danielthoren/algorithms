@@ -83,6 +83,8 @@ namespace dalg
 	 */
 	Vec2d<T> get_start_point() const;
 
+	Vec2d<T> get_vector() const;
+
     private:
 	//p(s) = p0 + su
 	Vec2d<T> p0;
@@ -90,7 +92,22 @@ namespace dalg
     
     };
 
-    //TODO: implement scalar product operator
+    /************************/
+    /* Non-Member functions */
+    /************************/
+
+    /**
+     * Returns the angle between the given vectors
+     *
+     * other : The vector to compare to
+     *
+     * return: The angle in degrees
+     */
+    template <typename T>
+    double rad_angle(LineSegment<T> const& l1, LineSegment<T> const& l2);
+
+    template <typename T>
+    double angle(LineSegment<T> const& l1, LineSegment<T> const& l2);
 }
 
 #include "line_segment.tcc"

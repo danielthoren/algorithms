@@ -56,16 +56,6 @@ namespace dalg
 	bool operator!=(Vec2d const& other) const;   
 
 	/**
-	 * Returns the angle between this and the given vector
-	 *
-	 * other : The vector to compare to
-	 *
-	 * return: The angle in degrees
-	 */
-	double rad_angle(Vec2d const& other) const;
-	double angle(Vec2d const& other) const;	
-
-	/**
 	 * Returns the length of this vector
 	 */
 	double length() const;
@@ -106,6 +96,19 @@ namespace dalg
     template<typename T>
     T dot(Vec2d<T> const& u, Vec2d<T> const& v);
 
+    /**
+     * Returns the angle between the given vectors
+     *
+     * other : The vector to compare to
+     *
+     * return: The angle in degrees
+     */
+    template <typename T>
+    double rad_angle(Vec2d<T> const& v1, Vec2d<T> const& v2);
+
+    template <typename T>
+    double angle(Vec2d<T> const& v1, Vec2d<T> const& v2);
+    
     /**
      * Projects this line segment onto the given line (treats the
      * given line segment as a line)

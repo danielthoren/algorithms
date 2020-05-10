@@ -34,22 +34,53 @@ bool constructor_test()
 	res = res & result;
     }
 
-    //--------------------Test LineSegment constructor---------------------------
+    //--------------------Test Vec2d constructor with wrong angle args---------------------------
+    {
+	bool result{true};
+
+	Vec2d<int> c1(0,0);
+	Vec2d<int> c2(1,1);
+	Vec2d<int> c3(0,1);
+	Vec2d<int> c4(-1,-1);
+
+	bool cought{false};
+
+	try {
+	    Rectangle<int> r1(c1, c2, c3, c4);
+	}
+	catch (dalg::BadArgumentException& e)
+	{
+	    cought = true;
+	}
+
+	result &= cought;
+
+	if (DEBUG && !result)
+	    std::cout << "constructor Test 2 failed" << std::endl;	
+
+	res = res & result;
+    }
+
+    //--------------------Test Vec2d constructor with wrong order args---------------------------
     {
 	bool result{true};
 
 	Vec2d<int> c1(0,0);
 	Vec2d<int> c2(0,1);
 	Vec2d<int> c3(1,1);
-	Vec2d<int> c4(0,1);
+	Vec2d<int> c4(1,0);
 
-	LineSegment<int> l1(c1, c2);
-	LineSegment<int> l2(c3, c4);	
+	bool cought{false};
 
-	Rectangle<int> r1(l1, l2);
+	try {
+	    Rectangle<int> r1(c1, c3, c2, c4);
+	}
+	catch (dalg::BadArgumentException& e)
+	{
+	    cought = true;
+	}
 
-	std::vector<Vec2d<int>>& c = r1.get_corners();
-	result &= c[0] == c1 && c[1] == c2 && c[2] == c3 && c[3] == c4;	   
+	result &= cought;
 
 	if (DEBUG && !result)
 	    std::cout << "constructor Test 2 failed" << std::endl;	
@@ -186,7 +217,7 @@ bool collision_x_test()
 	Vec2d<double> a1(1,1);
 	Vec2d<double> a2(2,1);
 	Vec2d<double> a3(2,0);
-	Vec2d<double> a4(0,1);
+	Vec2d<double> a4(1,0);
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
@@ -271,9 +302,9 @@ bool collision_x_test()
 	Rectangle<double> r1(c1, c2, c3, c4);
 
 	Vec2d<double> a1(1,1);
-	Vec2d<double> a2(2,2);
+	Vec2d<double> a2(2,1);
 	Vec2d<double> a3(2,0);
-	Vec2d<double> a4(0,1);
+	Vec2d<double> a4(1,0);
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
@@ -299,9 +330,9 @@ bool collision_x_test()
 	Rectangle<double> r1(c1, c2, c3, c4);
 
 	Vec2d<double> a1(10,10);
-	Vec2d<double> a2(11,11);
-	Vec2d<double> a3(11,0);
-	Vec2d<double> a4(0,11);
+	Vec2d<double> a2(11,10);
+	Vec2d<double> a3(11,11);
+	Vec2d<double> a4(10,11);
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
@@ -637,6 +668,34 @@ bool collision_test()
 	Vec2d<double> a2(1.1, 2  );
 	Vec2d<double> a3(2  , 2  );
 	Vec2d<double> a4(2  , 1.1);
+
+	Rectangle<double> r2(a1, a2, a3, a4);
+       
+	result &= !r1.collision(r2);
+
+	if (DEBUG && !result)
+	    std::cout << "XY collision Test " << test_count << " failed" << std::endl;
+
+	++test_count;
+
+	res = res & result;
+    }
+
+    //--------------------Test both axis, both rotated, verry close---------------------------    
+    {
+	bool result{true};
+
+	Vec2d<double> c1(0,0.5);
+	Vec2d<double> c2(0.5,1);
+	Vec2d<double> c3(1,0.5);
+	Vec2d<double> c4(0.5,0);
+
+	Rectangle<double> r1(c1, c2, c3, c4);
+
+	Vec2d<double> a1(0.75,0);
+	Vec2d<double> a2(1.25,0.5);
+	Vec2d<double> a3(1.75,0);
+	Vec2d<double> a4(1.25,-0.5);
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
