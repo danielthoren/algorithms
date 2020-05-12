@@ -11,12 +11,12 @@ namespace dphys
     public:
 	Shape():
 	    forces{}, angle{0}, vel{0,0},
-	    acc{0,0}, pos{0,0}
+	    acc{0,0}, pos{0,0}, mass{1}
 	    {}
 	
-	Shape(dalg::Vec2d<T> const& pos):
+	Shape(dalg::Vec2d<T> const& pos, T mass):
 	    forces{}, angle{0}, vel{0,0},
-	    acc{0,0}, pos{pos}
+	    acc{0,0}, pos{pos}, mass{mass}
 	    {}
 
 	Shape(Shape const& other):
@@ -24,7 +24,8 @@ namespace dphys
 	    angle{other.angle},
 	    vel{other.vel},
 	    acc{other.acc},
-	    pos{other.pos}
+	    pos{other.pos},
+	    mass{other.mass}
 	    {}	    
 	
 	dalg::Vec2d<T> merge_forces()
@@ -33,15 +34,18 @@ namespace dphys
 		for (dalg::Vec2d<T>& vec : forces)
 		{
 		    result += vec;
-		}
+		}	       		
 		return result;
 	    }
+
+    protected:
 
 	std::vector<dalg::Vec2d<T>> forces;
 	
 	T angle;
 	dalg::Vec2d<T> vel;
 	dalg::Vec2d<T> acc;
-	dalg::Vec2d<T> pos;	
+
+	T mass;
     };
 }

@@ -50,6 +50,9 @@ namespace dalg
 	Vec2d operator-(Vec2d const& other) const;
 	Vec2d& operator-=(Vec2d const& other);
 
+
+	Vec2d& operator*=(T scalar);
+
 	Vec2d& operator=(Vec2d const& other);
 
 	bool operator==(Vec2d const& other) const;	

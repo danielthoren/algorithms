@@ -50,6 +50,13 @@ dalg::Vec2d<T>& dalg::Vec2d<T>::operator-=(dalg::Vec2d<T> const& other)
 }
 
 template <typename T>
+dalg::Vec2d<T>& dalg::Vec2d<T>::operator*=(T scalar)
+{
+    *this = *this * scalar;
+    return *this;
+}
+
+template <typename T>
 dalg::Vec2d<T>& dalg::Vec2d<T>::operator=(dalg::Vec2d<T> const& other)
 {
     x = other.x;

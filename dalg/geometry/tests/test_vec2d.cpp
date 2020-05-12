@@ -48,7 +48,7 @@ bool addition_test()
 	Vec2d<int> p3{p1 + p2};
 
 	result &= (p3.x == p1.x + p2.x &&
-		  p3.y == p1.y + p2.y);
+		   p3.y == p1.y + p2.y);
 
 	if (DEBUG && !result)
 	    std::cout << "Addition test 1 failed" << std::endl;
@@ -91,7 +91,7 @@ bool substraction_test()
 	Vec2d<int> p3{p1 - p2};
 
 	result &= (p3.x == p1.x - p2.x &&
-		  p3.y == p1.y - p2.y);
+		   p3.y == p1.y - p2.y);
 
 	if (DEBUG && !result)
 	    std::cout << "Substraction test 1 failed" << std::endl;
@@ -207,7 +207,7 @@ bool scalar_mult_test()
 {
     bool res{true};
 
-    //--------------------Test normal scalar ---------------------------
+    //--------------------Test normal scalar p * x ---------------------------
     {
 	bool result = true;
 	
@@ -221,15 +221,16 @@ bool scalar_mult_test()
 	res &= result;
     }
 
+    //--------------------Test normal scalar x * p ---------------------------
     {
 	bool result = true;
 	
 	Vec2d<double> p1{1,1};
 
-	result &= (p1 * 3.14) == Vec2d<double>{3.14,3.14};
+	result &= (3.14 * p1) == Vec2d<double>{3.14,3.14};
 
 	if (DEBUG && !result)
-	    std::cout << "Scalar product test 1 falied" << std::endl;    
+	    std::cout << "Scalar product test 2 falied" << std::endl;    
 	
 	res &= result;
     }
@@ -242,7 +243,21 @@ bool scalar_mult_test()
 	result &= (p1 * 0.0) == Vec2d<double>{0,0};
 
 	if (DEBUG && !result)
-	    std::cout << "Scalar product test 1 falied" << std::endl;    
+	    std::cout << "Scalar product test 3 falied" << std::endl;    
+	
+	res &= result;
+    }
+
+    //--------------------Test normal scalar p *= x ---------------------------
+    {
+	bool result = true;
+	
+	Vec2d<double> p1{1,1};
+
+	result &= (p1 *= -1) == Vec2d<double>{-1, -1};
+
+	if (DEBUG && !result)
+	    std::cout << "Scalar product test 4 falied" << std::endl;    
 	
 	res &= result;
     }
