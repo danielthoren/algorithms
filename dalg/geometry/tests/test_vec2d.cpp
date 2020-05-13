@@ -1,3 +1,5 @@
+#include "catch.hpp"
+
 #include <string>
 #include <algorithm>
 #include <cmath>
@@ -9,665 +11,350 @@
 
 using namespace dalg;
 
-bool constructor_test()
+TEST_CASE( "Vec2d Constructor test", "[Vec2d]")
 {
-    bool res{true};
-
-    //--------------------Test copy constructor---------------------------
+    SECTION( "copy constructor" )
     {
-
-	bool result{true};
-
 	Vec2d<int> p1{1,1};
 	Vec2d<int> p2{p1};
 
-	result &= (p2.x == p1.x && p2.y == p1.y);
-	result &= (p2 == p1);
-
-	if (DEBUG && !result)
-	    std::cout << "Constructor test 1 failed" << std::endl;
-
-	res &= result;
-	
+	REQUIRE( p2.x == p1.x );
+	REQUIRE( p2.y == p1.y );
+        REQUIRE( p2 == p1 );	
     }
-    
-    return res;
 }
 
-bool addition_test()
+TEST_CASE( "Vec2d addition test", "[Vec2d]")
 {
-    bool res{true};
-
-    //--------------------Test Vec2d + Vec2d ---------------------------
+    SECTION( "Vec2d + Vec2d" )
     {
-	bool result = true;
-
 	Vec2d<int> p1{1,1};
 	Vec2d<int> p2{p1};
 	
 	Vec2d<int> p3{p1 + p2};
 
-	result &= (p3.x == p1.x + p2.x &&
-		   p3.y == p1.y + p2.y);
-
-	if (DEBUG && !result)
-	    std::cout << "Addition test 1 failed" << std::endl;
-
-	res &= result;
+	CHECK( p3.x == p1.x + p2.x );
+	CHECK( p3.y == p1.y + p2.y );
     }
 
-    //--------------------Test Vec2d += Vec2d ---------------------------
+    SECTION( "Vec2d += Vec2d" )
     {
-	bool result = true;
-
 	Vec2d<int> p1{1,1};
 	Vec2d<int> p2{p1};
 	
 	p2 += p1;
 
-	result &= (p2.x == 2 && p2.y == 2);
-	result &= (p1.x == 1 && p1.y == 1);
-
-	if (DEBUG && !result)
-	    std::cout << "Addition test 2 failed" << std::endl;
-
-	res &= result;
+	CHECK( p2.x == 2 );
+	CHECK( p2.y == 2 );
+	CHECK( p1.x == 1 );
+	CHECK( p1.y == 1 );
     }
-
-    return res;
 }
 
-bool substraction_test()
+TEST_CASE( "Vec2d substraction test", "[Vec2d]")
 {
-    bool res{true};
-
-    //--------------------Test Vec2d - Vec2d ---------------------------
+    SECTION( "Vec2d - Vec2d" )
     {
-	bool result = true;
-
 	Vec2d<int> p1{1,1};
 	Vec2d<int> p2{p1};
 	
 	Vec2d<int> p3{p1 - p2};
 
-	result &= (p3.x == p1.x - p2.x &&
-		   p3.y == p1.y - p2.y);
-
-	if (DEBUG && !result)
-	    std::cout << "Substraction test 1 failed" << std::endl;
-
-	res &= result;
+	CHECK( p3.x == p1.x - p2.x );
+	CHECK( p3.y == p1.y - p2.y );
     }
 
-    //--------------------Test Vec2d -= Vec2d ---------------------------
+    SECTION( " Vec2d -= Vec2d" )
     {
-	bool result = true;
-
 	Vec2d<int> p1{1,1};
 	Vec2d<int> p2{p1};
 	
 	p2 -= p1;
 
-	result &= (p2.x == 0 && p2.y == 0);
-	result &= (p1.x == 1 && p1.y == 1);
-
-	if (DEBUG && !result)
-	    std::cout << "Substraction test 2 failed" << std::endl;
-
-	res &= result;
+        CHECK( p2.x == 0 );
+	CHECK( p2.y == 0 );
+	CHECK( p1.x == 1 );
+	CHECK( p1.y == 1 );
     }
-
-    return res;
 }
 
-
-bool length_test()
+TEST_CASE( "Vec2d length test", "[Vec2d]")
 {
-    bool res{true};
-
-    //--------------------Test normal length ---------------------------
+    SECTION( "normal length" )
     {
-	bool result = true;
-	
 	Vec2d<int> p1{1,1};
 	
 	double len{p1.length()};
-	result &= (len == sqrt(2));
+	CHECK( len == Approx( sqrt(2) ) );
 
 	Vec2d<int> p2{-1,1};
 	
 	double len2{p2.length()};
-	result &= (len2 == sqrt(2));
+	CHECK( len2 == Approx( sqrt(2) ) );
 
 	Vec2d<int> p3{1,-1};
 	
 	double len3{p3.length()};
-	result &= (len3 == sqrt(2));
+	CHECK( len3 == Approx( sqrt(2) ) );
 
 	Vec2d<int> p4{-1,-1};
 	
 	double len4{p4.length()};
-	result &= (len4 == sqrt(2));
-
-	if (DEBUG && !result)
-	    std::cout << "Length test 1 failed" << std::endl;
-	
-	res &= result;
+	CHECK( len4 == Approx( sqrt(2) ) );
     }
 
-    //--------------------Test edge cases length ---------------------------
-    {
-	bool result = true;
-	
+    SECTION( "edge cases length" )
+    {	
 	Vec2d<int> p1{0,0};
 	
-	result &= (p1.length() == 0);
+	CHECK( p1.length() == Approx(0) );
 
 	Vec2d<int> p2{1,0};
 
-	result &= (p2.length() == 1);
+	CHECK( p2.length() == Approx(1) );
 
 	Vec2d<int> p3{0,1};
 
-	result &= (p3.length() == 1);	
-
-	if (DEBUG && !result)
-	    std::cout << "Length test 2 failed" << std::endl;
-	
-	res &= result;
+	CHECK( p3.length() == Approx(1) );
     }
-
-    return res;
 }
 
-bool comparison_test()
+TEST_CASE( "Vec2d comparison test", "[Vec2d]")
 {
-    bool global_result{true};    
-    //------------- Test comparison operators -------------
+    SECTION( "comparison operators" )
     {
-	bool result = true;
-
 	Vec2d<int> p1{1,1};
 	Vec2d<int> p2{p1};
 
 	Vec2d<int> p3{p1 - p2};
    
-	result &= (p3 != p2);
-	result &= (p1 == p2);
-
-	if (DEBUG && !result)
-	    std::cout << "Compairson test 1 failed" << std::endl;
-
-	global_result &= result;
+	CHECK( p3 != p2 );
+	CHECK( p1 == p2 );
     }
-    return global_result;
 }
 
-bool scalar_mult_test()
+TEST_CASE( "Vec2d scalar multiplication test", "[Vec2d]")
 {
-    bool res{true};
-
-    //--------------------Test normal scalar p * x ---------------------------
+    SECTION( "p * x (1)" )
     {
-	bool result = true;
-	
 	Vec2d<double> p1{1,1};
 
-	result &= (p1 * 2.0) == Vec2d<double>{2,2};
-
-	if (DEBUG && !result)
-	    std::cout << "Scalar product test 1 falied" << std::endl;    
-	
-	res &= result;
+	CHECK( (p1 * 2.0) == Vec2d<double>{2,2} );
     }
 
-    //--------------------Test normal scalar x * p ---------------------------
-    {
-	bool result = true;
-	
+    SECTION( "x * p (2)" )
+    {	
 	Vec2d<double> p1{1,1};
 
-	result &= (3.14 * p1) == Vec2d<double>{3.14,3.14};
-
-	if (DEBUG && !result)
-	    std::cout << "Scalar product test 2 falied" << std::endl;    
-	
-	res &= result;
+	CHECK( (3.14 * p1) == Vec2d<double>{3.14,3.14} );
     }
 
+    SECTION( "0.0 * p" )
     {
-	bool result = true;
-	
 	Vec2d<double> p1{1,1};
 
-	result &= (p1 * 0.0) == Vec2d<double>{0,0};
-
-	if (DEBUG && !result)
-	    std::cout << "Scalar product test 3 falied" << std::endl;    
-	
-	res &= result;
+	CHECK( (p1 * 0.0) == Vec2d<double>{0,0} );
     }
 
-    //--------------------Test normal scalar p *= x ---------------------------
-    {
-	bool result = true;
-	
+    SECTION( "p *= x" )
+    {	
 	Vec2d<double> p1{1,1};
 
-	result &= (p1 *= -1) == Vec2d<double>{-1, -1};
-
-	if (DEBUG && !result)
-	    std::cout << "Scalar product test 4 falied" << std::endl;    
-	
-	res &= result;
+	CHECK( (p1 *= -1) == Vec2d<double>{-1, -1} );
     }
-
-    return res;
 }
 
-bool scalar_div_test()
+TEST_CASE( "Vec2d scalar divison test", "[Vec2d]")
 {
-    bool res{true};
-
-    //--------------------Test normal scalar ---------------------------
+    SECTION( "p / x" )
     {
-	bool result = true;
-	
 	Vec2d<double> p1{1,1};
 
-	result &= (p1 / 2.0) == Vec2d<double>{0.5, 0.5};
-	result &= (p1 / 0.5) == Vec2d<double>{2, 2};
-
-	if (DEBUG && !result)
-	    std::cout << "Scalar product test 1 falied" << std::endl;    
-	
-	res &= result;
+	CHECK( (p1 / 2.0) == Vec2d<double>{0.5, 0.5} );
+	CHECK( (p1 / 0.5) == Vec2d<double>{2, 2} );
     }
-
-    return res;
 }
 
-bool cross_test()
+TEST_CASE( "Vec2d cross product test", "[Vec2d]")
 {
-    bool res{true};
-
-    //--------------------Test cross( p,p ) == 0 ---------------------------
+    SECTION( "cross( p1, p2 ) == 0" )
     {
-	bool result = true;
-
 	Vec2d<double> p1{1,1};
 	Vec2d<double> p2{p1};
 	
-	result &= (cross(p1, p2) == 0);
+	CHECK( cross(p1, p2) == 0 );
 
+    }
+
+    SECTION( "cross( p1, p2 ) (1)" )
+    {
 	Vec2d<double> p3{10.10,10.10};
 	Vec2d<double> p4{p3};
 	
-	result &= (cross(p3, p4) == 0);
-
-	if (DEBUG && !result)
-	    std::cout << "Cross test 1 falied" << std::endl;
-	
-	res &= result;
+	CHECK( cross(p3, p4) == 0 );
     }
-
-    
-    //--------------------Test normal cross ---------------------------
+   
+    SECTION( "cross( p1, p2 ) (2)" )
     {
-	bool result = true;
-
 	Vec2d<double> p1{0,1};
 	Vec2d<double> p2{1,0};
 	
-	result &= (cross(p1, p2) == -1);
-
-	if (DEBUG && !result)
-	    std::cout << "cross test 2 falied" << std::endl;
-	
-	res &= result;
+	CHECK( cross(p1, p2) == -1 );
     }
 
-    {
-	bool result = true;
-	
+    SECTION( "cross( p1, p2 ) (3)" )
+    {	
 	Vec2d<double> p1{10.5, 1.56};
 	Vec2d<double> p2{-13.8, 34.2};
 	
-	result &= (cross(p1, p2) == (10.5 * 34.2) - (1.56*-13.8));	
-
-	if (DEBUG && !result)
-	    std::cout << "cross test 3 falied" << std::endl;
-	
-	res &= result;
+	CHECK( cross(p1, p2) == Approx( (10.5 * 34.2) - (1.56*-13.8) ) );
     }    
     
-
+    SECTION( "cross( p1, p2 ) (4)" )
     {
-	bool result = true;
-
 	Vec2d<int> p1{1, 0};
 	Vec2d<int> p2{-4, 3};
 
 	int res = dalg::cross(p1, p2);
-	result &= res == 3;
-
-	if (DEBUG && !result)
-	    std::cout << "Cross test 4 falied" << std::endl;
-
-	res &= result;
+	CHECK( res == 3 );
     }
-    
-    {
-	bool result = true;
 
+    SECTION( "cross( p1, p2 ) (5)" )
+    {
 	Vec2d<int> p1{1, 3};
 	Vec2d<int> p2{2, 4};
 
 	int res = dalg::cross(p1, p2);
-	result &= res == -2;
-
-	if (DEBUG &&!result)
-	    std::cout << "Cross test 5 falied" << std::endl;
-
-	res &= result;
+	CHECK( res == -2 );
     }
 
+    SECTION( "cross( p1, p2 ) (6)" )
     {
-	bool result = true;
-
 	Vec2d<int> p1{2, -1};
 	Vec2d<int> p2{1, 3};
 
 	int res = dalg::cross(p1, p2);
-	result &= res == 7;
-
-	if (DEBUG && !result)
-	    std::cout << "Cross test 6 falied" << std::endl;
-
-	res &= result;
+	CHECK( res == 7 );
     }
-
-    return res;
 }
 
-bool dot_test()
+TEST_CASE( "Vec2d dot product test", "[Vec2d]")
 {
-    bool res{true};
-
-    //--------------------Test normal dot ---------------------------
+    SECTION( "dot( p1, p2 ) (1)" )
     {
-	bool result = true;
-
 	Vec2d<double> p1{1,1};
 	Vec2d<double> p2{p1};
 	
-	result &= (dot(p1, p2) == 2);
-
-	if (DEBUG && !result)
-	    std::cout << "dot test 1 falied" << std::endl;
-	
-	res &= result;
+	CHECK( dot(p1, p2) == 2 );
     }
 
+    SECTION( "dot( p1 ,p2 ) (2)" )
     {
-	bool result = true;
-
     	Vec2d<double> p3{10.10,10.10};
 	Vec2d<double> p4{p3};
 	
-	result &= (dot(p3, p4) == (10.10 * 10.10) + (10.10 * 10.10) );
-
-	if (DEBUG && !result)
-	    std::cout << "dot test 2 falied" << std::endl;
-	
-	res &= result;
+	CHECK( dot(p3, p4) == Approx( (10.10 * 10.10) + (10.10 * 10.10) ) );
     }
 
+    SECTION( "dot( p1, p2 ) (3)" )
     {
-	bool result = true;
-
     	Vec2d<double> p3{1,0};
 	Vec2d<double> p4{0,1};
 	
-	result &= (dot(p3, p4) == 0);
-
-	if (DEBUG && !result)
-	    std::cout << "dot test 3 falied" << std::endl;
-	
-	res &= result;
+	CHECK( dot(p3, p4) == 0 );
     }
 
+    SECTION( "dot( p1, p2 ) (4)" )
     {
-	bool result = true;
-
     	Vec2d<double> p3{0,1};
 	Vec2d<double> p4{1,0};
 	
-	result &= (dot(p3, p4) == 0);
-
-	if (DEBUG && !result)
-	    std::cout << "dot test 4 falied" << std::endl;
-	
-	res &= result;
+	CHECK( dot(p3, p4) == 0 );
     }
 
+    SECTION( "dot( p1, p2 ) (5)" )
     {
-	bool result = true;
-
     	Vec2d<double> p3{0,0};
 	Vec2d<double> p4{0,0};
 	
-	result &= (dot(p3, p4) == 0);
-
-	if (DEBUG && !result)
-	    std::cout << "dot test 5 falied" << std::endl;
-	
-	res &= result;
+	CHECK( dot(p3, p4) == 0 );
     }
 
+    SECTION( "dot( p1, p2 ) (6)" )
     {
-	bool result = true;
-
 	Vec2d<int> p1{2,4};
 	Vec2d<int> p2{4,2};
 
-	result &= dalg::dot(p1, p2) == 16;
-
-	if (DEBUG && !result)
-	    std::cout << "dot test 6 falied" << std::endl;
-
-	res &= result;
+	CHECK( dalg::dot(p1, p2) == 16 );
     }
-
-    return res;
 }
 
-bool project_test()
+TEST_CASE( "Vec2d projection test", "[Vec2d]")
 {
-    bool res{true};
-
+    SECTION( "project( p1, p2 ) (1)" )
     {
-	bool result = true;
-
 	Vec2d<double> p1{2, 3};
 	Vec2d<double> p2{1, 2};
 
 	Vec2d<double> tmp = dalg::project(p1, p2);
-	result &= tmp == Vec2d<double>(8.0/5.0, 16.0/5.0);
-
-	if (DEBUG && !result)
-	    std::cout << "Project test 1 falied" << std::endl;
-
-	res &= result;
+	CHECK( tmp == Vec2d<double>(8.0/5.0, 16.0/5.0) );
     }
-
+    
+    SECTION( "project( p1, p2 ) (2)" )
     {
-	bool result = true;
-
 	Vec2d<double> p1{0, -2};
 	Vec2d<double> p2{1, 3};
 
 	Vec2d<double> tmp = dalg::project(p1, p2);
-	result &= tmp == Vec2d<double>(-3.0/5.0, -9.0/5.0);
-
-	if (DEBUG && !result)
-	    std::cout << "Project test 2 falied" << std::endl;
-
-	res &= result;
+	CHECK( tmp == Vec2d<double>(-3.0/5.0, -9.0/5.0) );
     }
 
+    SECTION( "project( p1, p2 ) (3)" )
     {
-	bool result = true;
-
 	Vec2d<double> p1{1, 1};
 	Vec2d<double> p2{1, 1};
 
 	Vec2d<double> tmp = dalg::project(p1, p2);
-	result &= tmp == Vec2d<double>(1, 1);
-
-	if (DEBUG && !result)
-	    std::cout << "Project test 3 falied" << std::endl;
-
-	res &= result;
+	CHECK( tmp == Vec2d<double>(1, 1) );
     }
 
+    SECTION( "project( p1, p2 ) (4)" )
     {
-	bool result = true;
-
 	Vec2d<int> p1{0, -2};
 	Vec2d<int> p2{1, 3};
 
 	Vec2d<double> tmp = dalg::project<int, double>(p1, p2);
 	tmp.prec = 0.1; //Set precision quite high since get precision error
-	result &= tmp == Vec2d<double>(-3.0/5.0, -9.0/5.0);
-
-	if (DEBUG && !result)
-	    std::cout << "Project test 4 falied" << std::endl;
-
-	res &= result;
+	
+	CHECK( tmp == Vec2d<double>(-3.0/5.0, -9.0/5.0) );
     }
-
-    return res;
 }
 
-bool angle_test()
+TEST_CASE( "Vec2d angle test", "[Vec2d]")
 {
-    bool res{true};
-
-    //--------------------Test p.angle(p) ---------------------------
+    SECTION( "p.angle(p)" )
     {
-	bool result = true;
-
 	Vec2d<double> p1{1, 1};
 
-	result &= angle(p1,p1) < 0.01;
-	result &= rad_angle(p1,p1) < 0.01;
-
-	if (DEBUG && !result)
-	    std::cout << "angle test 1 falied" << std::endl;
-
-	res &= result;
+	CHECK( angle(p1,p1) < 0.01 );
+	CHECK( rad_angle(p1,p1) < 0.01 );
     }
 
-    //--------------------Test 90 degree ---------------------------
+    SECTION( "90 degree" )
     {
-	bool result = true;
-
 	Vec2d<double> p1{0, 1};
 	Vec2d<double> p2{1, 0};
 
-	result &= 90 - angle(p1,p2) < 0.01;
-	result &= (Vec2d<double>::PI / 2) - rad_angle(p1,p2) < 0.01;
-
-	if (DEBUG && !result)
-	    std::cout << "angle test 2 falied" << std::endl;
-
-	res &= result;
+	CHECK( Approx(90) == angle(p1,p2) );
+	CHECK( Approx(Vec2d<double>::PI / 2) == rad_angle(p1,p2) );
     }
 
-    //--------------------Test 45 degree ---------------------------
+    SECTION( "45 degree" )
     {
-	bool result = true;
-
 	Vec2d<double> p1{1, 1};
 	Vec2d<double> p2{1, 0};
 
-	result &= 45 - angle(p1,p2) < 0.01;
-	result &= (Vec2d<double>::PI / 4) - rad_angle(p1,p2) < 0.01;
-
-	if (DEBUG && !result)
-	    std::cout << "angle test 3 falied" << std::endl;
-
-	res &= result;
+	CHECK( Approx(45) == angle(p1,p2) );
+	CHECK( Approx(Vec2d<double>::PI / 4) == rad_angle(p1,p2) );
     }
-
-    //--------------------Test random ---------------------------
-    {
-	bool result = true;
-
-	Vec2d<double> p1{2, 5};
-	Vec2d<double> p2{10, -2};
-
-	result &= 0.18208926018230745 - rad_angle(p1,p2) < 0.01;
-
-	if (DEBUG && !result)
-	    std::cout << "angle test 4 falied" << std::endl;
-
-	res &= result;
-    }
-
-    return res;
-}
-
-
-int main()
-{
-
-    if (!constructor_test())
-    {
-	std::cout << "--------------------Constructor test failed------------------------" << std::endl;
-	return -1;
-    }
-    if (!addition_test())
-    {
-	std::cout << "--------------------Addition test failed---------------------------" << std::endl;
-    }
-    if (!substraction_test())
-    {
-	std::cout << "--------------------Substraction test failed-----------------------" << std::endl;
-    }
-    if (!length_test())
-    {
-	std::cout << "--------------------length test failed-----------------------------" << std::endl;
-    }
-    if (!comparison_test())
-    {
-	std::cout << "--------------------comparison test failed-------------------------" << std::endl;
-    }
-    if (!scalar_mult_test())
-    {
-	std::cout << "--------------------scalar mult test failed------------------------" << std::endl;
-    }
-    if (!scalar_div_test())
-    {
-	std::cout << "--------------------scalar div test failed-------------------------" << std::endl;
-    }
-    if (!cross_test())
-    {
-	std::cout << "--------------------cross test failed------------------------------" << std::endl;
-    }    
-    if (!dot_test())
-    {
-	std::cout << "--------------------dot test failed------------------------------" << std::endl;
-    }
-    if (!project_test())
-    {
-	std::cout << "--------------------project test failed--------------------------" << std::endl;
-    }
-    if (!angle_test())
-    {
-	std::cout << "--------------------angle test failed----------------------------" << std::endl;
-    }    
-    
-    return 0;
 }

@@ -19,8 +19,6 @@ TEST_CASE( "Circle-circle collision test", "[Circle]" )
     //--------------------Test random ---------------------------
     SECTION( "Test normal collision" )
     {
-	bool result = true;
-
 	Circle<double> c1{Vec2d<double>{0,0}, 5};
 	Circle<double> c2{Vec2d<double>{5,0}, 5};
 
@@ -42,9 +40,5 @@ TEST_CASE( "Circle-circle collision test", "[Circle]" )
 	col_c.B = &c2;
 
 	CHECK( col_act == col_c );
-
-	if (DEBUG && !result)
-	    std::cout << "circle_circle test 1 falied" << std::endl;
-
     }
 }

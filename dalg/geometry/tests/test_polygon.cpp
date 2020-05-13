@@ -80,7 +80,7 @@ TEST_CASE( "Polygon area test", "[Polygon]" )
     }
 
     SECTION( "Large area negative cords test" )
-    {
+    {	
 	dalg::Vec2d<int> p1(41, -6);
 	dalg::Vec2d<int> p2(-24, -74);
 	dalg::Vec2d<int> p3(-51, -6);

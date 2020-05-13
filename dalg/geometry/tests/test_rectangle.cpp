@@ -1,3 +1,5 @@
+#include "catch.hpp"
+
 #include <string>
 #include <algorithm>
 #include <cmath>
@@ -11,13 +13,13 @@
 
 using namespace dalg;
 
-bool constructor_test()
-{    
-    bool res{true};
-    //--------------------Test Vec2d constructor---------------------------
-    {
-	bool result{true};
 
+TEST_CASE( "Rectangle Constructor test", "[Rectangle]")
+{
+    SECTION( "Test Vec2d constructor" )
+    {
+	std::cout << "in rectangle test" << std::endl;
+	
 	Vec2d<int> c1(0,0);
 	Vec2d<int> c2(0,1);
 	Vec2d<int> c3(1,1);
@@ -26,72 +28,34 @@ bool constructor_test()
 	Rectangle<int> r1(c1, c2, c3, c4);
 
 	std::vector<Vec2d<int>>& c = r1.get_corners();
-	result &= c[0] == c1 && c[1] == c2 && c[2] == c3 && c[3] == c4;
-
-	if (DEBUG && !result)
-	    std::cout << "constructor Test 1 failed" << std::endl;	
-
-	res = res & result;
+        REQUIRE( c[0] == c1 );
+	REQUIRE( c[1] == c2 );
+	REQUIRE( c[2] == c3 );
+	REQUIRE( c[3] == c4 );
     }
 
-    //--------------------Test Vec2d constructor with wrong angle args---------------------------
+    SECTION( "Vec2d constructor with wrong angle args" )
     {
-	bool result{true};
-
 	Vec2d<int> c1(0,0);
 	Vec2d<int> c2(1,1);
 	Vec2d<int> c3(0,1);
 	Vec2d<int> c4(-1,-1);
 
-	bool cought{false};
-
-	try {
-	    Rectangle<int> r1(c1, c2, c3, c4);
-	}
-	catch (dalg::BadArgumentException& e)
-	{
-	    cought = true;
-	}
-
-	result &= cought;
-
-	if (DEBUG && !result)
-	    std::cout << "constructor Test 2 failed" << std::endl;	
-
-	res = res & result;
+	CHECK_THROWS_AS( Rectangle<int>(c1, c2, c3, c4), dalg::BadArgumentException );
     }
 
-    //--------------------Test Vec2d constructor with wrong order args---------------------------
+    SECTION( "Vec2d constructor with wrong order args" )
     {
-	bool result{true};
-
 	Vec2d<int> c1(0,0);
 	Vec2d<int> c2(0,1);
 	Vec2d<int> c3(1,1);
 	Vec2d<int> c4(1,0);
 
-	bool cought{false};
-
-	try {
-	    Rectangle<int> r1(c1, c3, c2, c4);
-	}
-	catch (dalg::BadArgumentException& e)
-	{
-	    cought = true;
-	}
-
-	result &= cought;
-
-	if (DEBUG && !result)
-	    std::cout << "constructor Test 2 failed" << std::endl;	
-
-	res = res & result;
+	CHECK_THROWS_AS( Rectangle<int>(c1, c3, c2, c4) ,dalg::BadArgumentException);
     }
 
-    //--------------------Test copy constructor---------------------------    
+    SECTION( "copy constructor" )
     {
-	bool result{true};
-
 	Vec2d<int> c1(0,0);
 	Vec2d<int> c2(0,1);
 	Vec2d<int> c3(1,1);
@@ -102,24 +66,18 @@ bool constructor_test()
 	Rectangle<int> r1(r);	
 
 	std::vector<Vec2d<int>>& c = r1.get_corners();
-	result &= c[0] == c1 && c[1] == c2 && c[2] == c3 && c[3] == c4;
-
-	if (DEBUG && !result)
-	    std::cout << "constructor Test 3 failed" << std::endl;	
-
-	res = res & result;
-    }    
-    
-    return res;
+	REQUIRE( c[0] == c1 );
+	REQUIRE( c[1] == c2 );
+	REQUIRE( c[2] == c3 );
+	REQUIRE( c[3] == c4 );
+    }
 }
 
 
-bool min_max_test()
-{    
-    bool res{true};    
+TEST_CASE( "Rectangle min_max test", "[Rectangle]")
+{
+    SECTION( "min_max test 1" )
     {
-	bool result{true};
-
 	Vec2d<int> c1(0,1);
 	Vec2d<int> c2(1,0);
 	Vec2d<int> c3(1,2);
@@ -131,24 +89,15 @@ bool min_max_test()
 	ret.first.prec = 0.1;
 	ret.second.prec = 0.1;
 
-	result &= ret.first == Vec2d<double>(0,0) && ret.second == Vec2d<double>(2,0);
-
-	if (DEBUG && !result)
-	    std::cout << "min_max Test 1 failed" << std::endl;	
-
-	res = res & result;
+        CHECK( ret.first == Vec2d<double>(0,0) );
+	CHECK( ret.second == Vec2d<double>(2,0) );
     }
-
-    return res;
 }
 
-bool center_point_test()
-{   
-    bool res{true};
-
+TEST_CASE( "Rectangle center point test", "[Rectangle]")
+{
+    SECTION( "Axel Aligned" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0,0);
 	Vec2d<double> c2(1,0);
 	Vec2d<double> c3(1,1);
@@ -159,26 +108,29 @@ bool center_point_test()
 	Vec2d<double> ret = r1.get_center_point();
 	ret.prec = 0.01;
 
-	result &= ret == Vec2d<double>(0.5, 0.5);
-
-	if (DEBUG && !result)
-	    std::cout << "min_max Test 1 failed" << std::endl;	
-
-	res = res & result;
+        CHECK( ret == Vec2d<double>(0.5, 0.5) );
     }
-    return res;
+
+    SECTION( "rotated 45" )
+    {
+	Vec2d<double> c1(0,1);
+	Vec2d<double> c2(1,0);
+	Vec2d<double> c3(0,-1);
+	Vec2d<double> c4(-1,0);
+
+	Rectangle<double> r1(c1, c2, c3, c4);
+
+	Vec2d<double> ret = r1.get_center_point();
+	ret.prec = 0.01;
+
+        CHECK( ret == Vec2d<double>(0, 0) );
+    }
 }
 
-bool collision_x_test()
+TEST_CASE( "Rectangle collision x-axis test", "[Rectangle]")
 {
-    bool res{true};
-
-    int test_count{1};
-
-    //--------------------Test same angle overlap x-axis---------------------------    
+    SECTION( "same angle overlap x-axis" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0,0);
 	Vec2d<double> c2(1,0);
 	Vec2d<double> c3(1,1);
@@ -193,20 +145,11 @@ bool collision_x_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "X collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+        CHECK( r1.collision(r2) );
     }
 
-    //--------------------Test same angle x-axis, only collision in line segment---------------------------    
+    SECTION( "same angle x-axis, only collision in line segment" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0,0);
 	Vec2d<double> c2(1,0);
 	Vec2d<double> c3(1,1);
@@ -221,21 +164,11 @@ bool collision_x_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "X collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( r1.collision(r2) );
     }
 
-
-    //--------------------Test same angle x-axis, no collision---------------------------    
+    SECTION( "same angle x-axis, no collision" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0,0);
 	Vec2d<double> c2(1,0);
 	Vec2d<double> c3(1,1);
@@ -250,21 +183,11 @@ bool collision_x_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= !r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "X collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( !r1.collision(r2) );
     }    
 
-
-    //--------------------Test different angle x-axis, deep collision---------------------------    
+    SECTION( "different angle x-axis, deep collision" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0.5,1  );
 	Vec2d<double> c2(1  ,0.5);
 	Vec2d<double> c3(0.5,  0);
@@ -279,21 +202,11 @@ bool collision_x_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "X collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( r1.collision(r2) );
     }
 
-
-    //--------------------Test different angle x-axis, only collision in point---------------------------    
+    SECTION( "different angle x-axis, only collision in point" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0.5,1  );
 	Vec2d<double> c2(1  ,0.5);
 	Vec2d<double> c3(0.5,  0);
@@ -308,20 +221,11 @@ bool collision_x_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "X collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( r1.collision(r2) );
     }
 
-    //--------------------Test different angle x-axis, no collision far---------------------------    
+    SECTION( "different angle x-axis, no collision far" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0.5,1  );
 	Vec2d<double> c2(1  ,0.5);
 	Vec2d<double> c3(0.5,  0);
@@ -335,22 +239,12 @@ bool collision_x_test()
 	Vec2d<double> a4(10,11);
 
 	Rectangle<double> r2(a1, a2, a3, a4);
-       
-	result &= !r1.collision(r2);
 
-	if (DEBUG && !result)
-	    std::cout << "X collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( !r1.collision(r2) );
     }
 
-
-    //--------------------Test different angle x-axis, no collision close---------------------------    
+    SECTION( "different angle x-axis, no collision close" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0.5,  1);
 	Vec2d<double> c2(1  ,0.5);
 	Vec2d<double> c3(0.5,  0);
@@ -365,30 +259,14 @@ bool collision_x_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= !r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "X collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
-    }
-    
-    return res;
+	CHECK( !r1.collision(r2) );
+    }   
 }
 
-
-bool collision_y_test()
+TEST_CASE( "Rectangle collision y-axis", "[Rectangle]")
 {
-    bool res{true};
-
-    int test_count{1};
-
-    //--------------------Test same angle overlap y-axis---------------------------    
+    SECTION( "same angle overlap y-axis" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0,0);
 	Vec2d<double> c2(1,0);
 	Vec2d<double> c3(1,1);
@@ -403,20 +281,11 @@ bool collision_y_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "Y collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( r1.collision(r2) );
     }
 
-    //--------------------Test same angle y-axis, only collision in line segment---------------------------    
+    SECTION( "same angle y-axis, only collision in line segment" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0,0);
 	Vec2d<double> c2(1,0);
 	Vec2d<double> c3(1,1);
@@ -431,21 +300,11 @@ bool collision_y_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "Y collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( r1.collision(r2) );
     }
 
-
-    //--------------------Test same angle y-axis, no collision---------------------------    
+    SECTION( "same angle y-axis, no collision" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0,0);
 	Vec2d<double> c2(1,0);
 	Vec2d<double> c3(1,1);
@@ -459,22 +318,12 @@ bool collision_y_test()
 	Vec2d<double> a4(0,11);
 
 	Rectangle<double> r2(a1, a2, a3, a4);
-       
-	result &= !r1.collision(r2);
 
-	if (DEBUG && !result)
-	    std::cout << "Y collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( !r1.collision(r2) );
     }    
 
-
-    //--------------------Test different angle y-axis, deep collision---------------------------    
+    SECTION( "different angle y-axis, deep collision" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0.5,1  );
 	Vec2d<double> c2(1  ,0.5);
 	Vec2d<double> c3(0.5,  0);
@@ -489,21 +338,11 @@ bool collision_y_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "Y collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( r1.collision(r2) );
     }
 
-
-    //--------------------Test different angle y-axis, only collision in point---------------------------    
+    SECTION( "different angle y-axis, only collision in point" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0.5, 1 );
 	Vec2d<double> c2(1  ,0.5);
 	Vec2d<double> c3(0.5,  0);
@@ -518,20 +357,11 @@ bool collision_y_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "Y collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( r1.collision(r2) );
     }
 
-    //--------------------Test different angle y-axis, no collision far---------------------------    
+    SECTION( "different angle y-axis, no collision far" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0.5,1  );
 	Vec2d<double> c2(1  ,0.5);
 	Vec2d<double> c3(0.5,  0);
@@ -546,21 +376,11 @@ bool collision_y_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= !r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "Y collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( !r1.collision(r2) );
     }
 
-
-    //--------------------Test different angle y-axis, no collision close---------------------------    
+    SECTION( "different angle y-axis, no collision close" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0.5,1 );
 	Vec2d<double> c2(1 ,0.5);
 	Vec2d<double> c3(0.5, 0);
@@ -575,32 +395,14 @@ bool collision_y_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= !r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "Y collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( !r1.collision(r2) );
     }
-    
-    return res;
 }
 
-bool collision_test()
+TEST_CASE( "Rectangle general collision test", "[Rectangle]")
 {
-    bool res{true};
-    
-    res &= collision_x_test();
-    res &= collision_y_test();
-
-    int test_count{1};
-
-    //--------------------Test both axis, deep collision---------------------------    
+    SECTION( "both axis, deep collision" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0,0);
 	Vec2d<double> c2(1,0);
 	Vec2d<double> c3(1,1);
@@ -615,20 +417,11 @@ bool collision_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "XY collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( r1.collision(r2) );
     }
 
-    //--------------------Test both axis, point collision---------------------------    
+    SECTION( "both axis, single point collision" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0,0);
 	Vec2d<double> c2(1,0);
 	Vec2d<double> c3(1,1);
@@ -643,20 +436,11 @@ bool collision_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "XY collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( r1.collision(r2) );
     }
 
-    //--------------------Test both axis, almost collision---------------------------    
+    SECTION( "both axis, almost collision" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0, 0);
 	Vec2d<double> c2(1, 0);
 	Vec2d<double> c3(1, 1);
@@ -671,20 +455,11 @@ bool collision_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= !r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "XY collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( !r1.collision(r2) );
     }
 
-    //--------------------Test both axis, both rotated, verry close---------------------------    
+    SECTION( "both rotated, verry close" )
     {
-	bool result{true};
-
 	Vec2d<double> c1(0,0.5);
 	Vec2d<double> c2(0.5,1);
 	Vec2d<double> c3(1,0.5);
@@ -699,40 +474,6 @@ bool collision_test()
 
 	Rectangle<double> r2(a1, a2, a3, a4);
        
-	result &= !r1.collision(r2);
-
-	if (DEBUG && !result)
-	    std::cout << "XY collision Test " << test_count << " failed" << std::endl;
-
-	++test_count;
-
-	res = res & result;
+	CHECK( !r1.collision(r2) );
     }
-    
-    return res;
-}
-
-
-int main()
-{
-
-    if (!constructor_test())
-    {
-	std::cout << "--------------------Constructor test failed------------------------" << std::endl;
-	return -1;
-    }
-    if (!min_max_test())
-    {
-	std::cout << "--------------------min_max test failed----------------------------" << std::endl;
-    }    
-    if (!center_point_test())
-    {
-	std::cout << "--------------------center_point test failed-----------------------" << std::endl;
-    }
-    if (!collision_test())
-    {
-	std::cout << "--------------------collision test failed--------------------------" << std::endl;
-    }    
-    
-    return 0;
 }
