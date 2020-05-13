@@ -1,3 +1,5 @@
+#include "catch.hpp"
+
 #include <string>
 #include <algorithm>
 #include <cmath>
@@ -11,10 +13,11 @@
 
 using namespace dalg;
 
-bool test_circle_circle()
+TEST_CASE( "Circle-circle collision test" )
 {
-    bool res{true};
+    
     //--------------------Test random ---------------------------
+    SECTION( "Test normal collision" )
     {
 	bool result = true;
 
@@ -23,45 +26,25 @@ bool test_circle_circle()
 
         auto col = c1.collision(c2);
 
-	if (!col)
-	{
-	    result = false;
-	}
-	else
-	{
-	    Collision<double>& col_act = col.value();
-
-	    Contact<double> c0{Vec2d<double>{0,0},
-			       Vec2d<double>{-1,0},
-			       5};
-
-	    Collision<double> col_c;
+	REQUIRE( col );
 	    
-	    col_c.contacts.push_back(c0);
-	    col_c.contact_count = 1;
-	    col_c.A = &c1;
-	    col_c.B = &c2;
+	Collision<double>& col_act = col.value();
 
-	    result &= col_act == col_c;
-	}
-	
+	Contact<double> c0{Vec2d<double>{0,0},
+			   Vec2d<double>{-1,0},
+			   5};
+
+	Collision<double> col_c;
+	    
+	col_c.contacts.push_back(c0);
+	col_c.contact_count = 1;
+	col_c.A = &c1;
+	col_c.B = &c2;
+
+	CHECK( col_act == col_c );
 
 	if (DEBUG && !result)
 	    std::cout << "circle_circle test 1 falied" << std::endl;
 
-	res &= result;
     }
-
-    return res;
-}
-
-
-int main()
-{
-    if (!test_circle_circle())
-    {
-	std::cout << "--------------------circle_circle test failed------------------------" << std::endl;
-	return -1;
-    }
-    return 0;
 }
