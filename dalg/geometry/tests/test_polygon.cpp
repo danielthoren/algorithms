@@ -1,3 +1,5 @@
+#include "catch.hpp"
+
 #include <string>
 #include <algorithm>
 #include <cmath>
@@ -9,7 +11,8 @@
 
 using namespace dalg;
 
-bool constructor()
+
+TEST_CASE( "Polygon Constructor test", "[Polygon]")
 {
     dalg::Vec2d<int> p1(0, 0);
     dalg::Vec2d<int> p2(1, 1);
@@ -17,43 +20,40 @@ bool constructor()
     std::vector<dalg::Vec2d<int>> pts{p1, p2, p3};
 
     dalg::Polygon poly(pts);
-
-    std::vector<dalg::LineSegment<int>>& segments = poly.get_segments();
-
-    if (!(segments[0].get_start_point() == p1 &&
-	segments[0].get_end_point() == p2 &&
-	segments[1].get_start_point() == p2 &&
-	segments[1].get_end_point() == p3 &&
-	segments[2].get_start_point() == p3 &&
-	  segments[2].get_end_point() == p1))
+    
+    SECTION( "Test normal construction" )
     {
-	std::cout << "Error when constructing polygon" << std::endl;
-	return false;
+	std::vector<dalg::LineSegment<int>>& segments = poly.get_segments();
+
+	REQUIRE( segments[0].get_start_point() == p1 );
+	REQUIRE( segments[0].get_end_point() == p2 );
+	REQUIRE( segments[1].get_start_point() == p2 );
+	REQUIRE( segments[1].get_end_point() == p3 );
+	REQUIRE( segments[2].get_start_point() == p3 );
+	REQUIRE( segments[2].get_end_point() == p1 );
     }
 
-    dalg::Vec2d<int> p4(4,0);
-
-    poly.add_point(p4, 1);
-
-    if (!(segments[0].get_start_point() == p1 &&
-	  segments[0].get_end_point() == p2 &&
-	  segments[1].get_start_point() == p2 &&
-	  segments[1].get_end_point() == p4 &&
-	  segments[2].get_start_point() == p4 &&
-	  segments[2].get_end_point() == p3 &&
-	  segments[3].get_start_point() == p3 &&
-	  segments[3].get_end_point() == p1))
+    SECTION( "Test add_point" )
     {
-	std::cout << "dalg::Vec2d not inserted correctly in polygon" << std::endl;
-	return false;
+	dalg::Vec2d<int> p4(4,0);
+
+	poly.add_point(p4, 1);
+	std::vector<dalg::LineSegment<int>>& segments = poly.get_segments();
+
+	CHECK( segments[0].get_start_point() == p1 );
+	CHECK( segments[0].get_end_point() == p2 );
+	CHECK( segments[1].get_start_point() == p2 );
+	CHECK( segments[1].get_end_point() == p4 );
+	CHECK( segments[2].get_start_point() == p4 );
+	CHECK( segments[2].get_end_point() == p3 );
+	CHECK( segments[3].get_start_point() == p3 );
+	CHECK( segments[3].get_end_point() == p1 );
     }
-    return true;
 }
 
-bool area()
+TEST_CASE( "Polygon area test", "[Polygon]" )
 {
-    bool global_res{true};
-    
+    SECTION( "Normal area test 1" )
     {
 	dalg::Vec2d<int> p1(0, 0);
 	dalg::Vec2d<int> p2(1, 1);	
@@ -62,13 +62,11 @@ bool area()
 	std::vector<dalg::Vec2d<int>> pts{p1, p2, p3, p4};
 
 	dalg::Polygon poly(pts);
-	if (4 - std::abs(poly.get_area<long double>()) > 0.01)
-	{
-	    std::cout << "area test 1 failed" << std::endl;
-	    global_res = false;
-	}
+
+	CHECK( std::abs(poly.get_area<long double>()) == Approx(4.0).epsilon(0.01) );
     }
 
+    SECTION( "Normal area test 2" )
     {
 	dalg::Vec2d<int> p1(0, 0);
 	dalg::Vec2d<int> p2(10, 0);
@@ -78,13 +76,10 @@ bool area()
 
 	dalg::Polygon poly(pts);
 
-	if (50 - std::abs(poly.get_area<long double>()) > 0.01)
-	{
-	    std::cout << "area test 2 failed" << std::endl;
-	    global_res = false;
-	}	
+	CHECK( std::abs(poly.get_area<long double>()) == Approx(50.0).epsilon(0.01) );
     }
 
+    SECTION( "Large area negative cords test" )
     {
 	dalg::Vec2d<int> p1(41, -6);
 	dalg::Vec2d<int> p2(-24, -74);
@@ -96,20 +91,37 @@ bool area()
 
 	dalg::Polygon poly(pts);
 
-	if (3817.5 - std::abs(poly.get_area<long double>()) > 0.01)
-	{
-	    std::cout << "area test 3 failed" << std::endl;
-	    global_res = false;
-	}	
+	CHECK( std::abs(poly.get_area<long double>()) == Approx(3817.5).epsilon(0.01) );
     }
-    
-    return global_res;
+
+    SECTION( "Zero area one point test" )
+    {
+	dalg::Vec2d<int> p1(0,0);
+	
+	std::vector<dalg::Vec2d<int>> pts{p1};
+
+	dalg::Polygon poly(pts);
+
+	CHECK( std::abs(poly.get_area<long double>()) == Approx(0.0).epsilon(0.01) );
+    }
+
+    SECTION( "Zero area two point test" )
+    {
+	dalg::Vec2d<int> p1(0,0);
+	dalg::Vec2d<int> p2(0,0);
+	
+	std::vector<dalg::Vec2d<int>> pts{p1, p2};
+
+	dalg::Polygon poly(pts);
+
+	CHECK( std::abs(poly.get_area<long double>()) == Approx(0.0).epsilon(0.01) );
+    }   
 }
 
-bool min_distance()
+
+TEST_CASE( "Polygon min_distance test", "[Polygon]" )
 {
-    bool global_res{true};
-    
+    SECTION( "Normal poly distance" )
     {
 	dalg::Vec2d<double> p1(0, 0);
 	dalg::Vec2d<double> p2(1, 1);	
@@ -127,13 +139,10 @@ bool min_distance()
 
 	double dist = (res.first - res.second).length();
 
-	if (1 - dist > 0.01)
-	{
-	    std::cout << "min distance test 1 failed" << std::endl;
-	    global_res = false;
-	}
+	CHECK( dist == Approx(1.0).epsilon(0.01) );
     }
 
+    SECTION( "Small square in larger square" )
     {
 	dalg::Vec2d<double> ip1(-5, -5);
 	dalg::Vec2d<double> ip2(5, -5);	
@@ -155,13 +164,60 @@ bool min_distance()
 
 	double dist = (res.first - res.second).length();
 
-	if (2.5 - dist > 0.01)
-	{
-	    std::cout << "min distance test 2 failed" << std::endl;
-	    global_res = false;
-	}
+	CHECK( dist == Approx(5).epsilon(0.01) );
     }
 
+    SECTION( "Small square in larger square rotated 45" )
+    {
+	dalg::Vec2d<double> ip1(-5, -5);
+	dalg::Vec2d<double> ip2(5, -5);	
+	dalg::Vec2d<double> ip3(5, 5);
+	dalg::Vec2d<double> ip4(-5, 5);
+
+	std::vector<dalg::Vec2d<double>> ipts{ip1, ip2, ip3, ip4};
+	dalg::Polygon inner(ipts);
+
+	dalg::Vec2d<double> op1(0, 2.5);
+	dalg::Vec2d<double> op2(2.5, 0);	
+	dalg::Vec2d<double> op3(0, -2.5);
+	dalg::Vec2d<double> op4(-2.5, 0);
+
+	std::vector<dalg::Vec2d<double>> opts{op1, op2, op3, op4};
+	dalg::Polygon outer(opts);
+
+	auto res = inner.min_distance(outer);
+
+	double dist = (res.first - res.second).length();
+
+	CHECK( dist == Approx( 2.5 ).epsilon(0.01) );
+    }
+
+    SECTION( "Small square in larger square rotated 45 intersecting" )
+    {
+	dalg::Vec2d<double> ip1(-5, -5);
+	dalg::Vec2d<double> ip2(5, -5);	
+	dalg::Vec2d<double> ip3(5, 5);
+	dalg::Vec2d<double> ip4(-5, 5);
+
+	std::vector<dalg::Vec2d<double>> ipts{ip1, ip2, ip3, ip4};
+	dalg::Polygon inner(ipts);
+
+	dalg::Vec2d<double> op1(0, 5);
+	dalg::Vec2d<double> op2(5, 0);	
+	dalg::Vec2d<double> op3(0, -5);
+	dalg::Vec2d<double> op4(-5, 0);
+
+	std::vector<dalg::Vec2d<double>> opts{op1, op2, op3, op4};
+	dalg::Polygon outer(opts);
+
+	auto res = inner.min_distance(outer);
+
+	double dist = (res.first - res.second).length();
+
+	CHECK( dist == Approx( 0 ).epsilon(0.01) );
+    }
+
+    SECTION( "Triangle inside warped square" )
     {
 	dalg::Vec2d<double> ip1(0,0);
 	dalg::Vec2d<double> ip2(1,0);	
@@ -182,32 +238,7 @@ bool min_distance()
 	auto res = inner.min_distance(outer);
 
 	double dist = (res.first - res.second).length();
-
-	if (0.70710678 - dist > 0.01)
-	{
-	    std::cout << "min distance test 3 failed" << std::endl;
-	    global_res = false;
-	}
-    }
-    
-    return global_res;
-}
-
-int main()
-{
-    if (!constructor())
-    {
-	std::cout << "--------------------Constructor test failed------------------------" << std::endl;
-	return -1;
-    }
-    if (!area())
-    {
-	std::cout << "--------------------Area test failed--------------------------------" << std::endl;
-    }
-    if (!min_distance())
-    {
-	std::cout << "--------------------min_distance test failed------------------------" << std::endl;
+	
+	CHECK( dist == Approx( std::sqrt(2) ).epsilon(0.01) );
     }    
-
-    return 0;
 }

@@ -47,6 +47,10 @@ template <typename T>
 template <typename F>
 F dalg::Polygon<T>::get_area() const
 {
+    //If less than 3 segments then there is no area
+    if (segments.size() < 3)
+	return 0;
+    
     F area{0};
 
     dalg::Vec2d<T> p1 = segments[0].get_start_point();
