@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include <type_traits>
+#include <variant>
 
 namespace dalg
 {
@@ -87,6 +88,8 @@ namespace dalg
 	return os;
     }
 
+
+
     /*
      * Returns the cross product of the two vectors which is defined as
      * the Determinant of the two vectors. 
@@ -125,24 +128,58 @@ namespace dalg
      */
     template<typename T, typename FL = T>
     Vec2d<FL> project(Vec2d<T> const& v, Vec2d<T> const& s);
+    
 
-    /**
-     * Scalar multiplication between a scalar and a vec2d
-     */
     template <typename T>
     Vec2d<T> operator*(T scalar, Vec2d<T> const& pt);
 
     template <typename T>
     Vec2d<T> operator*(Vec2d<T> const& pt, T scalar);
 
-    /**
-     * Scalar division between a scalar and vec2d
-     */
     template <typename T>
     Vec2d<T> operator/(T scalar, Vec2d<T> const& pt);
 
     template <typename T>
     Vec2d<T> operator/(Vec2d<T> const& pt, T scalar);
+
+    /*
+     * Returns true if the given line segment contains the given line segment
+     * contains the point.
+     *
+     * The line segment is defined as follows:
+     *
+     * L = p + u * x : x = 1
+     *
+     * p     : line segment point
+     * u     : line segment vector
+     * point : The point to check
+     *
+     * return: True if the line segment contains the point
+     */
+    template <typename T>
+      bool on_line(Vec2d<T> const& line_p,
+			 Vec2d<T> const& line_u,
+			 Vec2d<T> const& point);
+
+    /**
+     * Returns the point where this lines intersects If they
+     * don't intersect
+     *
+     * The line segments is defined as follows:
+     *
+     * L1(x) = p + u * x : x = 1
+     * L2(x) = q + v * x : x = 1
+     *
+     * other : The line to check for intersection with
+     * return: The intersection point. If there is non then return point with
+     *         std::numeric_limits<T>::min() as its values
+     */
+    template <typename T>
+    std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>>>
+      line_seg_intersection(Vec2d<T> const& p,
+			    Vec2d<T> const& u,
+			    Vec2d<T> const& q,
+			    Vec2d<T> const& v);
 }
 
 #include "vec2d.tcc"

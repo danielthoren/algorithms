@@ -54,14 +54,14 @@ namespace dalg
 	 * return: The closest points on the line segments
 	 *         std::pair<on this, on lseg>
 	 */
-	std::pair<Vec2d<T>, Vec2d<T>> closest_points(LineSegment<T> const& lseg) const;    
+	std::pair<Vec2d<T>, Vec2d<T>> closest_points(LineSegment<T> const& lseg) const;
 
 	/**
 	 * Returns true if this linesegment contains the given point,
 	 * otherwise false
 	 */
 	bool contains(Vec2d<T> const& pt) const;
-
+	
 	/**
 	 * Returns the point where this Line and other intersects If they
 	 * don't intersect then return point(std::numeric_limits<T>::min())
@@ -72,6 +72,12 @@ namespace dalg
 	 */
 	std::variant<std::monostate, Vec2d<T>, LineSegment<T>>
 	intersection(LineSegment<T> const& other) const;
+
+	/**
+	 * Returns true if this linesegment contains the given point,
+	 * otherwise false
+	 */
+	bool contains(Vec2d<T> const& pt);
 
 	/**
 	 * returns p0 + u
