@@ -175,18 +175,61 @@ dalg::Vec2d<T> dalg::operator/(dalg::Vec2d<T> const& pt, T scalar)
 }
 
 template <typename T>
+bool dalg::collinear(dalg::Vec2d<T> const& a,
+		     dalg::Vec2d<T> const& b,
+		     dalg::Vec2d<T> const& c)
+{
+  return (b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y) < a.prec;
+}
+
+template <typename T>
+bool dalg::collinear(std::vector<dalg::Vec2d<T>> const& points)
+{
+  if (points.size() < 3)
+    return true;
+
+  unsigned p1{0};
+  unsigned p2{1};
+  unsigned p3{2};
+  for (int i{2}; i < points.size(); i++)
+    {
+      if (!dalg::collinear(points[p1], points[p2], points[p3]))
+	return false;
+
+      ++p1;
+      ++p2;
+      ++p3;
+    }
+
+  return true;
+}
+
+template <typename T>
+inline bool within(T a, T b, T c)
+{
+  return
+    (a <= b && b <= c) ||
+    (c <= b && b <= a);
+}
+
+template <typename T>
 bool dalg::on_line(dalg::Vec2d<T> const& p,
 		   dalg::Vec2d<T> const& u,
 		   dalg::Vec2d<T> const& point)
 {
     //This is a point, check if both points are the same
-    if (u.x == 0 && u.y == 0)
-    {
-	return p == point;
-    }
+  if (p == point || (p + u) == point)
+    return true;
     
     T t { dot( (point - p), u) / dot(u, u) };
     return (p + u * t) == point;
+
+
+
+  return dalg::collinear(p, p + u, point) &&
+    ((within(p.x, point.x, (p + u).x)) ||
+      within(p.y, point.y, (p + u).y));
+    
 }
 
 /*

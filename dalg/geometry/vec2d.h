@@ -142,6 +142,15 @@ namespace dalg
     template <typename T>
     Vec2d<T> operator/(Vec2d<T> const& pt, T scalar);
 
+  template <typename T>
+  bool collinear(dalg::Vec2d<T> const& a,
+		       dalg::Vec2d<T> const& b,
+		       dalg::Vec2d<T> const& c);
+
+  template <typename T>
+  bool collinear(std::vector<dalg::Vec2d<T>> const& points);
+  
+    
     /*
      * Returns true if the given line segment contains the given line segment
      * contains the point.

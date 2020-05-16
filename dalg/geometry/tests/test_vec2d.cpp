@@ -416,7 +416,7 @@ TEST_CASE( "Vec2d contains test", "[Vec2d]" )
 	Vec2d<double> p{0,0};
 	Vec2d<double> u{0,1};
 
-	Vec2d<double> pt{0,1.0001};
+	Vec2d<double> pt{0.0,1.0001};
 
 	CHECK_FALSE( on_line(p,u,pt) );
       }
