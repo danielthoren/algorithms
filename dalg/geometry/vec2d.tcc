@@ -219,12 +219,12 @@ bool dalg::on_line(dalg::Vec2d<T> const& p,
 {
     //This is a point, check if both points are the same
   if (p == point || (p + u) == point)
-    return true;
+  {
+      return true;
+  }
     
-    T t { dot( (point - p), u) / dot(u, u) };
-    return (p + u * t) == point;
-
-
+  T t { dot( (point - p), u) / dot(u, u) };
+  return (p + u * t) == point;
 
   return dalg::collinear(p, p + u, point) &&
     ((within(p.x, point.x, (p + u).x)) ||
