@@ -5,7 +5,6 @@
 #include <sstream>
 
 #include "vec2d.h"
-#include "line_segment.h"
 
 namespace dalg
 {

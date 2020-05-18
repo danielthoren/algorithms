@@ -11,18 +11,19 @@ namespace dalg
     /**
      * Author: Daniel Thorén
      *
-     * Class performing various line segment operations
+     * Class performing various line segment operations.
+     * Line segment represented by its endpoints
      */
     template<typename T>
     class LineSegment
     {
     public:
 	LineSegment(LineSegment<T> const& other)
-	    :  p0{other.p0}, u{other.u}
+	    :  p1{other.p1}, p2{other.p2}
 	    {}
 	
-	LineSegment(Vec2d<T> const& p0, Vec2d<T> const& p1)
-	    : p0{p0}, u{p1 - p0}
+	LineSegment(Vec2d<T> const& p1, Vec2d<T> const& p2)
+	    : p1{p1}, p2{p2}
 	    {}
     
 	LineSegment(T x0, T y0, T x1, T y1)
@@ -79,41 +80,17 @@ namespace dalg
 	 */
 	bool contains(Vec2d<T> const& pt);
 
-	/**
-	 * returns p0 + u
-	 */
-	Vec2d<T> get_end_point() const;
+	Vec2d<T> get_end() const;
 
-	/**
-	 * Returns p0
-	 */
-	Vec2d<T> get_start_point() const;
+	Vec2d<T> get_start() const;
 
 	Vec2d<T> get_vector() const;
 
     private:
-	//p(s) = p0 + su
-	Vec2d<T> p0;
-	Vec2d<T> u;    // u = p1 - p0
+	Vec2d<T> p1;
+	Vec2d<T> p2;
     
     };
-
-    /************************/
-    /* Non-Member functions */
-    /************************/
-
-    /**
-     * Returns the angle between the given vectors
-     *
-     * other : The vector to compare to
-     *
-     * return: The angle in degrees
-     */
-    template <typename T>
-    double rad_angle(LineSegment<T> const& l1, LineSegment<T> const& l2);
-
-    template <typename T>
-    double angle(LineSegment<T> const& l1, LineSegment<T> const& l2);
 }
 
 #include "line_segment.tcc"

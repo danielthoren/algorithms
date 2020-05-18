@@ -359,9 +359,9 @@ TEST_CASE( "Vec2d angle test", "[Vec2d]")
     }
 }
 
-TEST_CASE( "Vec2d contains test", "[Vec2d]" )
+TEST_CASE( "Vec2d on_line test", "[Vec2d]" )
 {
-  SECTION( "on line posetive" )
+  SECTION( "on line between points posetive" )
     {
       Vec2d<double> p{0,0};
       Vec2d<double> u{2,2};
@@ -371,7 +371,17 @@ TEST_CASE( "Vec2d contains test", "[Vec2d]" )
       CHECK( on_line(p,u,pt) );
     }
 
-    SECTION( "on line negative" )
+    SECTION( "on line posetive" )
+    {
+      Vec2d<double> p{0,0};
+      Vec2d<double> u{2,2};
+
+      Vec2d<double> pt{4,4};
+
+      CHECK( on_line(p,u,pt) );
+    }
+
+    SECTION( "on line between points negative" )
     {
       Vec2d<double> p{0,0};
       Vec2d<double> u{-2,-2};
@@ -380,8 +390,18 @@ TEST_CASE( "Vec2d contains test", "[Vec2d]" )
 
       CHECK( on_line(p,u,pt) );
     }
+    
+    SECTION( "on line negative" )
+    {
+      Vec2d<double> p{0,0};
+      Vec2d<double> u{-2,-2};
 
-    SECTION( "on end edge of line" )
+      Vec2d<double> pt{-4,-4};
+
+      CHECK( on_line(p,u,pt) );
+    }
+
+    SECTION( "on the point p + u" )
     {
       Vec2d<double> p{0,0};
       Vec2d<double> u{1,1};
@@ -391,7 +411,7 @@ TEST_CASE( "Vec2d contains test", "[Vec2d]" )
       CHECK( on_line(p,u,pt) );
     }
 
-    SECTION( "on start edge of line" )
+    SECTION( "on the point p" )
     {
       Vec2d<double> p{0,0};
       Vec2d<double> u{1,1};
@@ -408,29 +428,130 @@ TEST_CASE( "Vec2d contains test", "[Vec2d]" )
 
 	Vec2d<double> pt{1,1};
 
-	CHECK_FALSE( on_line(p,u,pt) );
+	CHECK( on_line(p,u,pt) == false );
+      }
+
+    SECTION( "not on line, so close that precision makes on line" )
+      {
+	Vec2d<double> p{0,0};
+	Vec2d<double> u{0,1};
+
+	Vec2d<double> pt{0.00001,0.5};
+
+	bool ret = on_line(p,u,pt);
+
+	CHECK(ret);
       }
 
     SECTION( "not on line, close (1)" )
-      {
-	Vec2d<double> p{0,0};
-	Vec2d<double> u{0,1};
+    {
+	Vec2d<double> p{0,0, 0};
+	Vec2d<double> u{0,1, 0};
 
-	Vec2d<double> pt{0.0,1.0001};
+	Vec2d<double> pt{0.1, 0.5, 0};
 
-	CHECK_FALSE( on_line(p,u,pt) );
-      }
+	bool ret = on_line(p,u,pt);
+
+	CHECK(ret == false);
+    }
 
     SECTION( "not on line, close (2)" )
       {
-	Vec2d<double> p{0,0};
-	Vec2d<double> u{0,1};
+	  Vec2d<double> p{0,0, 0.0};
+	  Vec2d<double> u{0,1, 0.0};
 
-	Vec2d<double> pt{0.0001,1};
+	  Vec2d<double> pt{0.0001,1, 0.0};
 
-	CHECK_FALSE( on_line(p,u,pt) );
+	  CHECK( on_line(p,u,pt) == false );
       }
 }
+
+// TEST_CASE( "Vec2d on_line_segment test" )
+// {
+//   SECTION( "on line posetive" )
+//     {
+//       Vec2d<double> p{0,0};
+//       Vec2d<double> u{2,2};
+
+//       Vec2d<double> pt{1,1};
+
+//       CHECK( on_line(p,u,pt) );
+//     }
+
+//     SECTION( "on line negative" )
+//     {
+//       Vec2d<double> p{0,0};
+//       Vec2d<double> u{-2,-2};
+
+//       Vec2d<double> pt{-1,-1};
+
+//       CHECK( on_line(p,u,pt) );
+//     }
+
+//     SECTION( "on end edge of line" )
+//     {
+//       Vec2d<double> p{0,0};
+//       Vec2d<double> u{1,1};
+
+//       Vec2d<double> pt{1,1};
+
+//       CHECK( on_line(p,u,pt) );
+//     }
+
+//     SECTION( "on start edge of line" )
+//     {
+//       Vec2d<double> p{0,0};
+//       Vec2d<double> u{1,1};
+      
+//       Vec2d<double> pt{0,0};
+      
+//       CHECK( on_line(p,u,pt) );
+//     }
+    
+//     SECTION( "not on line" )
+//       {
+// 	Vec2d<double> p{0,0};
+// 	Vec2d<double> u{0,1};
+
+// 	Vec2d<double> pt{1,1};
+
+// 	CHECK( on_line(p,u,pt) == false );
+//       }
+
+//     SECTION( "not on line, so close that precision makes on line" )
+//       {
+// 	Vec2d<double> p{0,0};
+// 	Vec2d<double> u{0,1};
+
+// 	Vec2d<double> pt{0.0,1.0001};
+
+// 	bool ret = on_line(p,u,pt);
+
+// 	CHECK(ret);
+//       }
+
+//     SECTION( "not on line, close (1)" )
+//     {
+// 	Vec2d<double> p{0,0, 0.0};
+// 	Vec2d<double> u{0,1, 0.0};
+
+// 	Vec2d<double> pt{0.0,1.0001, 0.0};
+
+// 	bool ret = on_line(p,u,pt);
+
+// 	CHECK(ret == false);
+//     }
+
+//     SECTION( "not on line, close (2)" )
+//       {
+// 	  Vec2d<double> p{0,0, 0.0};
+// 	  Vec2d<double> u{0,1, 0.0};
+
+// 	  Vec2d<double> pt{0.0001,1, 0.0};
+
+// 	  CHECK( on_line(p,u,pt) == false );
+//       }
+// }
 
 
 TEST_CASE( "Vec2d line segment intersection test", "[Vec2d]" )
@@ -438,14 +559,11 @@ TEST_CASE( "Vec2d line segment intersection test", "[Vec2d]" )
   SECTION( "kattis test 1" )
     {
       Vec2d<double> p1{-10, 0};
-      Vec2d<double> q1{10, 0};
-      Vec2d<double> p2{0, -10};
+      Vec2d<double> p2{10, 0};
+      Vec2d<double> q1{0, -10};
       Vec2d<double> q2{0, 10};
 
-      Vec2d<double> u1{ p1 - q1 };
-      Vec2d<double> u2{ p2 - q2 };
-
-      auto res = line_seg_intersection(p1, u1, p2, u2);
+      auto res = line_seg_intersection(p1, p2, q1, q2);
 
       CHECK( std::holds_alternative<dalg::Vec2d<double>>(res) );
 
@@ -459,14 +577,11 @@ TEST_CASE( "Vec2d line segment intersection test", "[Vec2d]" )
     SECTION( "kattis test 2" )
     {
       Vec2d<double> p1{-10, 0};
-      Vec2d<double> q1{10, 0};
-      Vec2d<double> p2{-5, 0};
+      Vec2d<double> p2{10, 0};
+      Vec2d<double> q1{-5, 0};
       Vec2d<double> q2{5, 0};
 
-      Vec2d<double> u1{ p1 - q1 };
-      Vec2d<double> u2{ p2 - q2 };
-
-      auto res = line_seg_intersection(p1, u1, p2, u2);
+      auto res = line_seg_intersection(p1, p2, q1, q2);
       
       CHECK( std::holds_alternative<std::pair<Vec2d<double>, Vec2d<double>>>(res) );
 
@@ -476,21 +591,18 @@ TEST_CASE( "Vec2d line segment intersection test", "[Vec2d]" )
 	    std::get<std::pair<Vec2d<double>, Vec2d<double>>>(res);
 	  
 	  CHECK( act.first == Vec2d<double>{-5.0, 0.0} );
-	  CHECK( act.first == Vec2d<double>{5.0, 0.0} );
+	  CHECK( act.second == Vec2d<double>{5.0, 0.0} );
 	}
     }
 
     SECTION( "kattis test 3" )
     {
       Vec2d<double> p1{1,1};
-      Vec2d<double> q1{1,1};
       Vec2d<double> p2{1,1};
+      Vec2d<double> q1{1,1};
       Vec2d<double> q2{2,1};
 
-      Vec2d<double> u1{ p1 - q1 };
-      Vec2d<double> u2{ p2 - q2 };
-
-      auto res = line_seg_intersection(p1, u1, p2, u2);     
+      auto res = line_seg_intersection(p1, p2, q1, q2);
 
       CHECK( std::holds_alternative<dalg::Vec2d<double>>(res) );
 
@@ -504,14 +616,11 @@ TEST_CASE( "Vec2d line segment intersection test", "[Vec2d]" )
     SECTION( "kattis test 4" )
       {
 	Vec2d<double> p1{1,1};
-	Vec2d<double> q1{1,1};
-	Vec2d<double> p2{2,1};
+	Vec2d<double> p2{1,1};
+	Vec2d<double> q1{2,1};
 	Vec2d<double> q2{2,1};
 
-	Vec2d<double> u1{ p1 - q1 };
-	Vec2d<double> u2{ p2 - q2 };
-
-	auto res = line_seg_intersection(p1, u1, p2, u2);     
+	auto res = line_seg_intersection(p1, p2, q1, q2);
 
 	CHECK_FALSE( std::holds_alternative<dalg::Vec2d<double>>(res) );
       }
@@ -519,21 +628,18 @@ TEST_CASE( "Vec2d line segment intersection test", "[Vec2d]" )
     SECTION( "kattis test 5" )
     {
       Vec2d<double> p1{1871, 5789};
-      Vec2d<double> q1{216, -517};
-      Vec2d<double> p2{189, -518};
+      Vec2d<double> p2{216, -517};
+      Vec2d<double> q1{189, -518};
       Vec2d<double> q2{3851, 1895};
 
-      Vec2d<double> u1{ p1 - q1 };
-      Vec2d<double> u2{ p2 - q2 };
-
-      auto res = line_seg_intersection(p1, u1, p2, u2);     
+      auto res = line_seg_intersection(p1, p2, q1, q2);
 
       CHECK( std::holds_alternative<dalg::Vec2d<double>>(res) );
 
       if (std::holds_alternative<dalg::Vec2d<double>>(res))
 	{
 	  dalg::Vec2d<double> act = std::get<dalg::Vec2d<double>>(res);
-	  CHECK( act == Vec2d<double>{221.33, -496.70} );
+	  CHECK( act == Vec2d<double>{221.33, -496.70, 0.05} );
 	}
     }
 }

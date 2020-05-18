@@ -7,7 +7,6 @@
 
 #include "../rectangle.h"
 #include "../vec2d.h"
-#include "../line_segment.h"
 
 #define DEBUG 1
 

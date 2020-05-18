@@ -8,7 +8,8 @@
 template <typename T>
 bool dalg::Vec2d<T>::equals(dalg::Vec2d<T> const& other, std::true_type) const
 {
-    return std::abs(x - other.x) < prec && std::abs(y - other.y) < prec;
+    T precision = std::max(prec, other.prec);
+    return std::abs(x - other.x) < precision && std::abs(y - other.y) < precision;
 }
 
 template <typename T>
@@ -205,6 +206,24 @@ bool dalg::collinear(std::vector<dalg::Vec2d<T>> const& points)
 }
 
 template <typename T>
+bool dalg::on_line(dalg::Vec2d<T> const& p,
+		   dalg::Vec2d<T> const& u,
+		   dalg::Vec2d<T> const& point)
+{
+    //The line is a point, check if both points are the same
+    if (u.x == 0 && u.y == 0)
+    {
+	return p.x == point.x && p.y == point.y;
+    }
+    
+  T t { dot( (point - p), u) / dot(u, u) };
+  dalg::Vec2d<T> res = (p + u * t);
+  bool ret = (res == point);
+
+  return ret;
+}
+
+template <typename T>
 inline bool within(T a, T b, T c)
 {
   return
@@ -213,33 +232,23 @@ inline bool within(T a, T b, T c)
 }
 
 template <typename T>
-bool dalg::on_line(dalg::Vec2d<T> const& p,
-		   dalg::Vec2d<T> const& u,
-		   dalg::Vec2d<T> const& point)
-{
-    //This is a point, check if both points are the same
-  if (p == point || (p + u) == point)
-  {
-      return true;
-  }
-    
-  T t { dot( (point - p), u) / dot(u, u) };
-  return (p + u * t) == point;
-
-  return dalg::collinear(p, p + u, point) &&
-    ((within(p.x, point.x, (p + u).x)) ||
-      within(p.y, point.y, (p + u).y));
-    
+bool dalg::on_line_segment(dalg::Vec2d<T> const& p1,
+			   dalg::Vec2d<T> const& p2,
+			   dalg::Vec2d<T> const& point)
+{   
+    if (dalg::on_line(p1, p2 - p1 , point))
+    {
+	return within(p1.x, point.x, p2.x) ||
+	    within(p1.y, point.y, p2.y);  
+    }
+    return false;
 }
 
 /*
  * Returns the point where line segments intersects. Returns line if the lines
  * overlap. 
  *
- * The line segments is defined as follows:
- *
- * L1(x) = p + u * x : x = 1
- * L2(x) = q + v * x : x = 1
+ * The line segments are defined by their respective endpoints
  *
  * There are three cases, the segments are not intersecting, the
  * segments are intersecting in one point and the segments overlap in
@@ -312,11 +321,16 @@ bool dalg::on_line(dalg::Vec2d<T> const& p,
  */
 template <typename T>
 std::variant<std::monostate, dalg::Vec2d<T>, std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>>>
-	     dalg::line_seg_intersection(dalg::Vec2d<T> const& p,
-					 dalg::Vec2d<T> const& u,
-					 dalg::Vec2d<T> const& q,
-					 dalg::Vec2d<T> const& v)
-{    
+	     dalg::line_seg_intersection(dalg::Vec2d<T> const& p1,
+					 dalg::Vec2d<T> const& p2,
+					 dalg::Vec2d<T> const& q1,
+					 dalg::Vec2d<T> const& q2)
+{
+    dalg::Vec2d<T> p{ p1 };
+    dalg::Vec2d<T> u{ p2 - p1};
+    dalg::Vec2d<T> q{ q1 };
+    dalg::Vec2d<T> v{ q2 - q1};
+    
   //t = ( (q - p) x V ) / U x V
   dalg::Vec2d<T> qp = q - p;
   T uv = cross(u, v);
@@ -327,7 +341,7 @@ std::variant<std::monostate, dalg::Vec2d<T>, std::pair<dalg::Vec2d<T>, dalg::Vec
   //If u2 == 0 then other is a point, not a line
   if (std::abs(u2) < 1e-6)
     {
-      if ( on_line(q, q+v, p) )
+      if ( on_line_segment(q, q + v, p) )
     	{
 	  return p;
     	}
@@ -336,7 +350,7 @@ std::variant<std::monostate, dalg::Vec2d<T>, std::pair<dalg::Vec2d<T>, dalg::Vec
   //If v2 == 0 then this is a point, not a line
   if (std::abs(v2) < 1e-6)
     {
-      if ( on_line(p, p+u, q) )
+      if ( on_line_segment(p, p + u, q) )
     	{
 	  return q;
     	}
@@ -369,7 +383,7 @@ std::variant<std::monostate, dalg::Vec2d<T>, std::pair<dalg::Vec2d<T>, dalg::Vec
 		  return p_start;
 		}
 
-	      return std::pair{p_start, p_end - p_start};
+	      return std::pair{p_start, p_end};
 	      //return dalg::LineSegment<T>(p_start, p_end);
 	    }
 	}

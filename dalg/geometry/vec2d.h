@@ -35,11 +35,11 @@ namespace dalg
 	bool equals(Vec2d const& other, std::false_type is_floating_point ) const;
 	
     public:	
-	Vec2d(T x = 0, T y = 0, T prec = 0.05) :
+	Vec2d(T x = 0, T y = 0, T prec = 0.0001) :
 	    x{x}, y{y}, prec{prec}
 	    {}
     
-	Vec2d(Vec2d const& pt, T prec = 0.05) :
+	Vec2d(Vec2d const& pt, T prec = 0.0001) :
 	    x{pt.x}, y{pt.y}, prec{prec}
 	    {}
 
@@ -152,7 +152,7 @@ namespace dalg
   
     
     /*
-     * Returns true if the given line segment contains the given line segment
+     * Returns true if the given line or line segment contains the given point
      * contains the point.
      *
      * The line segment is defined as follows:
@@ -169,6 +169,11 @@ namespace dalg
       bool on_line(Vec2d<T> const& line_p,
 			 Vec2d<T> const& line_u,
 			 Vec2d<T> const& point);
+
+    template <typename T>
+    bool on_line_segment(Vec2d<T> const& line_p,
+		 Vec2d<T> const& line_u,
+		 Vec2d<T> const& point);
 
     /**
      * Returns the point where this lines intersects If they
