@@ -142,33 +142,33 @@ namespace dalg
     template <typename T>
     Vec2d<T> operator/(Vec2d<T> const& pt, T scalar);
 
-  template <typename T>
-  bool collinear(dalg::Vec2d<T> const& a,
-		       dalg::Vec2d<T> const& b,
-		       dalg::Vec2d<T> const& c);
-
-  template <typename T>
-  bool collinear(std::vector<dalg::Vec2d<T>> const& points);    
-
     /**
-     * Returns the point where this lines intersects If they
-     * don't intersect
+     * Checks if the tree given points are collinear
+     * (lie on the same line)
      *
-     * The line segments is defined as follows:
+     * a : Point a
+     * b : Point b
+     * c : Point c
      *
-     * L1(x) = p + u * x : x = 1
-     * L2(x) = q + v * x : x = 1
-     *
-     * other : The line to check for intersection with
-     * return: The intersection point. If there is non then return point with
-     *         std::numeric_limits<T>::min() as its values
+     * return: true if collinear otherwise false
      */
     template <typename T>
-    std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>>>
-      line_seg_intersection(Vec2d<T> const& p,
-			    Vec2d<T> const& u,
-			    Vec2d<T> const& q,
-			    Vec2d<T> const& v);
+    bool collinear(dalg::Vec2d<T> const& a,
+		   dalg::Vec2d<T> const& b,
+		   dalg::Vec2d<T> const& c);
+
+    /**
+     * Checks if the given points are collinear
+     * (lie on the same line)
+     *
+     * Time complexity: O(n)
+     *
+     * points: the given points
+     *
+     * return: true if collinear otherwise false
+     */
+    template <typename T>
+    bool collinear(std::vector<dalg::Vec2d<T>> const& points);    
 }
 
 #include "vec2d.tcc"

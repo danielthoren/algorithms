@@ -37,13 +37,10 @@ bool dalg::LineSegment<T>::on_line(dalg::Vec2d<T> const& pt) const
     return (p0 + u * t) == pt;
 }
 
-
 template <typename T>
 inline bool within(T a, T b, T c)
 {
-  return
-    (a <= b && b <= c) ||
-    (c <= b && b <= a);
+  return (a <= b && b <= c) || (c <= b && b <= a);
 }
 
 template <typename T>

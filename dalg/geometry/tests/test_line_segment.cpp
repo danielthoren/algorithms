@@ -13,6 +13,229 @@
 
 using namespace dalg;
 
+TEST_CASE( "Vec2d on_line test", "[Vec2d]" )
+{
+  SECTION( "on line between points posetive" )
+    {
+      Vec2d<double> p1{0,0};
+      Vec2d<double> p2{2,2};
+
+      LineSegment<double> line{p1, p2};
+
+      Vec2d<double> pt{1,1};
+
+      CHECK( line.on_line(pt) );
+    }
+
+    SECTION( "on line posetive" )
+    {
+      Vec2d<double> p1{0,0};
+      Vec2d<double> p2{2,2};
+
+      LineSegment<double> line{p1, p2};
+
+      Vec2d<double> pt{4,4};
+
+      CHECK( line.on_line(pt) );
+    }
+
+    SECTION( "on line between points negative" )
+    {
+      Vec2d<double> p1{0,0};
+      Vec2d<double> p2{-2,-2};
+
+      LineSegment<double> line{p1, p2};
+
+      Vec2d<double> pt{-1,-1};
+
+      CHECK( line.on_line(pt) );
+    }
+    
+    SECTION( "on line negative" )
+    {
+      Vec2d<double> p1{0,0};
+      Vec2d<double> p2{-2,-2};
+
+      LineSegment<double> line{p1, p2};
+
+      Vec2d<double> pt{-4,-4};
+
+      CHECK( line.on_line(pt) );
+    }
+
+    SECTION( "on the point p + u" )
+    {
+      Vec2d<double> p1{0,0};
+      Vec2d<double> p2{1,1};
+
+      LineSegment<double> line{p1, p2};
+
+      Vec2d<double> pt{1,1};
+
+      CHECK( line.on_line(pt) );
+    }
+
+    SECTION( "on the point p" )
+    {
+      Vec2d<double> p1{0,0};
+      Vec2d<double> p2{1,1};
+
+      LineSegment<double> line{p1, p2};
+      
+      Vec2d<double> pt{0,0};
+      
+      CHECK( line.on_line(pt) );
+    }
+    
+    SECTION( "not on line" )
+      {
+	Vec2d<double> p1{0,0};
+	Vec2d<double> p2{0,1};
+
+	LineSegment<double> line{p1, p2};
+
+	Vec2d<double> pt{1,1};
+
+	CHECK_FALSE( line.on_line(pt) );
+      }
+
+    SECTION( "not on line, so close that precision makes on line" )
+      {
+	Vec2d<double> p1{0,0};
+	Vec2d<double> p2{0,1};
+
+	LineSegment<double> line{p1, p2};
+
+	Vec2d<double> pt{0.00001,0.5};
+
+	CHECK( line.on_line(pt) );
+      }
+
+    SECTION( "not on line, close (1)" )
+    {
+	Vec2d<double> p1{0,0, 0};
+	Vec2d<double> p2{0,1, 0};
+
+	LineSegment<double> line{p1, p2};
+
+	Vec2d<double> pt{0.1, 0.5, 0};
+
+	CHECK_FALSE( line.on_line(pt) );
+    }
+
+    SECTION( "not on line, close (2)" )
+      {
+	  Vec2d<double> p1{0,0, 0.0};
+	  Vec2d<double> p2{0,1, 0.0};
+
+	  LineSegment<double> line{p1, p2};
+
+	  Vec2d<double> pt{0.0001,1, 0.0};
+
+	  CHECK_FALSE( line.on_line(pt) );
+      }
+}
+
+TEST_CASE( "Vec2d on_line_segment test" )
+{
+  SECTION( "on line posetive" )
+    {
+      Vec2d<double> p1{0,0};
+      Vec2d<double> p2{2,2};
+
+      LineSegment<double> line{p1, p2};
+
+      Vec2d<double> pt{1,1};
+
+      CHECK( line.on_segment(pt) );
+    }
+
+    SECTION( "on line negative" )
+    {
+      Vec2d<double> p1{0,0};
+      Vec2d<double> p2{-2,-2};
+
+      LineSegment<double> line{p1, p2};
+
+      Vec2d<double> pt{-1,-1};
+
+      CHECK( line.on_segment(pt) );
+    }
+
+    SECTION( "on end edge of line" )
+    {
+      Vec2d<double> p1{0,0};
+      Vec2d<double> p2{1,1};
+
+      LineSegment<double> line{p1, p2};
+
+      Vec2d<double> pt{1,1};
+
+      CHECK( line.on_segment(pt) );
+    }
+
+    SECTION( "on start edge of line" )
+    {
+      Vec2d<double> p1{0,0};
+      Vec2d<double> p2{1,1};
+
+      LineSegment<double> line{p1, p2};
+      
+      Vec2d<double> pt{0,0};
+      
+      CHECK( line.on_segment(pt) );
+    }
+    
+    SECTION( "not on line" )
+      {
+	Vec2d<double> p1{0,0};
+	Vec2d<double> p2{0,1};
+
+	LineSegment<double> line{p1, p2};
+
+	Vec2d<double> pt{1,1};
+
+	CHECK_FALSE( line.on_segment(pt) );
+      }
+
+    SECTION( "not on line, so close that precision makes on line" )
+      {
+	Vec2d<double> p1{0,0};
+	Vec2d<double> p2{0,1};
+
+	LineSegment<double> line{p1, p2};
+
+	Vec2d<double> pt{0.0,1.0001};
+
+	CHECK( line.on_segment(pt) );
+      }
+
+    SECTION( "not on line, close (1)" )
+    {
+	Vec2d<double> p1{0,0, 0.0};
+	Vec2d<double> p2{0,1, 0.0};
+
+	LineSegment<double> line{p1, p2};
+
+	Vec2d<double> pt{0.0,1.0001, 0.0};
+
+	CHECK_FALSE( line.on_segment(pt) );
+    }
+
+    SECTION( "not on line, close (2)" )
+      {
+	  Vec2d<double> p1{0,0, 0.0};
+	  Vec2d<double> p2{0,1, 0.0};
+
+	  LineSegment<double> line{p1, p2};
+
+	  Vec2d<double> pt{0.0001,1, 0.0};
+
+	  CHECK_FALSE( line.on_segment(pt) );
+      }
+}
+
+
 TEST_CASE( "Vec2d line segment intersection test", "[Vec2d]" )
 {
   SECTION( "kattis test 1" )
