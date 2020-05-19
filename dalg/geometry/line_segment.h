@@ -19,11 +19,11 @@ namespace dalg
     {
     public:
 	LineSegment(LineSegment<T> const& other)
-	    :  p1{other.p1}, p2{other.p2}
+	    :  p0{other.p0}, u{other.u}
 	    {}
 	
-	LineSegment(Vec2d<T> const& p1, Vec2d<T> const& p2)
-	    : p1{p1}, p2{p2}
+	LineSegment(Vec2d<T> const& p0, Vec2d<T> const& p1)
+	    : p0{p0}, u{p1 - p0}
 	    {}
     
 	LineSegment(T x0, T y0, T x1, T y1)
@@ -58,10 +58,16 @@ namespace dalg
 	std::pair<Vec2d<T>, Vec2d<T>> closest_points(LineSegment<T> const& lseg) const;
 
 	/**
+	 * Returns true if this line contains the given point,
+	 * otherwise false
+	 */
+	bool on_line(Vec2d<T> const& pt) const;
+
+	/**
 	 * Returns true if this linesegment contains the given point,
 	 * otherwise false
 	 */
-	bool contains(Vec2d<T> const& pt) const;
+	bool on_segment(Vec2d<T> const& pt) const;
 	
 	/**
 	 * Returns the point where this Line and other intersects If they
@@ -72,23 +78,30 @@ namespace dalg
 	 *         std::numeric_limits<T>::min() as its values
 	 */
 	std::variant<std::monostate, Vec2d<T>, LineSegment<T>>
-	intersection(LineSegment<T> const& other) const;
+	intersect(LineSegment<T> const& other) const;
 
 	/**
 	 * Returns true if this linesegment contains the given point,
 	 * otherwise false
 	 */
-	bool contains(Vec2d<T> const& pt);
-
+	bool on_segment(Vec2d<T> const& pt);
+	
+	/**
+	 * returns p0 + u
+	 */
 	Vec2d<T> get_end() const;
-
+	
+	/**
+	 * Returns p0
+	 */
 	Vec2d<T> get_start() const;
 
 	Vec2d<T> get_vector() const;
 
     private:
-	Vec2d<T> p1;
-	Vec2d<T> p2;
+	//p(s) = p0 + su
+	Vec2d<T> p0;
+	Vec2d<T> u;    // u = p1 - p0
     
     };
 }

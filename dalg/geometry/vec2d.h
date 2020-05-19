@@ -148,32 +148,7 @@ namespace dalg
 		       dalg::Vec2d<T> const& c);
 
   template <typename T>
-  bool collinear(std::vector<dalg::Vec2d<T>> const& points);
-  
-    
-    /*
-     * Returns true if the given line or line segment contains the given point
-     * contains the point.
-     *
-     * The line segment is defined as follows:
-     *
-     * L = p + u * x : x = 1
-     *
-     * p     : line segment point
-     * u     : line segment vector
-     * point : The point to check
-     *
-     * return: True if the line segment contains the point
-     */
-    template <typename T>
-      bool on_line(Vec2d<T> const& line_p,
-			 Vec2d<T> const& line_u,
-			 Vec2d<T> const& point);
-
-    template <typename T>
-    bool on_line_segment(Vec2d<T> const& line_p,
-		 Vec2d<T> const& line_u,
-		 Vec2d<T> const& point);
+  bool collinear(std::vector<dalg::Vec2d<T>> const& points);    
 
     /**
      * Returns the point where this lines intersects If they

@@ -25,7 +25,7 @@ void dalg::LineSegment<T>::operator=(dalg::LineSegment<T> const& other)
 }
 
 template <typename T>
-bool dalg::LineSegment<T>::contains(dalg::Vec2d<T> const& pt) const
+bool dalg::LineSegment<T>::on_line(dalg::Vec2d<T> const& pt) const
 {
     //This is a point, check if both points are the same
     if (u.x == 0 && u.y == 0)
@@ -36,6 +36,27 @@ bool dalg::LineSegment<T>::contains(dalg::Vec2d<T> const& pt) const
     T t { dot( (pt - p0), u) / dot(u, u) };
     return (p0 + u * t) == pt;
 }
+
+
+template <typename T>
+inline bool within(T a, T b, T c)
+{
+  return
+    (a <= b && b <= c) ||
+    (c <= b && b <= a);
+}
+
+template <typename T>
+bool dalg::LineSegment<T>::on_segment(dalg::Vec2d<T> const& pt) const
+{   
+    if (on_line(pt))
+    {
+	return within(p0.x, pt.x, (p0+u).x) ||
+	    within(p0.y, pt.y, (p0+u).y);  
+    }
+    return false;
+}
+
 
 /**
  * The closes distance between a line and a point is the tangent to
@@ -239,13 +260,13 @@ std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>> dalg::LineSegment<T>::closest_points(d
  */
 template <typename T>
 std::variant<std::monostate, dalg::Vec2d<T>, dalg::LineSegment<T>>
-dalg::LineSegment<T>::intersection(dalg::LineSegment<T> const& other) const
+dalg::LineSegment<T>::intersect(dalg::LineSegment<T> const& other) const
 {
-    dalg::Vec2d<T> u = this->u;
-    dalg::Vec2d<T> p = this->p0;
+    dalg::Vec2d<T> const& u = this->u;
+    dalg::Vec2d<T> const& p = this->p0;
     
-    dalg::Vec2d<T> v = other.u;
-    dalg::Vec2d<T> q = other.p0;
+    dalg::Vec2d<T> const& v = other.u;
+    dalg::Vec2d<T> const& q = other.p0;
     
     //t = ( (q - p) x V ) / U x V
     dalg::Vec2d<T> qp = q - p;
@@ -257,7 +278,7 @@ dalg::LineSegment<T>::intersection(dalg::LineSegment<T> const& other) const
     //If u2 == 0 then other is a point, not a line
     if (std::abs(u2) < 1e-6)
     {
-    	if (other.contains(p))
+    	if (other.on_segment(p))
     	{
     	    return p;
     	}
@@ -266,7 +287,7 @@ dalg::LineSegment<T>::intersection(dalg::LineSegment<T> const& other) const
     //If v2 == 0 then this is a point, not a line
     if (std::abs(v2) < 1e-6)
     {
-    	if (this->contains(q))
+    	if (this->on_segment(q))
     	{
     	    return q;
     	}
@@ -325,13 +346,13 @@ dalg::LineSegment<T>::intersection(dalg::LineSegment<T> const& other) const
 }
 
 template<typename T>
-dalg::Vec2d<T> dalg::LineSegment<T>::get_end_point() const
+dalg::Vec2d<T> dalg::LineSegment<T>::get_end() const
 {
     return p0 + u;
 }
 
 template<typename T>
-dalg::Vec2d<T> dalg::LineSegment<T>::get_start_point() const
+dalg::Vec2d<T> dalg::LineSegment<T>::get_start() const
 {
     return p0;
 }
@@ -340,21 +361,4 @@ template<typename T>
 dalg::Vec2d<T> dalg::LineSegment<T>::get_vector() const
 {
     return u;
-}
-
-/************************/
-/* Non-Member functions */
-/************************/
-
-
-template <typename T>
-double dalg::rad_angle(dalg::LineSegment<T> const& l1, dalg::LineSegment<T> const& l2)
-{
-    return dalg::rad_angle(l1.get_vector(), l2.get_vector());
-}
-
-template <typename T>
-double dalg::angle(dalg::LineSegment<T> const& l1, dalg::LineSegment<T> const& l2)
-{
-    return rad_angle(l1, l2) * (180.0 / dalg::Vec2d<T>::PI);
 }
