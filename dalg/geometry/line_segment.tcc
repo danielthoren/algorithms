@@ -38,7 +38,7 @@ bool dalg::LineSegment<T>::on_line(dalg::Vec2d<T> const& pt) const
 }
 
 template <typename T>
-inline bool within(T a, T b, T c)
+inline bool dalg::within(T a, T b, T c)
 {
   return (a <= b && b <= c) || (c <= b && b <= a);
 }
@@ -48,8 +48,8 @@ bool dalg::LineSegment<T>::on_segment(dalg::Vec2d<T> const& pt) const
 {   
     if (on_line(pt))
     {
-	return within(p0.x, pt.x, (p0+u).x) ||
-	    within(p0.y, pt.y, (p0+u).y);  
+	return dalg::within(p0.x, pt.x, (p0+u).x) &&
+	    dalg::within(p0.y, pt.y, (p0+u).y);  
     }
     return false;
 }

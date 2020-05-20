@@ -9,7 +9,7 @@ template <typename T>
 bool dalg::Vec2d<T>::equals(dalg::Vec2d<T> const& other, std::true_type) const
 {
     T precision = std::max(prec, other.prec);
-    return std::abs(x - other.x) < precision && std::abs(y - other.y) < precision;
+    return std::abs(x - other.x) <= precision && std::abs(y - other.y) <= precision;
 }
 
 template <typename T>

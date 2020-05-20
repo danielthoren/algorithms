@@ -79,12 +79,6 @@ namespace dalg
 	 */
 	std::variant<std::monostate, Vec2d<T>, LineSegment<T>>
 	intersect(LineSegment<T> const& other) const;
-
-	/**
-	 * Returns true if this linesegment contains the given point,
-	 * otherwise false
-	 */
-	bool on_segment(Vec2d<T> const& pt);
 	
 	/**
 	 * returns p0 + u
@@ -104,6 +98,12 @@ namespace dalg
 	Vec2d<T> u;    // u = p1 - p0
     
     };
+
+    /**
+     * Checks if a <= b <= c
+     */
+    template <typename T>
+    inline bool within(T a, T b, T c);
 }
 
 #include "line_segment.tcc"

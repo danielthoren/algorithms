@@ -80,23 +80,33 @@ TEST_CASE( "Vec2d substraction test", "[Vec2d]")
 
 TEST_CASE( "Vec2d length test", "[Vec2d]")
 {
-    SECTION( "normal length" )
+    SECTION( "normal length (1)" )
     {
 	Vec2d<int> p1{1,1};
 	
 	double len{p1.length()};
 	CHECK( len == Approx( sqrt(2) ) );
+    }
 
+    SECTION( "normal length (2)" )
+    {
 	Vec2d<int> p2{-1,1};
 	
 	double len2{p2.length()};
 	CHECK( len2 == Approx( sqrt(2) ) );
+    }
+
+    SECTION( "normal length (3)" )
+    {
 
 	Vec2d<int> p3{1,-1};
 	
 	double len3{p3.length()};
 	CHECK( len3 == Approx( sqrt(2) ) );
+    }
 
+    SECTION( "normal length (4)" )
+    {
 	Vec2d<int> p4{-1,-1};
 	
 	double len4{p4.length()};
@@ -108,11 +118,17 @@ TEST_CASE( "Vec2d length test", "[Vec2d]")
 	Vec2d<int> p1{0,0};
 	
 	CHECK( p1.length() == Approx(0) );
+    }
 
+    SECTION( "edge cases length" )
+    {
 	Vec2d<int> p2{1,0};
 
 	CHECK( p2.length() == Approx(1) );
+    }
 
+    SECTION( "edge cases length" )
+    {
 	Vec2d<int> p3{0,1};
 
 	CHECK( p3.length() == Approx(1) );
@@ -121,15 +137,103 @@ TEST_CASE( "Vec2d length test", "[Vec2d]")
 
 TEST_CASE( "Vec2d comparison test", "[Vec2d]")
 {
-    SECTION( "comparison operators" )
+    SECTION( "{1,1} & {1,1}" )
     {
 	Vec2d<int> p1{1,1};
 	Vec2d<int> p2{p1};
 
-	Vec2d<int> p3{p1 - p2};
-   
-	CHECK( p3 != p2 );
 	CHECK( p1 == p2 );
+	CHECK_FALSE( p1 != p2 );
+    }
+    
+    SECTION( "{0,0} & {1,1}" )
+    {
+	Vec2d<int> p1{1,1};
+	Vec2d<int> p2{0,0};
+	
+   	CHECK_FALSE( p1 == p2 );
+	CHECK( p1 != p2 );	
+    }
+    
+    SECTION( "{1,1} & {1, 1 + DEFAULT_PREC}" )
+    {
+	Vec2d<double> p1{1,1};
+	Vec2d<double> p2{1, 1 + DEFAULT_PREC};
+   
+	CHECK( p1 == p2 );
+	CHECK_FALSE( p1 != p2 );	
+    }
+
+    SECTION( "{1,1} == {1 + DEFAULT_PREC, 1}" )
+    {
+	Vec2d<double> p1{1,1};
+	Vec2d<double> p2{1 + DEFAULT_PREC, 1};
+   
+	CHECK( p1 == p2 );
+	CHECK_FALSE( p1 != p2 );
+    }
+
+    SECTION( "{1,1} == {1, 1 + (2 * DEFAULT_PREC)}" )
+    {
+	Vec2d<double> p1{1,1};
+	Vec2d<double> p2{1, 1 + (2 * DEFAULT_PREC)};
+   
+	CHECK_FALSE( p1 == p2 );
+	CHECK( p1 != p2 );
+    }
+
+    SECTION( "{1,1} == {1 + (2 * DEFAULT_PREC), 1}" )
+    {
+	Vec2d<double> p1{1,1};
+	Vec2d<double> p2{1 + (2 * DEFAULT_PREC), 1};
+   
+	CHECK_FALSE( p1 == p2 );
+	CHECK( p1 != p2 );
+    }
+
+    SECTION( "0 precision false" )
+    {
+	Vec2d<double> p1{1,1, 0.0};
+	Vec2d<double> p2{1, 1 + DEFAULT_PREC, 0.0};
+   
+	CHECK_FALSE( p1 == p2 );
+	CHECK( p1 != p2 );
+    }
+
+    SECTION( "0 precision true" )
+    {
+	Vec2d<double> p1{1,1, 0.0};
+	Vec2d<double> p2{1, 1, 0.0};
+   
+	CHECK( p1 == p2 );
+	CHECK_FALSE( p1 != p2 );
+    }
+
+    SECTION( "Different precision true" )
+    {
+	Vec2d<double> p1{1, 1, 0.0};
+	Vec2d<double> p2{1, 1 + 2, 2};
+   
+	CHECK( p1 == p2 );
+	CHECK_FALSE( p1 != p2 );
+    }
+
+    SECTION( "Different precision true" )
+    {
+	Vec2d<double> p1{1, 1, 0.0};
+	Vec2d<double> p2{1, 1 + 2, 2};
+   
+	CHECK( p1 == p2 );
+	CHECK_FALSE( p1 != p2 );
+    }
+
+    SECTION( "Different precision false" )
+    {
+	Vec2d<double> p1{1, 1, 3};
+	Vec2d<double> p2{1, 1 + 2, 2};
+   
+	CHECK( p1 == p2 );
+	CHECK_FALSE( p1 != p2 );
     }
 }
 

@@ -9,6 +9,7 @@
 
 namespace dalg
 {
+    const double DEFAULT_PREC = 0.0001;
 
     /**
      * Author: Daniel Thorén
@@ -35,12 +36,12 @@ namespace dalg
 	bool equals(Vec2d const& other, std::false_type is_floating_point ) const;
 	
     public:	
-	Vec2d(T x = 0, T y = 0, T prec = 0.0001) :
+	Vec2d(T x = 0, T y = 0, T prec = static_cast<T>( DEFAULT_PREC )) :
 	    x{x}, y{y}, prec{prec}
 	    {}
     
-	Vec2d(Vec2d const& pt, T prec = 0.0001) :
-	    x{pt.x}, y{pt.y}, prec{prec}
+	Vec2d(Vec2d const& pt) :
+	    x{pt.x}, y{pt.y}, prec{pt.prec}
 	    {}
 
 	~Vec2d() = default;
