@@ -189,7 +189,109 @@ TEST_CASE( "LineSegment Copy constructor test" )
 
 TEST_CASE( "LineSegment comparison test" )
 {
+    SECTION( "normal comparison posetive" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{2, 2};	
+	
+	LineSegment<double> l1{p1, p2};
+	LineSegment<double> l2{p1, p2};
 
+	CHECK( l1 == l2 );
+	CHECK_FALSE( l1 != l2 );
+    }
+
+    SECTION( "normal comparison negative" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{2, 2};	
+	
+	LineSegment<double> l1{p1, p2};
+
+	Vec2d<double> p3{0, 0};
+	Vec2d<double> p4{2, 3};
+	
+	LineSegment<double> l2{p3, p4};
+
+	CHECK_FALSE( l1 == l2 );
+	CHECK( l1 != l2 );
+    }
+
+    SECTION( "close comparison negative" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{2, 2};	
+	
+	LineSegment<double> l1{p1, p2};
+
+	Vec2d<double> p3{0, 0};
+	Vec2d<double> p4{2, 2.001};
+	
+	LineSegment<double> l2{p3, p4};
+
+	CHECK_FALSE( l1 == l2 );
+	CHECK( l1 != l2 );
+    }
+
+    SECTION( "point comparison posetive" )
+    {
+	Vec2d<double> p1{0, 0};
+	
+	LineSegment<double> l1{p1, p1};	
+	LineSegment<double> l2{p1, p1};
+
+	CHECK( l1 == l2 );
+	CHECK_FALSE( l1 != l2 );
+    }
+
+    SECTION( "point comparison negative" )
+    {
+	Vec2d<double> p1{0, 0};
+	
+	LineSegment<double> l1{p1, p1};
+
+	Vec2d<double> p2{0, 1};
+	
+	LineSegment<double> l2{p2, p2};
+
+	CHECK_FALSE( l1 == l2 );
+	CHECK( l1 != l2 );
+    }
+
+    SECTION( "point comparison close negative" )
+    {
+	Vec2d<double> p1{0, 0};
+	
+	LineSegment<double> l1{p1, p1};
+
+	Vec2d<double> p2{0, 0.001};
+	
+	LineSegment<double> l2{p2, p2};
+
+	CHECK_FALSE( l1 == l2 );
+	CHECK( l1 != l2 );
+    }
+
+    SECTION( "comparison with self negative" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{2, 2};
+	
+	LineSegment<double> l1{p1, p2};
+
+	CHECK( l1 == l1 );
+	CHECK_FALSE( l1 != l1 );
+    }
+
+    SECTION( "point comparison with self negative" )
+    {
+	Vec2d<double> p1{0, 0};
+	
+	LineSegment<double> l1{p1, p1};
+
+	CHECK( l1 == l1 );
+	CHECK_FALSE( l1 != l1 );
+    }
 }
 
 TEST_CASE( "LineSegment assignment test" )
@@ -202,15 +304,15 @@ TEST_CASE( "LineSegment assignment test" )
 	LineSegment<double> l1{p1, p2};
 	LineSegment<double> l2 = l1;
 
-	REQUIRE( l1.get_start() == Vec2d<double>{0,0} );
-	REQUIRE( l1.get_vec() == Vec2d<double>{2,2} );
-	REQUIRE( l1.get_end() == Vec2d<double>{2,2} );
+	CHECK( l1.get_start() == Vec2d<double>{0,0} );
+	CHECK( l1.get_vec() == Vec2d<double>{2,2} );
+	CHECK( l1.get_end() == Vec2d<double>{2,2} );
 
-	REQUIRE( l2.get_start() == Vec2d<double>{0,0} );
-	REQUIRE( l2.get_vec() == Vec2d<double>{2,2} );
-	REQUIRE( l2.get_end() == Vec2d<double>{2,2} );
+	CHECK( l2.get_start() == Vec2d<double>{0,0} );
+	CHECK( l2.get_vec() == Vec2d<double>{2,2} );
+	CHECK( l2.get_end() == Vec2d<double>{2,2} );
 
-	REQUIRE( l1 == l2 );
+	CHECK( l1 == l2 );
     }
 
     SECTION( "assign to self" )
@@ -221,9 +323,9 @@ TEST_CASE( "LineSegment assignment test" )
 	LineSegment<double> l1{p1, p2};
 	l1 = l1;
 
-	REQUIRE( l1.get_start() == Vec2d<double>{0,0} );
-	REQUIRE( l1.get_vec() == Vec2d<double>{2,2} );
-	REQUIRE( l1.get_end() == Vec2d<double>{2,2} );
+	CHECK( l1.get_start() == Vec2d<double>{0,0} );
+	CHECK( l1.get_vec() == Vec2d<double>{2,2} );
+	CHECK( l1.get_end() == Vec2d<double>{2,2} );
     }
 }
 
