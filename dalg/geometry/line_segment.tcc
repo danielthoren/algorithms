@@ -355,7 +355,7 @@ dalg::Vec2d<T> dalg::LineSegment<T>::get_start() const
 }
 
 template<typename T>
-dalg::Vec2d<T> dalg::LineSegment<T>::get_vector() const
+dalg::Vec2d<T> dalg::LineSegment<T>::get_vec() const
 {
     return u;
 }

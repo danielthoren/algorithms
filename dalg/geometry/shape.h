@@ -16,9 +16,6 @@ namespace dalg
     template<typename T>
     class Circle;
 
-    struct panda
-    {};
-
     /**
      * Author: Daniel Thorén
      *

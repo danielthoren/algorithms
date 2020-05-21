@@ -90,7 +90,7 @@ namespace dalg
 	 */
 	Vec2d<T> get_start() const;
 
-	Vec2d<T> get_vector() const;
+	Vec2d<T> get_vec() const;
 
     private:
 	//p(s) = p0 + su

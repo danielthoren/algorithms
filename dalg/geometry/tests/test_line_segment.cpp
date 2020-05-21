@@ -14,9 +14,177 @@
 using namespace dalg;
 
 
-TEST_CASE( "LineSegment constructor test" )
+TEST_CASE( "LineSegment Vec2d constructor test" )
 {
+    SECTION( "Vec2d constructor {0,0}->{1,1}" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{1, 1};
 
+	LineSegment<double> l1{p1,p2};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{0,0} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{1,1} );
+	REQUIRE( l1.get_end() == Vec2d<double>{1,1} );
+    }
+
+    SECTION( "Vec2d constructor {1,1}->{2,2}" )
+    {
+	Vec2d<double> p1{1, 1};
+	Vec2d<double> p2{2, 2};
+
+	LineSegment<double> l1{p1,p2};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{1,1} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{1,1} );
+	REQUIRE( l1.get_end() == Vec2d<double>{2,2} );
+    }
+
+    SECTION( "Vec2d constructor {0,1}->{2,2}" )
+    {
+	Vec2d<double> p1{0, 1};
+	Vec2d<double> p2{2, 2};
+
+	LineSegment<double> l1{p1,p2};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{0,1} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{2,1} );
+	REQUIRE( l1.get_end() == Vec2d<double>{2,2} );
+    }
+
+    SECTION( "Vec2d constructor {1,0}->{2,2}" )
+    {
+	Vec2d<double> p1{1, 0};
+	Vec2d<double> p2{2, 2};
+
+	LineSegment<double> l1{p1,p2};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{1,0} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{1,2} );
+	REQUIRE( l1.get_end() == Vec2d<double>{2,2} );
+    }
+
+    SECTION( "Vec2d constructor {0,0}->{0,2}" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{0, 2};
+
+	LineSegment<double> l1{p1,p2};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{0,0} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{0,2} );
+	REQUIRE( l1.get_end() == Vec2d<double>{0,2} );
+    }
+
+    SECTION( "Vec2d constructor {0,0}->{2,0}" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{2, 0};
+
+	LineSegment<double> l1{p1,p2};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{0,0} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{2,0} );
+	REQUIRE( l1.get_end() == Vec2d<double>{2,0} );	
+    }
+}
+
+TEST_CASE( "LineSegment Scalar constructor test" )
+    {
+
+    SECTION( "Scalar constructor {0,0}->{1,1}" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{1, 1};
+
+	LineSegment<double> l1{p1.x, p1.y, p2.x, p2.y};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{0,0} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{1,1} );
+	REQUIRE( l1.get_end() == Vec2d<double>{1,1} );
+    }
+
+    SECTION( "Scalar constructor {1,1}->{2,2}" )
+    {
+	Vec2d<double> p1{1, 1};
+	Vec2d<double> p2{2, 2};
+
+	LineSegment<double> l1{p1.x, p1.y, p2.x, p2.y};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{1,1} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{1,1} );
+	REQUIRE( l1.get_end() == Vec2d<double>{2,2} );
+    }
+
+    SECTION( "Scalar constructor {0,1}->{2,2}" )
+    {
+	Vec2d<double> p1{0, 1};
+	Vec2d<double> p2{2, 2};
+
+	LineSegment<double> l1{p1.x, p1.y, p2.x, p2.y};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{0,1} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{2,1} );
+	REQUIRE( l1.get_end() == Vec2d<double>{2,2} );
+    }
+
+    SECTION( "Scalar constructor {1,0}->{2,2}" )
+    {
+	Vec2d<double> p1{1, 0};
+	Vec2d<double> p2{2, 2};
+
+	LineSegment<double> l1{p1.x, p1.y, p2.x, p2.y};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{1,0} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{1,2} );
+	REQUIRE( l1.get_end() == Vec2d<double>{2,2} );
+    }
+
+    SECTION( "Scalar constructor {0,0}->{0,2}" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{0, 2};
+
+	LineSegment<double> l1{p1.x, p1.y, p2.x, p2.y};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{0,0} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{0,2} );
+	REQUIRE( l1.get_end() == Vec2d<double>{0,2} );
+    }
+
+    SECTION( "Scalar constructor {0,0}->{2,0}" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{2, 0};
+
+	LineSegment<double> l1{p1.x, p1.y, p2.x, p2.y};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{0,0} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{2,0} );
+	REQUIRE( l1.get_end() == Vec2d<double>{2,0} );	
+    }
+}
+
+TEST_CASE( "LineSegment Copy constructor test" )
+{
+    SECTION( "Normal copy construction" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{2, 2};
+
+	LineSegment<double> l1{p1, p2};
+	LineSegment<double> l2{l1};
+
+	REQUIRE( l1.get_start() == Vec2d<double>{0,0} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{2,2} );
+	REQUIRE( l1.get_end() == Vec2d<double>{2,2} );
+
+	REQUIRE( l2.get_start() == Vec2d<double>{0,0} );
+	REQUIRE( l2.get_vec() == Vec2d<double>{2,2} );
+	REQUIRE( l2.get_end() == Vec2d<double>{2,2} );
+
+	REQUIRE( l1 == l2 );
+    }
 }
 
 TEST_CASE( "LineSegment comparison test" )
@@ -26,7 +194,37 @@ TEST_CASE( "LineSegment comparison test" )
 
 TEST_CASE( "LineSegment assignment test" )
 {
+    SECTION( "Normal assignment" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{2, 2};
 
+	LineSegment<double> l1{p1, p2};
+	LineSegment<double> l2 = l1;
+
+	REQUIRE( l1.get_start() == Vec2d<double>{0,0} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{2,2} );
+	REQUIRE( l1.get_end() == Vec2d<double>{2,2} );
+
+	REQUIRE( l2.get_start() == Vec2d<double>{0,0} );
+	REQUIRE( l2.get_vec() == Vec2d<double>{2,2} );
+	REQUIRE( l2.get_end() == Vec2d<double>{2,2} );
+
+	REQUIRE( l1 == l2 );
+    }
+
+    SECTION( "assign to self" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{2, 2};
+
+	LineSegment<double> l1{p1, p2};
+	l1 = l1;
+
+	REQUIRE( l1.get_start() == Vec2d<double>{0,0} );
+	REQUIRE( l1.get_vec() == Vec2d<double>{2,2} );
+	REQUIRE( l1.get_end() == Vec2d<double>{2,2} );
+    }
 }
 
 TEST_CASE( "LineSegment closest_point test" )
