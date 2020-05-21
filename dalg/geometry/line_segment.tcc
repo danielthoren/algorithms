@@ -141,7 +141,20 @@ dalg::Vec2d<T> dalg::LineSegment<T>::closest_point(dalg::Vec2d<T> const& x) cons
  */
 template <typename T>
 std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>> dalg::LineSegment<T>::closest_points(dalg::LineSegment<T> const& lseg) const
-{    
+{
+    //If the two segments intersect, closest points is the intersection point
+    auto res = intersect(lseg);
+    if (std::holds_alternative<dalg::Vec2d<T>>(res))
+    {
+	dalg::Vec2d<T> res_act = std::get<dalg::Vec2d<T>>(res);
+	return {res_act, res_act};
+    }
+    else if (std::holds_alternative<dalg::LineSegment<T>>(res))
+    {
+	dalg::LineSegment<T> res_act = std::get<dalg::LineSegment<T>>(res);
+	return {res_act.get_start(), res_act.get_start()};
+    }
+    
     dalg::Vec2d<T> p_res      { closest_point(lseg.p0) };
     dalg::Vec2d<T> u_res      { closest_point(lseg.p0 + lseg.u) };
     dalg::Vec2d<T> p_res_other{ lseg.closest_point(p0) };

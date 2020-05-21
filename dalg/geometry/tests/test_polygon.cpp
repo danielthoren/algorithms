@@ -25,12 +25,12 @@ TEST_CASE( "Polygon Constructor test", "[Polygon]")
     {
 	std::vector<dalg::LineSegment<int>>& segments = poly.get_segments();
 
-	REQUIRE( segments[0].get_start_point() == p1 );
-	REQUIRE( segments[0].get_end_point() == p2 );
-	REQUIRE( segments[1].get_start_point() == p2 );
-	REQUIRE( segments[1].get_end_point() == p3 );
-	REQUIRE( segments[2].get_start_point() == p3 );
-	REQUIRE( segments[2].get_end_point() == p1 );
+	REQUIRE( segments[0].get_start() == p1 );
+	REQUIRE( segments[0].get_end() == p2 );
+	REQUIRE( segments[1].get_start() == p2 );
+	REQUIRE( segments[1].get_end() == p3 );
+	REQUIRE( segments[2].get_start() == p3 );
+	REQUIRE( segments[2].get_end() == p1 );
     }
 
     SECTION( "Test add_point" )
@@ -40,14 +40,14 @@ TEST_CASE( "Polygon Constructor test", "[Polygon]")
 	poly.add_point(p4, 1);
 	std::vector<dalg::LineSegment<int>>& segments = poly.get_segments();
 
-	CHECK( segments[0].get_start_point() == p1 );
-	CHECK( segments[0].get_end_point() == p2 );
-	CHECK( segments[1].get_start_point() == p2 );
-	CHECK( segments[1].get_end_point() == p4 );
-	CHECK( segments[2].get_start_point() == p4 );
-	CHECK( segments[2].get_end_point() == p3 );
-	CHECK( segments[3].get_start_point() == p3 );
-	CHECK( segments[3].get_end_point() == p1 );
+	CHECK( segments[0].get_start() == p1 );
+	CHECK( segments[0].get_end() == p2 );
+	CHECK( segments[1].get_start() == p2 );
+	CHECK( segments[1].get_end() == p4 );
+	CHECK( segments[2].get_start() == p4 );
+	CHECK( segments[2].get_end() == p3 );
+	CHECK( segments[3].get_start() == p3 );
+	CHECK( segments[3].get_end() == p1 );
     }
 }
 

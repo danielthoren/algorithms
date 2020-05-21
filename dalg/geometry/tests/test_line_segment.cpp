@@ -14,7 +14,7 @@
 using namespace dalg;
 
 
-TEST_CASE( "LineSegment Vec2d constructor test" )
+TEST_CASE( "LineSegment Vec2d constructor test", "[LineSegment]" )
 {
     SECTION( "Vec2d constructor {0,0}->{1,1}" )
     {
@@ -165,7 +165,7 @@ TEST_CASE( "LineSegment Scalar constructor test" )
     }
 }
 
-TEST_CASE( "LineSegment Copy constructor test" )
+TEST_CASE( "LineSegment Copy constructor test", "[LineSegment]" )
 {
     SECTION( "Normal copy construction" )
     {
@@ -187,7 +187,7 @@ TEST_CASE( "LineSegment Copy constructor test" )
     }
 }
 
-TEST_CASE( "LineSegment comparison test" )
+TEST_CASE( "LineSegment comparison test", "[LineSegment]" )
 {
     SECTION( "normal comparison posetive" )
     {
@@ -294,7 +294,7 @@ TEST_CASE( "LineSegment comparison test" )
     }
 }
 
-TEST_CASE( "LineSegment assignment test" )
+TEST_CASE( "LineSegment assignment test", "[LineSegment]" )
 {
     SECTION( "Normal assignment" )
     {
@@ -329,17 +329,60 @@ TEST_CASE( "LineSegment assignment test" )
     }
 }
 
-TEST_CASE( "LineSegment closest_point test" )
+TEST_CASE( "LineSegment closest_points test", "[LineSegment]" )
 {
+    SECTION( "Kattis test (1)" )
+    {
+	LineSegment<double> l1{-10, 0, 10, 0};
+	LineSegment<double> l2{0, -10, 0, 10};
 
+	auto res = l1.closest_points(l2);
+
+	CHECK( (res.first - res.second).length() < 0.0001 );
+    }
+    
+    SECTION( "Kattis test (2)" )
+    {
+	LineSegment<double> l1{-10, 0, 10, 0};
+	LineSegment<double> l2{-5, 0, 5, 0};
+
+	auto res = l1.closest_points(l2);
+
+	CHECK( (res.first - res.second).length() < 0.0001 );
+    }
+
+    SECTION( "Kattis test (3)" )
+    {
+	LineSegment<double> l1{1, 1, 1, 1};
+	LineSegment<double> l2{1, 1, 2, 1};
+
+	auto res = l1.closest_points(l2);
+
+	CHECK( (res.first - res.second).length() < 0.0001 );
+    }
+
+    SECTION( "Kattis test (4)" )
+    {
+	LineSegment<double> l1{1, 1, 1, 1};
+	LineSegment<double> l2{2, 1, 2, 1};
+
+	auto res = l1.closest_points(l2);
+
+	CHECK( 1 - (res.first - res.second).length() < 0.0001 );
+    }
+
+    SECTION( "Kattis test (5)" )
+    {
+	LineSegment<double> l1{1871, 5789, 216, -517};
+	LineSegment<double> l2{189, -1518, 3851, 1895};
+
+	auto res = l1.closest_points(l2);
+
+	CHECK( 713.86 - (res.first - res.second).length() < 0.0001 );
+    }    
 }
 
-TEST_CASE( "LineSegment closest_points test" )
-{
-
-}
-
-TEST_CASE( "LineSegment on_line test", "[Vec2d]" )
+TEST_CASE( "LineSegment on_line test", "[LineSegment]" )
 {
     SECTION( "on line between points posetive" )
     {
@@ -462,7 +505,7 @@ TEST_CASE( "LineSegment on_line test", "[Vec2d]" )
     }
 }
 
-TEST_CASE( "LineSegment on_line_segment test" )
+TEST_CASE( "LineSegment on_line_segment test", "[LineSegment]" )
 {
     SECTION( "on line posetive" )
     {
@@ -563,7 +606,7 @@ TEST_CASE( "LineSegment on_line_segment test" )
 }
 
 
-TEST_CASE( "LineSegment line segment intersection test", "[Vec2d]" )
+TEST_CASE( "LineSegment intersection test", "[LineSegment]" )
 {
     SECTION( "kattis test 1" )
     {

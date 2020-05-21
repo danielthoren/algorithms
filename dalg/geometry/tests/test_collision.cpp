@@ -13,7 +13,7 @@
 
 using namespace dalg;
 
-TEST_CASE( "Circle-circle collision test", "[Circle]" )
+TEST_CASE( "Circle-circle collision test", "[Collision]" )
 {
     
     //--------------------Test random ---------------------------
