@@ -24,7 +24,11 @@ namespace dalg
 	/**
 	 * Constructs polygon from points
 	 */
-	Polygon(std::vector<Vec2d<T>> const& points);
+	Polygon(std::vector<Vec2d<T>> const& points) : points{points}
+	    {}
+
+	Polygon(Polygon<T> const& other) : points{other.points}
+	    {}
 
 	/**
 	 * Adds a new point between the given point and the one in front
@@ -33,7 +37,7 @@ namespace dalg
 	void add_point(Vec2d<T> const& pt, T position = 0);
     
 
-	std::vector<LineSegment<T>>& get_segments();
+	std::vector<Vec2d<T>>& get_points();
 
 	/**
 	 * Calculates the area of the polygon and returns it. Awnswer is
@@ -77,7 +81,7 @@ namespace dalg
     
     private:
 
-	std::vector<LineSegment<T>> segments{};
+	std::vector<Vec2d<T>> points{};
     };
 }
 

@@ -13,41 +13,78 @@ using namespace dalg;
 
 
 TEST_CASE( "Polygon Constructor test", "[Polygon]")
-{
-    dalg::Vec2d<int> p1(0, 0);
-    dalg::Vec2d<int> p2(1, 1);
-    dalg::Vec2d<int> p3(1, -1);
-    std::vector<dalg::Vec2d<int>> pts{p1, p2, p3};
-
-    dalg::Polygon poly(pts);
-    
-    SECTION( "Test normal construction" )
+{    
+    SECTION( "normal construction" )
     {
-	std::vector<dalg::LineSegment<int>>& segments = poly.get_segments();
+	Vec2d<int> p1(0, 0);
+	Vec2d<int> p2(1, 1);
+	Vec2d<int> p3(1, -1);
+	std::vector<Vec2d<int>> pts{p1, p2, p3};
 
-	REQUIRE( segments[0].get_start() == p1 );
-	REQUIRE( segments[0].get_end() == p2 );
-	REQUIRE( segments[1].get_start() == p2 );
-	REQUIRE( segments[1].get_end() == p3 );
-	REQUIRE( segments[2].get_start() == p3 );
-	REQUIRE( segments[2].get_end() == p1 );
+	Polygon poly(pts);
+	
+	std::vector<Vec2d<int>>& points = poly.get_points();
+
+	REQUIRE( points[0] == p1 );
+	REQUIRE( points[1] == p2 );
+	REQUIRE( points[2] == p3 );
     }
 
+    SECTION( "copy constructor" )
+    {
+	Vec2d<int> p1(1, -1);
+	Vec2d<int> p2(0, 1);
+	Vec2d<int> p3(1, 1);
+	Vec2d<int> p4(-10, -10);
+	std::vector<Vec2d<int>> pts{p1, p2, p3, p4};
+
+	Polygon poly(pts);
+	
+	std::vector<Vec2d<int>>& points = poly.get_points();
+
+	REQUIRE( points[0] == p1 );
+	REQUIRE( points[1] == p2 );
+	REQUIRE( points[2] == p3 );
+	REQUIRE( points[3] == p4 );
+
+	Polygon copy{poly};
+	
+	std::vector<Vec2d<int>>& copy_points = copy.get_points();
+
+	REQUIRE( copy_points[0] == p1 );
+	REQUIRE( copy_points[1] == p2 );
+	REQUIRE( copy_points[2] == p3 );
+	REQUIRE( copy_points[3] == p4 );
+	
+    }
+}
+
+TEST_CASE( "Polygon add_point test" )
+{
     SECTION( "Test add_point" )
     {
+	Vec2d<int> p1(0, 0);
+	Vec2d<int> p2(1, 1);
+	Vec2d<int> p3(1, -1);
+	std::vector<Vec2d<int>> pts{p1, p2, p3};
+
+	Polygon poly(pts);
+	
+	std::vector<Vec2d<int>>& points = poly.get_points();
+
+	REQUIRE( points[0] == p1 );
+	REQUIRE( points[1] == p2 );
+	REQUIRE( points[2] == p3 );
+	
 	dalg::Vec2d<int> p4(4,0);
 
 	poly.add_point(p4, 1);
-	std::vector<dalg::LineSegment<int>>& segments = poly.get_segments();
+	std::vector<Vec2d<int>>& n_points = poly.get_points();
 
-	CHECK( segments[0].get_start() == p1 );
-	CHECK( segments[0].get_end() == p2 );
-	CHECK( segments[1].get_start() == p2 );
-	CHECK( segments[1].get_end() == p4 );
-	CHECK( segments[2].get_start() == p4 );
-	CHECK( segments[2].get_end() == p3 );
-	CHECK( segments[3].get_start() == p3 );
-	CHECK( segments[3].get_end() == p1 );
+	CHECK( n_points[0] == p1 );
+	CHECK( n_points[1] == p2 );
+	CHECK( n_points[2] == p4 );
+	CHECK( n_points[3] == p3 );
     }
 }
 
@@ -119,9 +156,9 @@ TEST_CASE( "Polygon area test", "[Polygon]" )
 }
 
 
-TEST_CASE( "Polygon min_distance test", "[Polygon]" )
+TEST_CASE( "Polygon-LineSegment min_distance test", "[Polygon]" )
 {
-    SECTION( "Normal poly distance" )
+    SECTION( "Endpoints not closest" )
     {
 	dalg::Vec2d<double> p1(0, 0);
 	dalg::Vec2d<double> p2(1, 1);	
@@ -140,7 +177,83 @@ TEST_CASE( "Polygon min_distance test", "[Polygon]" )
 	double dist = (res.first - res.second).length();
 
 	CHECK( dist == Approx(1.0).epsilon(0.01) );
+	CHECK( res.first == p2 );
+	CHECK( res.second == Vec2d<double>{1,2} );
     }
+
+    SECTION( "start point closest" )
+    {
+	dalg::Vec2d<double> p1(0, 0);
+	dalg::Vec2d<double> p2(1, 1);	
+	dalg::Vec2d<double> p3(4, 0);
+	dalg::Vec2d<double> p4(1, -1);
+	std::vector<dalg::Vec2d<double>> pts{p1, p2, p3, p4};
+
+	dalg::Polygon poly(pts);
+
+	dalg::Vec2d<double> pt1(5, 0);
+	dalg::Vec2d<double> pt2(6, 0);
+	dalg::LineSegment<double> seg(pt1, pt2);
+
+	auto res = poly.min_distance(seg);
+
+	double dist = (res.first - res.second).length();
+
+	CHECK( dist == Approx(1.0).epsilon(0.01) );
+	CHECK( res.first == p3 );
+	CHECK( res.second == pt1 );
+    }
+
+    SECTION( "end point closest" )
+    {
+	dalg::Vec2d<double> p1(0, 0);
+	dalg::Vec2d<double> p2(1, 1);	
+	dalg::Vec2d<double> p3(4, 0);
+	dalg::Vec2d<double> p4(1, -1);
+	std::vector<dalg::Vec2d<double>> pts{p1, p2, p3, p4};
+
+	dalg::Polygon poly(pts);
+
+	dalg::Vec2d<double> pt1(6, 0);
+	dalg::Vec2d<double> pt2(5, 0);
+	dalg::LineSegment<double> seg(pt1, pt2);
+
+	auto res = poly.min_distance(seg);
+
+	double dist = (res.first - res.second).length();
+
+	CHECK( dist == Approx(1.0).epsilon(0.01) );
+	CHECK( res.first == p3 );
+	CHECK( res.second == pt2 );
+    }
+
+    //TODO: something wrong with precision, get (1.15, -1.45) == (1, -1.5) on third check
+    SECTION( "parallel line precision test" )
+    {
+	dalg::Vec2d<long double> p1(0, 0);
+	dalg::Vec2d<long double> p2(1, 1);	
+	dalg::Vec2d<long double> p3(4, 0);
+	dalg::Vec2d<long double> p4(1, -1);
+	std::vector<dalg::Vec2d<long double>> pts{p1, p2, p3, p4};
+
+	dalg::Polygon poly(pts);
+
+	dalg::Vec2d<long double> pt1(3, -5.0/6.0);
+	dalg::Vec2d<long double> pt2(1, -3.0/2.0);
+	dalg::LineSegment<long double> seg(pt1, pt2);
+
+	auto res = poly.min_distance(seg);
+
+	long double dist = (res.first - res.second).length();
+
+	CHECK( dist == Approx(0.5).epsilon(0.01) );
+	CHECK( res.first == p4 );
+	CHECK( res.second == pt2 );
+    }
+}
+
+TEST_CASE( "Polygon-Polygon min_distance test", "[Polygon]" )
+{
 
     SECTION( "Small square in larger square" )
     {
