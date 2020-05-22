@@ -5,6 +5,7 @@
 #include <vector>
 #include <optional>
 
+
 #include "vec2d.h"
 
 #ifndef DEBUG
@@ -12,7 +13,7 @@
 #endif
 
 namespace dalg
-{
+{    
     template<typename T>
     class Circle;
 
@@ -152,7 +153,6 @@ namespace dalg
 
 	bool operator==(Shape<T> const& other) const
 	    {
-		std::cout << "in shape operator" << std::endl;
 		return pos == other.pos;
 	    }
 

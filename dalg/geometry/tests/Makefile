@@ -18,6 +18,7 @@ test_main.o :   ${CATCH_DIR}/test_main.o \
 		${BUILD_DIR}/test_vec2d.o \
 		${BUILD_DIR}/test_line_segment.o \
 		${BUILD_DIR}/test_polygon.o \
+		${BUILD_DIR}/test_aabb.o \
 		${BUILD_DIR}/test_collision.o \
 		${BUILD_DIR}/test_rectangle.o
 
@@ -26,6 +27,7 @@ test_main.o :   ${CATCH_DIR}/test_main.o \
 	${BUILD_DIR}/test_vec2d.o \
 	${BUILD_DIR}/test_line_segment.o \
 	${BUILD_DIR}/test_polygon.o \
+	${BUILD_DIR}/test_aabb.o \
 	${BUILD_DIR}/test_collision.o \
 	${BUILD_DIR}/test_rectangle.o
 
@@ -38,6 +40,9 @@ ${BUILD_DIR}/test_collision.o : test_collision.cpp
 
 ${BUILD_DIR}/test_rectangle.o : test_rectangle.cpp
 	${CC} ${FLAGS} -c test_rectangle.cpp -o ${BUILD_DIR}/test_rectangle.o
+
+${BUILD_DIR}/test_aabb.o : test_aabb.cpp
+	${CC} ${FLAGS} -c test_aabb.cpp -o ${BUILD_DIR}/test_aabb.o
 
 ${BUILD_DIR}/test_polygon.o : test_polygon.cpp
 	${CC} ${FLAGS} -c test_polygon.cpp -o ${BUILD_DIR}/test_polygon.o

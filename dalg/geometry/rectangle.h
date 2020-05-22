@@ -5,25 +5,10 @@
 #include <sstream>
 
 #include "vec2d.h"
+#include "utility.h"
 
 namespace dalg
 {
-    struct BadArgumentException : public std::exception
-    {
-	BadArgumentException(std::string msg)
-	    {
-		std::stringstream stream("Bad arguments given: ");
-		stream << msg << std::endl;
-		this->msg = stream.str();
-	    }
-	    
-	const char * what () const throw ()
-	    {
-		return msg.c_str();
-	    }
-
-	std::string msg;
-    };
     
     /**
      * Author: Daniel Thorén
