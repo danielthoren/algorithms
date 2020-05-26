@@ -5,11 +5,13 @@
 #include <cmath>
 #include <iostream>
 #include <variant>
+#include <optional>
+
+#include "../shape.h"
+#include "../circle.h"
+#include "../collision.h"
 
 #define DEBUG 1
-
-#include "../vec2d.h"
-#include "../circle.h"
 
 using namespace dalg;
 
@@ -22,7 +24,10 @@ TEST_CASE( "Circle-circle collision test", "[Collision]" )
 	Circle<double> c1{Vec2d<double>{0,0}, 5};
 	Circle<double> c2{Vec2d<double>{5,0}, 5};
 
-        auto col = c1.collision(c2);
+	Shape<double>* s1 = &c1;
+	Shape<double>* s2 = &c2;
+
+	auto col = collision(s1, s2);
 
 	REQUIRE( col );
 	    

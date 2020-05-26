@@ -139,6 +139,15 @@ namespace dalg
 	Shape<T>* B;
     };
 
+    enum ShapeType
+    {
+	shape,
+	circle,
+	lineSegment,
+	square,
+	polygon
+    };
+
     /**
      * Author: Daniel Thorén
      *
@@ -148,12 +157,12 @@ namespace dalg
     class Shape
     {
     public:
-	Shape(Vec2d<T> const& pos): pos{pos}
+	Shape(Vec2d<T> const& pos, ShapeType type): pos{pos}, type{type}
 	    {}
 
 	bool operator==(Shape<T> const& other) const
 	    {
-		return pos == other.pos;
+		return pos == other.pos && type == other.type;
 	    }
 
 	bool operator!=(Shape<T> const& other) const
@@ -161,31 +170,13 @@ namespace dalg
 		return !(*this == other);
 	    }
 
-	/**
-	 * Function used to check what type this is. This function
-	 * then calls the appropriate function in other to check which
-	 * type other is. other then calls the actual collision function.
-	 */
-	virtual std::optional<Collision<T>>
-	collision(Shape<T>& other) = 0;
-
-	
-	/**
-	 * If "collision" calls this function then the other object is
-	 * of circle type. Call the appropriate function that handles
-	 * collision between this type and circle
-	 */
-	virtual std::optional<Collision<T>>
-	circle_collision(Circle<T>& other) = 0;
-
-
 	Vec2d<T> get_pos() const
 	    {
 		return pos;
 	    }
 
-    protected:
 	Vec2d<T> pos;
+	const ShapeType type;
     };
 
 #include "circle.h"
