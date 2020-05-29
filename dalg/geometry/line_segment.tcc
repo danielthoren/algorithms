@@ -5,54 +5,57 @@
 #error 'line_segment.tcc' is not supposed to be included directly. Include 'line_segment.h' instead.
 #endif
 
-template <typename T>
-bool dalg::LineSegment<T>::operator==(dalg::LineSegment<T> const& other) const
+namespace dalg
 {
-    return this->p0 == other.p0 && this->u == other.u;
-}
 
-template <typename T>
-bool dalg::LineSegment<T>::operator!=(dalg::LineSegment<T> const& other) const
-{
-    return ! (*this == other);
-}
-
-template <typename T>
-void dalg::LineSegment<T>::operator=(dalg::LineSegment<T> const& other)
-{
-    p0 = other.p0;
-    u = other.u;
-}
-
-template <typename T>
-bool dalg::LineSegment<T>::on_line(dalg::Vec2d<T> const& pt) const
-{
-    //This is a point, check if both points are the same
-    if (u.x == 0 && u.y == 0)
+    template <typename T>
+    bool LineSegment<T>::operator==(LineSegment<T> const& other) const
     {
-	return p0 == pt;
+	return this->p0 == other.p0 && this->u == other.u;
     }
+
+    template <typename T>
+    bool LineSegment<T>::operator!=(LineSegment<T> const& other) const
+    {
+	return ! (*this == other);
+    }
+
+    template <typename T>
+    void LineSegment<T>::operator=(LineSegment<T> const& other)
+    {
+	p0 = other.p0;
+	u = other.u;
+    }
+
+    template <typename T>
+    bool LineSegment<T>::on_line(Vec2d<T> const& pt) const
+    {
+	//This is a point, check if both points are the same
+	if (u.x == 0 && u.y == 0)
+	{
+	    return p0 == pt;
+	}
     
-    T t { dot( (pt - p0), u) / dot(u, u) };
-    return (p0 + u * t) == pt;
-}
-
-template <typename T>
-inline bool dalg::within(T a, T b, T c)
-{
-  return (a <= b && b <= c) || (c <= b && b <= a);
-}
-
-template <typename T>
-bool dalg::LineSegment<T>::on_segment(dalg::Vec2d<T> const& pt) const
-{   
-    if (on_line(pt))
-    {
-	return dalg::within(p0.x, pt.x, (p0+u).x) &&
-	    dalg::within(p0.y, pt.y, (p0+u).y);  
+	T t { dot( (pt - p0), u) / dot(u, u) };
+	return (p0 + u * t) == pt;
     }
-    return false;
-}
+
+    template <typename T>
+    inline bool within(T a, T b, T c)
+    {
+	return (a <= b && b <= c) || (c <= b && b <= a);
+    }
+
+    template <typename T>
+    bool LineSegment<T>::on_segment(Vec2d<T> const& pt) const
+    {   
+	if (on_line(pt))
+	{
+	    return within(p0.x, pt.x, (p0+u).x) &&
+		within(p0.y, pt.y, (p0+u).y);  
+	}
+	return false;
+    }
 
 
 /**
@@ -93,40 +96,40 @@ bool dalg::LineSegment<T>::on_segment(dalg::Vec2d<T> const& pt) const
  * x     : The point to measure distance to
  * return: The resulting point R
  */
-template <typename T>
-dalg::Vec2d<T> dalg::LineSegment<T>::closest_point(dalg::Vec2d<T> const& x) const
-{
-    //Move coordinate system if the line does not go through origo
-    dalg::Vec2d<T> xt = x - p0;
+    template <typename T>
+    Vec2d<T> LineSegment<T>::closest_point(Vec2d<T> const& x) const
+    {
+	//Move coordinate system if the line does not go through origo
+	Vec2d<T> xt = x - p0;
 
-    T u2 = dot(u, u);
+	T u2 = dot(u, u);
     
-    //If u2 == 0 then this line is a single point
-    if (u2 == 0)
-    {
-	return p0;
+	//If u2 == 0 then this line is a single point
+	if (u2 == 0)
+	{
+	    return p0;
+	}
+
+	//Calculate projection
+	T c = dot(u, xt) / u2;
+
+	//If 0 <= c <= 1 then the point is on the line segment
+	if (c <= 1 && c >= 0)
+	{
+	    Vec2d<T> res = c * u + p0;
+	    return res;
+	}
+
+	//Otherwise one of the line segments endpoints is closest
+	Vec2d<T> v1{p0 - x};
+	Vec2d<T> v2{(p0 + u) - x};
+
+	if (v1.length() < v2.length())
+	{
+	    return p0;
+	}
+	return p0 + u;
     }
-
-    //Calculate projection
-    T c = dot(u, xt) / u2;
-
-    //If 0 <= c <= 1 then the point is on the line segment
-    if (c <= 1 && c >= 0)
-    {
-	dalg::Vec2d<T> res = c * u + p0;
-	return res;
-    }
-
-    //Otherwise one of the line segments endpoints is closest
-    dalg::Vec2d<T> v1{p0 - x};
-    dalg::Vec2d<T> v2{(p0 + u) - x};
-
-    if (v1.length() < v2.length())
-    {
-	return p0;
-    }
-    return p0 + u;
-}
 
 /**
  * Functions determines the closest pair of points on the two line
@@ -139,57 +142,57 @@ dalg::Vec2d<T> dalg::LineSegment<T>::closest_point(dalg::Vec2d<T> const& x) cons
  * return: The pair of points that are the closest on the given line segments
  *         std::pair<closest on this, closest on lseg>
  */
-template <typename T>
-std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>> dalg::LineSegment<T>::closest_points(dalg::LineSegment<T> const& lseg) const
-{
-    //If the two segments intersect, closest points is the intersection point
-    auto res = intersect(lseg);
-    if (std::holds_alternative<dalg::Vec2d<T>>(res))
+    template <typename T>
+    std::pair<Vec2d<T>, Vec2d<T>> LineSegment<T>::closest_points(LineSegment<T> const& lseg) const
     {
-	dalg::Vec2d<T> res_act = std::get<dalg::Vec2d<T>>(res);
-	return {res_act, res_act};
-    }
-    else if (std::holds_alternative<dalg::LineSegment<T>>(res))
-    {
-	dalg::LineSegment<T> res_act = std::get<dalg::LineSegment<T>>(res);
-	return {res_act.get_start(), res_act.get_start()};
-    }
+	//If the two segments intersect, closest points is the intersection point
+	auto res = intersect(lseg);
+	if (std::holds_alternative<Vec2d<T>>(res))
+	{
+	    Vec2d<T> res_act = std::get<Vec2d<T>>(res);
+	    return {res_act, res_act};
+	}
+	else if (std::holds_alternative<LineSegment<T>>(res))
+	{
+	    LineSegment<T> res_act = std::get<LineSegment<T>>(res);
+	    return {res_act.get_start(), res_act.get_start()};
+	}
     
-    dalg::Vec2d<T> p_res      { closest_point(lseg.p0) };
-    dalg::Vec2d<T> u_res      { closest_point(lseg.p0 + lseg.u) };
-    dalg::Vec2d<T> p_res_other{ lseg.closest_point(p0) };
-    dalg::Vec2d<T> u_res_other{ lseg.closest_point(p0 + u) };
+	Vec2d<T> p_res      { closest_point(lseg.p0) };
+	Vec2d<T> u_res      { closest_point(lseg.p0 + lseg.u) };
+	Vec2d<T> p_res_other{ lseg.closest_point(p0) };
+	Vec2d<T> u_res_other{ lseg.closest_point(p0 + u) };
 
-    T p_len       = p_res.distance(lseg.p0);
-    T u_len       = u_res.distance(lseg.p0 + lseg.u);
-    T p_len_other = p_res_other.distance(p0);
-    T u_len_other = u_res_other.distance(p0 + u);
+	T p_len       = p_res.distance(lseg.p0);
+	T u_len       = u_res.distance(lseg.p0 + lseg.u);
+	T p_len_other = p_res_other.distance(p0);
+	T u_len_other = u_res_other.distance(p0 + u);
     
-    if (p_len <= u_len &&
-	p_len <= p_len_other &&
-	p_len <= u_len_other)
-    {
-	return {p_res, lseg.p0};
+	if (p_len <= u_len &&
+	    p_len <= p_len_other &&
+	    p_len <= u_len_other)
+	{
+	    return {p_res, lseg.p0};
+	}
+	else if (
+	    u_len <= p_len &&
+	    u_len <= p_len_other &&
+	    u_len <= u_len_other)
+	{
+	    return {u_res, lseg.p0 + lseg.u};
+	}
+	else if (
+	    p_len_other <= p_len &&
+	    p_len_other <= u_len_other &&
+	    p_len_other <= u_len)
+	{
+	    return {p0, p_res_other};
+	}
+	else
+	{
+	    return {p0 + u, u_res_other};
+	}
     }
-    else if (
-	u_len <= p_len &&
-	u_len <= p_len_other &&
-	u_len <= u_len_other)
-    {
-	return {u_res, lseg.p0 + lseg.u};
-    }
-    else if (
-	p_len_other <= p_len &&
-	p_len_other <= u_len_other &&
-	p_len_other <= u_len)
-    {
-	return {p0, p_res_other};
-    }
-    else
-    {
-	return {p0 + u, u_res_other};
-    }
-}
 
 
 
@@ -268,107 +271,108 @@ std::pair<dalg::Vec2d<T>, dalg::Vec2d<T>> dalg::LineSegment<T>::closest_points(d
  * return: The intersection point. If there is non then return point with
  *         std::numeric_limits<T>::min() as its values
  */
-template <typename T>
-std::variant<std::monostate, dalg::Vec2d<T>, dalg::LineSegment<T>>
-dalg::LineSegment<T>::intersect(dalg::LineSegment<T> const& other) const
-{
-    dalg::Vec2d<T> const& u = this->u;
-    dalg::Vec2d<T> const& p = this->p0;
-    
-    dalg::Vec2d<T> const& v = other.u;
-    dalg::Vec2d<T> const& q = other.p0;
-    
-    //t = ( (q - p) x V ) / U x V
-    dalg::Vec2d<T> qp = q - p;
-    T uv = cross(u, v);
-
-    T u2 = dot(u, u);
-    T v2 = dot(v, v);
-    
-    //If u2 == 0 then other is a point, not a line
-    if (std::abs(u2) < 1e-6)
+    template <typename T>
+    std::variant<std::monostate, Vec2d<T>, LineSegment<T>>
+    LineSegment<T>::intersect(LineSegment<T> const& other) const
     {
-    	if (other.on_segment(p))
-    	{
-    	    return p;
-    	}
-    	return {};
-    }
-    //If v2 == 0 then this is a point, not a line
-    if (std::abs(v2) < 1e-6)
-    {
-    	if (this->on_segment(q))
-    	{
-    	    return q;
-    	}
-    	return {};
-    }
+	Vec2d<T> const& u = this->u;
+	Vec2d<T> const& p = this->p0;
+    
+	Vec2d<T> const& v = other.u;
+	Vec2d<T> const& q = other.p0;
+    
+	//t = ( (q - p) x V ) / U x V
+	Vec2d<T> qp = q - p;
+	T uv = cross(u, v);
 
-    //If U x V == 0 then the segments are parallel
-    if (std::abs(uv) < 1e-6 ) 
-    {
-	//IF (q-p) x u == 0 then the lines are overlapping
-	if ( std::abs( cross(qp, u) ) < 1e-6 )
-	{	    
-	    T t0 = dot(qp, u) / u2;
-	    T t1 = t0 + dot(v, u) / u2;
-
-	    T t_max = std::min( (T) 1, std::max(t0, t1));
-	    T t_min = std::max( (T) 0, std::min(t0, t1));
-
-	    //If t_min and t_max belongs to the interval [0, 1] then
-	    //the line segments overlap otherwise there is no solution
-	    if (t_max <= 1 && t_max >= 0 && t_min <= 1 && t_min >= 0)
+	T u2 = dot(u, u);
+	T v2 = dot(v, v);
+    
+	//If u2 == 0 then other is a point, not a line
+	if (std::abs(u2) < 1e-6)
+	{
+	    if (other.on_segment(p))
 	    {
-		dalg::Vec2d<T> p_start(p + t_min * u);
-		dalg::Vec2d<T> p_end(p + t_max * u);
+		return p;
+	    }
+	    return {};
+	}
+	//If v2 == 0 then this is a point, not a line
+	if (std::abs(v2) < 1e-6)
+	{
+	    if (this->on_segment(q))
+	    {
+		return q;
+	    }
+	    return {};
+	}
 
-		//If p_start and p_end are the same then the lines
-		//only intersect in one point, return that point
-		if (p_start == p_end)
+	//If U x V == 0 then the segments are parallel
+	if (std::abs(uv) < 1e-6 ) 
+	{
+	    //IF (q-p) x u == 0 then the lines are overlapping
+	    if ( std::abs( cross(qp, u) ) < 1e-6 )
+	    {	    
+		T t0 = dot(qp, u) / u2;
+		T t1 = t0 + dot(v, u) / u2;
+
+		T t_max = std::min( (T) 1, std::max(t0, t1));
+		T t_min = std::max( (T) 0, std::min(t0, t1));
+
+		//If t_min and t_max belongs to the interval [0, 1] then
+		//the line segments overlap otherwise there is no solution
+		if (t_max <= 1 && t_max >= 0 && t_min <= 1 && t_min >= 0)
 		{
-		    return p_start;
-		}
+		    Vec2d<T> p_start(p + t_min * u);
+		    Vec2d<T> p_end(p + t_max * u);
 
-		return dalg::LineSegment<T>(p_start, p_end);
+		    //If p_start and p_end are the same then the lines
+		    //only intersect in one point, return that point
+		    if (p_start == p_end)
+		    {
+			return p_start;
+		    }
+
+		    return LineSegment<T>(p_start, p_end);
+		}
 	    }
 	}
-    }
-    //Else they intersect in one point
-    else
-    {
-	T t = cross(qp, v) / uv;
-
-	//Can reuse calculations from t by using the following properties:
-	// s = (( (p - q) x U ) / V x U => / A x B = -B x A / =>
-	// s = ( -(q - p) x U ) / -U x V =>
-	// s = ( (q - p) x U ) / U x V
-	T s = cross(qp, u) / uv;
-
-	//Check if s and t are valid, if not then they do not intersect
-	if (t <= 1 && t >= 0 && s <= 1 && s >= 0)
+	//Else they intersect in one point
+	else
 	{
-	    return dalg::Vec2d<T>{ p + (t * u) };
+	    T t = cross(qp, v) / uv;
+
+	    //Can reuse calculations from t by using the following properties:
+	    // s = (( (p - q) x U ) / V x U => / A x B = -B x A / =>
+	    // s = ( -(q - p) x U ) / -U x V =>
+	    // s = ( (q - p) x U ) / U x V
+	    T s = cross(qp, u) / uv;
+
+	    //Check if s and t are valid, if not then they do not intersect
+	    if (t <= 1 && t >= 0 && s <= 1 && s >= 0)
+	    {
+		return Vec2d<T>{ p + (t * u) };
+	    }
 	}
+
+	return {};
     }
 
-    return {};
-}
+    template<typename T>
+    Vec2d<T> LineSegment<T>::get_end() const
+    {
+	return p0 + u;
+    }
 
-template<typename T>
-dalg::Vec2d<T> dalg::LineSegment<T>::get_end() const
-{
-    return p0 + u;
-}
+    template<typename T>
+    Vec2d<T> LineSegment<T>::get_start() const
+    {
+	return p0;
+    }
 
-template<typename T>
-dalg::Vec2d<T> dalg::LineSegment<T>::get_start() const
-{
-    return p0;
-}
-
-template<typename T>
-dalg::Vec2d<T> dalg::LineSegment<T>::get_vec() const
-{
-    return u;
+    template<typename T>
+    Vec2d<T> LineSegment<T>::get_vec() const
+    {
+	return u;
+    }
 }

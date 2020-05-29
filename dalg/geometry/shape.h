@@ -178,8 +178,8 @@ namespace dalg
 	Vec2d<T> pos;
 	const ShapeType type;
     };
+}
 
 #include "circle.h"
-}
 
 #endif

@@ -1,20 +1,20 @@
 
 
 template <typename T>
-std::optional<dalg::Collision<T>>
+inline std::optional<dalg::Collision<T>>
 dalg::collision(dalg::Shape<T>* a, dalg::Shape<T>* b)
 {
     if (a->type == dalg::ShapeType::circle &&
 	b->type == dalg::ShapeType::circle)
     {
-	return circle_circle_collision(*dynamic_cast<dalg::Circle<T>*>(a),
-				       *dynamic_cast<dalg::Circle<T>*>(b))
+	return circle_circle_collision(*static_cast<dalg::Circle<T>*>(a),
+				       *static_cast<dalg::Circle<T>*>(b));
     }
     return {};
 }
 
 template <typename T>
-std::optional<dalg::Collision<T>>
+inline std::optional<dalg::Collision<T>>
 dalg::circle_circle_collision(dalg::Circle<T>& b, dalg::Circle<T>& a)
 {
     T radius = a.get_radius() + b.get_radius();
