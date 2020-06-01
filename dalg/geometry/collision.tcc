@@ -15,7 +15,7 @@ dalg::collision(dalg::Shape<T>* a, dalg::Shape<T>* b)
 
 template <typename T>
 inline std::optional<dalg::Collision<T>>
-dalg::circle_circle_collision(dalg::Circle<T>& b, dalg::Circle<T>& a)
+dalg::circle_circle_collision(dalg::Circle<T>& a, dalg::Circle<T>& b)
 {
     T radius = a.get_radius() + b.get_radius();
 
@@ -26,12 +26,12 @@ dalg::circle_circle_collision(dalg::Circle<T>& b, dalg::Circle<T>& a)
     //If they are to far away to collide, return monostate
     if (distance * distance > radius * radius)
     {
-	return {};
+    	return {};
     }
 
     Collision<T> collision{};
-    collision.A = dynamic_cast<Shape<T>*>(&a);
-    collision.B = dynamic_cast<Shape<T>*>(&b);
+    collision.A = static_cast<Shape<T>*>(&a);
+    collision.B = static_cast<Shape<T>*>(&b);
     collision.contact_count = 1;
 
     collision.contacts.emplace_back();

@@ -19,10 +19,10 @@ TEST_CASE( "Circle-circle collision test", "[Collision]" )
 {
     
     //--------------------Test random ---------------------------
-    SECTION( "Test normal collision" )
+    SECTION( "Test edge collision" )
     {
 	Circle<double> c1{Vec2d<double>{0,0}, 5};
-	Circle<double> c2{Vec2d<double>{5,0}, 5};
+	Circle<double> c2{Vec2d<double>{0,10}, 5};
 
 	Shape<double>* s1 = &c1;
 	Shape<double>* s2 = &c2;
@@ -31,19 +31,21 @@ TEST_CASE( "Circle-circle collision test", "[Collision]" )
 
 	REQUIRE( col );
 	    
-	Collision<double>& col_act = col.value();
+	Collision<double> col_act = col.value();
 
-	Contact<double> c0{Vec2d<double>{0,0},
-			   Vec2d<double>{-1,0},
-			   5};
+	Contact<double> c0{Vec2d<double>{0,5},
+			   Vec2d<double>{0,-1},
+			   0};
 
 	Collision<double> col_c;
 	    
 	col_c.contacts.push_back(c0);
 	col_c.contact_count = 1;
-	col_c.A = &c1;
-	col_c.B = &c2;
+	col_c.A = s1;
+	col_c.B = s2;
 
-	CHECK( col_act == col_c );
+	bool res = col_act == col_c;
+
+	CHECK( res );
     }
 }
