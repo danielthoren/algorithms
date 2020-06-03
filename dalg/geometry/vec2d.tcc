@@ -1,6 +1,8 @@
 
 #include <cmath>
 
+#include "utility.h"
+
 #ifndef VEC_2D
 #error 'vec2d.tcc' is not supposed to be included directly. Include 'vec2d.h' instead.
 #endif
@@ -123,7 +125,7 @@ double dalg::rad_angle(Vec2d<T> const& v1, Vec2d<T> const& v2)
 template <typename T>
 double dalg::angle(Vec2d<T> const& v1, Vec2d<T> const& v2)
 {
-    return rad_angle(v1, v2) * (180.0 / dalg::Vec2d<T>::PI);
+    return rad_angle(v1, v2) * (180.0 / dalg::PI);
 }
 
 /**

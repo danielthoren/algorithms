@@ -70,8 +70,6 @@ namespace dalg
 	T x;
 	T y;
 	T prec;
-
-	constexpr static double PI = 3.141592653589793;
     };
 
     /************************/

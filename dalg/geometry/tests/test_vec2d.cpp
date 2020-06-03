@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "../vec2d.h"
+#include "../utility.h"
 
 #define DEBUG 1
 
@@ -450,7 +451,7 @@ TEST_CASE( "Vec2d angle test", "[Vec2d]")
 	Vec2d<double> p2{1, 0};
 
 	CHECK( Approx(90) == angle(p1,p2) );
-	CHECK( Approx(Vec2d<double>::PI / 2) == rad_angle(p1,p2) );
+	CHECK( Approx(PI / 2) == rad_angle(p1,p2) );
     }
 
     SECTION( "45 degree" )
@@ -459,6 +460,6 @@ TEST_CASE( "Vec2d angle test", "[Vec2d]")
 	Vec2d<double> p2{1, 0};
 
 	CHECK( Approx(45) == angle(p1,p2) );
-	CHECK( Approx(Vec2d<double>::PI / 4) == rad_angle(p1,p2) );
+	CHECK( Approx(PI / 4) == rad_angle(p1,p2) );
     }
 }

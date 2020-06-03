@@ -7,6 +7,8 @@
 
 namespace dalg
 {
+    constexpr static double PI = 3.141592653589793;
+    
     struct BadArgumentException : public std::exception
     {
 	BadArgumentException(std::string msg)
