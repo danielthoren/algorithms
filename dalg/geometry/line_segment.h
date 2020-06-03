@@ -4,6 +4,7 @@
 #include <variant>
 
 #include "vec2d.h"
+#include "shape.h"
 
 namespace dalg
 {
@@ -17,15 +18,11 @@ namespace dalg
     template<typename T>
     class LineSegment
     {
-    public:
-	LineSegment(LineSegment<T> const& other)
-	    :  p0{other.p0}, u{other.u}
-	    {}
-	
+    public:	
 	LineSegment(Vec2d<T> const& p0, Vec2d<T> const& p1)
-	    : p0{p0}, u{p1 - p0}
+	    :  p0{p0}, u{p1 - p0}
 	    {}
-    
+
 	LineSegment(T x0, T y0, T x1, T y1)
 	    : LineSegment<T>({x0, y0}, {x1, y1})
 	    {}
@@ -36,8 +33,6 @@ namespace dalg
 	 */
 	bool operator==(LineSegment<T> const& other) const;
 	bool operator!=(LineSegment<T> const& other) const;
-
-	void operator=(LineSegment<T> const& other);
 
 	/**
 	 * Calculates the point on the line that is closest to the given pt

@@ -10,17 +10,9 @@
 
 namespace dalg
 {
-
     template <typename T>
-    std::optional<Collision<T>>
-    collision(Shape<T>* a, Shape<T>* b);
-
-    /**
-     * Checks collisions between the given circels and returns 
-     */
-    template <typename T>
-    std::optional<Collision<T>>
-    circle_circle_collision(Circle<T>& b, Circle<T>& a);
+    inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>>, Circle<T> >
+    intersect(Circle<T> const& c0, Circle<T> const& c1);
 }
 
 #include "collision.tcc"

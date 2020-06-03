@@ -21,13 +21,6 @@ namespace dalg
     }
 
     template <typename T>
-    void LineSegment<T>::operator=(LineSegment<T> const& other)
-    {
-	p0 = other.p0;
-	u = other.u;
-    }
-
-    template <typename T>
     bool LineSegment<T>::on_line(Vec2d<T> const& pt) const
     {
 	//This is a point, check if both points are the same

@@ -12,8 +12,10 @@ namespace dalg
     class Circle : public Shape<T>
     {
     public:
-	Circle(Vec2d<T> const& pos, T radius) :
-	    Shape<T>(pos, ShapeType::circle), radius{radius}
+	Circle() = default;
+	
+	Circle(Vec2d<T> const& center, T radius) :
+	    Shape<T>(ShapeType::circle), center{center}, radius{radius}
 	    {}
 
 	bool operator==(Circle<T>& other) const
@@ -27,12 +29,7 @@ namespace dalg
 		return !(*this == other);
 	    }
 
-	T get_radius() const
-	    {
-		return radius;
-	    }
-
-    private:
+	Vec2d<T> center;
 	T radius;
     };
 }

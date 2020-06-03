@@ -9,7 +9,7 @@
   - [ ] add kattis test for baseball elimination
 
 ** Geometry
-   - [ ] Move from current multimethod system to enumeration using tags
+   * [ ] Move PI constant from vec2d to utility
 
 *** LineSegment
   - [X] Add test file for LineSegment
@@ -23,3 +23,6 @@
 *** AABB
    - [X] Implement tests for AABB
    - [ ] Possibly implement comparison in vector to make collision method smaller
+*** Vec2d
+    * [X] Implement *=
+    * [X] Implement /=

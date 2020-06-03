@@ -27,9 +27,6 @@ namespace dalg
 	Polygon(std::vector<Vec2d<T>> const& points) : points{points}
 	    {}
 
-	Polygon(Polygon<T> const& other) : points{other.points}
-	    {}
-
 	/**
 	 * Adds a new point between the given point and the one in front
 	 * of it. Defaults to the end of the segments array

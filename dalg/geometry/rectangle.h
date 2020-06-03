@@ -55,11 +55,7 @@ namespace dalg
 		corners[2] = top_left + Vec2d<T>(width_x, height_y);
 		corners[3] = top_left + Vec2d<T>(width_x, 0);
 	    }
-
-	Rectangle(Rectangle<T> const& other) :
-	    corners{ other.corners }
-	    {}
-
+	
 	/**
 	 * Returns the min and max projection of the foud points of
 	 * the box onto the given vec. This is done by projecting each

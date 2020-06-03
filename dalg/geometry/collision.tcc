@@ -1,60 +1,58 @@
+#include <cmath>
 
+#ifndef DALG_COLLISION
+#error 'collision.tcc' is not supposed to be included directly. Include 'collision.h' instead.
+#endif
 
-template <typename T>
-inline std::optional<dalg::Collision<T>>
-dalg::collision(dalg::Shape<T>* a, dalg::Shape<T>* b)
+namespace dalg
 {
-    if (a->type == dalg::ShapeType::circle &&
-	b->type == dalg::ShapeType::circle)
+    template <typename T>
+    inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>>, Circle<T> >
+    intersect(Circle<T> const& c0, Circle<T> const& c1)
     {
-	return circle_circle_collision(*static_cast<dalg::Circle<T>*>(a),
-				       *static_cast<dalg::Circle<T>*>(b));
+	T radius = c0.radius + c1.radius;
+
+	//Translation vector between midpoints
+	Vec2d<T> dist_vec{c0.center - c1.center};
+	T distance = dist_vec.length();
+
+	//If they are to far away to collide, return monostate
+	if (distance * distance > radius * radius)
+	{
+	    return {};
+	}
+
+	//If they completely overlap
+	if (distance == 0.0)
+	{	    
+	    return Circle<T>{c0};
+	}
+
+	T x0  { c0.center.x };
+	T y0  { c0.center.y };
+
+	T x1  { c1.center.x };
+	T y1  { c1.center.y };
+
+	T r0  { c0.radius };
+	T r1  { c1.radius };
+
+	T d   { dist_vec.length() };
+
+	T a   { (std::pow(r0, 2) - std::pow(r1, 2) + std::pow(d,2) ) / (2*d) };
+	T h  { std::sqrt( std::pow(r0, 2) - std::pow(a, 2) ) };
+
+	Vec2d<T> p2 { c0.center + a * (c1.center - c0.center) / d };
+
+	Vec2d<T> p30 { p2.x + h * (y1 - y0), p2.y - h * (x1 - x0) / d };
+
+	if ( std::abs(a - r0) < c0.center.prec )
+	{
+	    return p30;
+	}
+
+	Vec2d<T> p31 { p2.x - h * (y1 - y0), p2.y + h * (x1 - x0) / d };
+
+	return std::pair<Vec2d<T>, Vec2d<T>>{p30, p31};
     }
-    return {};
-}
-
-template <typename T>
-inline std::optional<dalg::Collision<T>>
-dalg::circle_circle_collision(dalg::Circle<T>& a, dalg::Circle<T>& b)
-{
-    T radius = a.get_radius() + b.get_radius();
-
-    //Translation vector between midpoints
-    Vec2d<T> ab{a.get_pos() - b.get_pos()};
-    T distance = ab.length();
-	
-    //If they are to far away to collide, return monostate
-    if (distance * distance > radius * radius)
-    {
-    	return {};
-    }
-
-    Collision<T> collision{};
-    collision.A = static_cast<Shape<T>*>(&a);
-    collision.B = static_cast<Shape<T>*>(&b);
-    collision.contact_count = 1;
-
-    collision.contacts.emplace_back();
-    Contact<T>* c0 = &collision.contacts[0];
-
-    //If they completely overlap
-    if (distance == 0.0)
-    {
-	c0->pos = a.get_pos();
-	c0->normal = Vec2d<T>{1,0};
-	c0->penetration = a.get_radius();
-
-	return collision;
-    }
-
-    c0->penetration = radius - distance;
-
-    //Normalize length of vector
-    c0->normal = ab / distance;
-
-    // Take b position and move it along the contact normal
-    // the distance of b radius
-    c0->pos = c0->normal * b.get_radius() + b.get_pos();
-
-    return collision;
 }
