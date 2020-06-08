@@ -34,8 +34,6 @@ namespace dalg
 
 	bool is_parallel(Line<T> const& other) const;
 
-	Vec2d<T> orthogonal_projection(Vec2d<T> const& pt) const;
-
 	/*
 	 * Returns the point where this Line and other intersects
 	 * If the lines are parallel then return point with
@@ -53,11 +51,13 @@ namespace dalg
 	 */
 	Vec2d<T> intersection(Line<T> const& other) const;
 
-    protected:
 	//p(s) = p0 + su
 	Vec2d<T> p0;
 	Vec2d<T> u;    // u = p1 - p0
     };
+
+    template <typename T>
+    Vec2d<T> project(Vec2d<T> const& pt, Line<T> const& l);
 
 /*************************************************************/
 /* Should be in tcc file, temporarily here for kattis        */
@@ -66,14 +66,14 @@ namespace dalg
     template <typename T>
     bool Line<T>::is_parallel(Line<T> const& other) const
     {
-	return u.determinant(other.u) == 0;
+	return cross(u, other.u) == 0;
     }
 
 
     template <typename T>
     bool Line<T>::operator==(Line<T> const& other) const
     {
-	return is_parallel(other) && u.determinant(p0 - other.p0) == 0;
+	return is_parallel(other) && cross(u, p0 - other.p0) == 0;
     }
 
     template <typename T>
@@ -83,16 +83,22 @@ namespace dalg
     }
 
     template <typename T>
-    Vec2d<T> Line<T>::orthogonal_projection(Vec2d<T> const& pt) const
+    Vec2d<T> project(Vec2d<T> const& pt, Line<T> const& l)
     {
-	return ((pt * u) / (u * u)) * u;
+	Vec2d<T> pt_t {pt - l.p0};
+
+	Vec2d<T> res{ project(pt_t, l.u) };
+
+	res += l.p0;
+
+	return res;
     }
 
 
     template <typename T>
     Vec2d<T> Line<T>::intersection(Line<T> const& other) const
     {
-	T t = other.u.determinant( (other.p0 - p0) ) / other.u.determinant(u);
+	T t = cross(other.u, (other.p0 - p0) ) / cross(other.u, u);
 
 	//No solution
 	if (t == 0)

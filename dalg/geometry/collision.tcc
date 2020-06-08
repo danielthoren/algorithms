@@ -6,10 +6,9 @@
 
 namespace dalg
 {
-
-
-
     /**
+     * Author: Daniel Thorén
+     *
      * Calculates intersection between two Circles. The intersection
      * points are obtained by calculating the angle between c0.centre
      * and each intersection.
@@ -65,9 +64,14 @@ namespace dalg
      *   /_____________|      |_____________\
      *  p0      a                    b       p1
      *
+     * This give the following equations:
+     *
+     * a^2 + h^2 = r0^2 
+     * b^2 + h^2 = r1^2
+     *
      * Set d = a + b and solve for a:
      *
-     * a = (r0^2 - r1^2 + d^2) / 2*d
+     * a = (r0^2 - r1^2 + d^2) / 2*(a + b)
      *
      * h = sqrt( r0^2 - a^2 )
      *
@@ -130,4 +134,48 @@ namespace dalg
 
 	return std::pair<Vec2d<T>, Vec2d<T>>{p30, p31};
     }
+
+    template <typename T>
+    inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
+    intersect(Circle<T> const& c, Line<T> const& l)
+    {
+
+	//If the distance between the center of the circle and the
+	//closest point on the line is larger than the radius of the
+	//circle then they can not intersect
+	if ( (project(c.center, l) - c.center).length() > c.radius )
+	{
+	    return {};
+	}
+	
+	T p = -2 * dot(l.p0 - c.center, l.u);
+
+	T q = std::pow( 2 * dot(l.p0 - c.center, l.u), 2) -
+	      4 * std::pow(l.u.length(), 2) *
+	      ( std::pow((l.p0 - c.center).length(), 2) - std::pow(c.radius, 2) );
+	
+	T d = 2 * std::pow(l.u.length(), 2);
+
+	T t1 = ( p + std::sqrt(q) ) / d;
+	T t2 = ( p - std::sqrt(q) ) / d;
+
+	Vec2d<T> v1 {l.p0.x + l.u.x * t1, l.p0.y + l.u.y * t1};
+
+	if (t1 - t2 < DEFAULT_PREC)
+	{
+	    return v1;
+	}
+
+	Vec2d<T> v2 {l.p0.x + l.u.x * t2, l.p0.y + l.u.y * t2};
+
+	return std::pair{v1, v2};
+    }
+
+    template <typename T>
+    inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
+    intersect(Line<T> const& l, Circle<T> const& c)
+    {
+	return intersect(c, l);
+    }
+    
 }
