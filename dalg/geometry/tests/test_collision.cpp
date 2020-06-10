@@ -49,16 +49,16 @@ TEST_CASE( "Circle-circle intersection test", "[Intersection]" )
     SECTION( "Test normal intersection" )
     {
 	Circle<double> c1{Vec2d<double>{0,0}, 10};
-	Circle<double> c2{Vec2d<double>{0,15}, 10};
+	Circle<double> c2{Vec2d<double>{15,0}, 10};
 
 	auto col = intersect<double>(c1, c2);
 
 	REQUIRE( std::holds_alternative<std::pair<Vec2d<double>, Vec2d<double>>>(col) );
 	
 	std::pair<Vec2d<double>, Vec2d<double>> res = std::get<std::pair<Vec2d<double>, Vec2d<double>>>(col);
-	
-	CHECK( res.first == Vec2d<double>{225.0 / 30.0, std::sqrt(100 - std::pow(225.0 / 30.0, 2))} );
-	CHECK( res.second == Vec2d<double>{225.0 / 30.0, -std::sqrt(100 - std::pow(225.0 / 30.0, 2))} );
+
+	CHECK( res.first == Vec2d<double>{225.0 / 30.0, -std::sqrt(100 - std::pow(225.0 / 30.0, 2))} );
+	CHECK( res.second == Vec2d<double>{225.0 / 30.0, std::sqrt(100 - std::pow(225.0 / 30.0, 2))} );
     }    
 
 }

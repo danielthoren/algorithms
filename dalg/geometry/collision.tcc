@@ -123,14 +123,14 @@ namespace dalg
 
 	Vec2d<T> p2 { c0.center + a * (c1.center - c0.center) / d };
 
-	Vec2d<T> p30 { p2.x + h * (y1 - y0), p2.y - h * (x1 - x0) / d };
+	Vec2d<T> p30 { p2.x + h * (y1 - y0) / d, p2.y - h * (x1 - x0) / d };
 
 	if ( std::abs(a - r0) < c0.center.prec )
 	{
 	    return p30;
 	}
 
-	Vec2d<T> p31 { p2.x - h * (y1 - y0), p2.y + h * (x1 - x0) / d };
+	Vec2d<T> p31 { p2.x - h * (y1 - y0) / d, p2.y + h * (x1 - x0) / d };
 
 	return std::pair<Vec2d<T>, Vec2d<T>>{p30, p31};
     }
