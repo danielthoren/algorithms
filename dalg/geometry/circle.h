@@ -18,13 +18,13 @@ namespace dalg
 	    Shape<T>(ShapeType::circle), center{center}, radius{radius}
 	    {}
 
-	bool operator==(Circle<T>& other) const
+	bool operator==(Circle<T> const& other) const
 	    {
 		std::cout << "in circle operator" << std::endl;
-		return radius == other.radius && this->pos == other.pos;
+		return radius == other.radius && this->center == other.center;
 	    }
 
-	bool operator!=(Circle<T>& other) const
+	bool operator!=(Circle<T> const& other) const
 	    {
 		return !(*this == other);
 	    }

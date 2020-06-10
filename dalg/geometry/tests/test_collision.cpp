@@ -16,8 +16,6 @@ using namespace dalg;
 
 TEST_CASE( "Circle-circle intersection test", "[Intersection]" )
 {
-    
-    //--------------------Test random ---------------------------
     SECTION( "Test edge intersection" )
     {
 	Circle<double> c1{Vec2d<double>{0,0}, 5};
@@ -31,6 +29,38 @@ TEST_CASE( "Circle-circle intersection test", "[Intersection]" )
 	
 	CHECK( res == Vec2d<double>{0,5} );
     }
+
+    SECTION( "Test complete intersection" )
+    {
+	Circle<double> c1{Vec2d<double>{0,0}, 5};
+	Circle<double> c2{Vec2d<double>{0,0}, 5};
+
+	auto col = intersect<double>(c1, c2);
+
+	REQUIRE( std::holds_alternative<Circle<double>>(col) );
+	    
+	Circle<double> res = std::get<Circle<double>>(col);
+
+	Circle<double> ref {Vec2d<double>{0,0}, 5};
+	
+	CHECK( res == ref );
+    }
+
+    SECTION( "Test normal intersection" )
+    {
+	Circle<double> c1{Vec2d<double>{0,0}, 10};
+	Circle<double> c2{Vec2d<double>{0,15}, 10};
+
+	auto col = intersect<double>(c1, c2);
+
+	REQUIRE( std::holds_alternative<std::pair<Vec2d<double>, Vec2d<double>>>(col) );
+	
+	std::pair<Vec2d<double>, Vec2d<double>> res = std::get<std::pair<Vec2d<double>, Vec2d<double>>>(col);
+	
+	CHECK( res.first == Vec2d<double>{225.0 / 30.0, std::sqrt(100 - std::pow(225.0 / 30.0, 2))} );
+	CHECK( res.second == Vec2d<double>{225.0 / 30.0, -std::sqrt(100 - std::pow(225.0 / 30.0, 2))} );
+    }    
+
 }
 
 TEST_CASE( "Circle-Line intersection test", "[Intersection]" )
