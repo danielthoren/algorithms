@@ -1,10 +1,12 @@
-#ifndef LINE_SEG
-#define LINE_SEG
+#ifndef DALG_LINE_SEG
+#define DALG_LINE_SEG
 
 #include <variant>
 
 #include "vec2d.h"
 #include "shape.h"
+#include "utility.h"
+#include "aabb.h"
 
 namespace dalg
 {
@@ -19,12 +21,15 @@ namespace dalg
     class LineSegment
     {
     public:	
-	LineSegment(Vec2d<T> const& p0, Vec2d<T> const& p1)
+	LineSegment(Vec2d<T> const& p0, Vec2d<T> const& p1, p_type prec = static_cast<p_type>(DEFAULT_PREC))
 	    :  p0{p0}, u{p1 - p0}
-	    {}
+	    {
+		this->p0.prec = prec;
+		this->u.prec = prec;
+	    }
 
-	LineSegment(T x0, T y0, T x1, T y1)
-	    : LineSegment<T>({x0, y0}, {x1, y1})
+	LineSegment(T x0, T y0, T x1, T y1, p_type prec = static_cast<p_type>(DEFAULT_PREC))
+	    : LineSegment<T>({x0, y0, prec}, {x1, y1, prec})
 	    {}
 
 	/**
@@ -74,6 +79,13 @@ namespace dalg
 	 */
 	std::variant<std::monostate, Vec2d<T>, LineSegment<T>>
 	intersect(LineSegment<T> const& other) const;
+
+	/**
+	 * Returns the AABB that encloses this line segment
+	 *
+	 * return: AABB encloding line segment
+	 */
+	AABB<T> get_aabb() const;
 	
 	/**
 	 * returns p0 + u
@@ -91,7 +103,7 @@ namespace dalg
 	//p(s) = p0 + su
 	Vec2d<T> p0;
 	Vec2d<T> u;    // u = p1 - p0
-    
+	p_type prec;
     };
 
     /**

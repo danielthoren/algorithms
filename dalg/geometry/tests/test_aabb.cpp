@@ -25,11 +25,89 @@ TEST_CASE( "AABB constructor test", "[AABB]" )
 	REQUIRE( ab.get_min() == min );
 	REQUIRE( ab.get_max() == max );	
     }
+
+    SECTION( "format constructor (min/max points swapped)" )
+    {
+	Vec2d<double> max{0,0};
+	Vec2d<double> min{1,1};
+	
+	AABB<double> ab{min, max};
+
+	REQUIRE( ab.get_min() == max );
+	REQUIRE( ab.get_max() == min );	
+    }    
 }
 
-TEST_CASE( "AABB collision test" )
+TEST_CASE( "AABB == and != test", "[AABB]" )
 {
-    SECTION( "collision same y posetive" )
+    SECTION( "Normal true" )
+    {
+	Vec2d<double> min1{0,0};
+	Vec2d<double> max1{10,10};
+	
+	AABB<double> ab1{min1, max1};
+
+	Vec2d<double> min2{0,0};
+	Vec2d<double> max2{10,10};
+	
+	AABB<double> ab2{min2, max2};
+
+	CHECK( ab1 == ab2 );
+	CHECK_FALSE( ab1 != ab2 );
+    }
+
+    SECTION( "Normal false" )
+    {
+	Vec2d<double> min1{0,0};
+	Vec2d<double> max1{11,10};
+	
+	AABB<double> ab1{min1, max1};
+
+	Vec2d<double> min2{0,0};
+	Vec2d<double> max2{10,10};
+	
+	AABB<double> ab2{min2, max2};
+
+	CHECK( ab1 != ab2 );
+	CHECK_FALSE( ab1 == ab2 );
+    }
+
+    SECTION( "precision true" )
+    {
+	Vec2d<double> min1{0,0};
+	Vec2d<double> max1{10,10 + DEFAULT_PREC};
+	
+	AABB<double> ab1{min1, max1, 2 * DEFAULT_PREC};
+
+	Vec2d<double> min2{0,0};
+	Vec2d<double> max2{10,10};
+	
+	AABB<double> ab2{min2, max2, 2 * DEFAULT_PREC};
+
+	CHECK( ab1 == ab2 );
+	CHECK_FALSE( ab1 != ab2 );
+    }
+
+    SECTION( "precision false" )
+    {
+	Vec2d<double> min1{0,0};
+	Vec2d<double> max1{10,10 + DEFAULT_PREC};
+	
+	AABB<double> ab1{min1, max1};
+
+	Vec2d<double> min2{0,0};
+	Vec2d<double> max2{10,10};
+	
+	AABB<double> ab2{min2, max2};
+
+	CHECK( ab1 != ab2 );
+	CHECK_FALSE( ab1 == ab2 );
+    }
+}
+
+TEST_CASE( "AABB overlap test", "[AABB]" )
+{
+    SECTION( "overlap same y posetive" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -41,10 +119,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK( ab1.collision(ab2) );
+	CHECK( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision same y posetive" )
+    SECTION( "overlap same y posetive" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -56,10 +134,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK( ab1.collision(ab2) );
+	CHECK( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision posetive" )
+    SECTION( "overlap posetive" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -71,10 +149,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK( ab1.collision(ab2) );
+	CHECK( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision top right corner posetive" )
+    SECTION( "overlap top right corner posetive" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -86,10 +164,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK( ab1.collision(ab2) );
+	CHECK( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision top left corner posetive" )
+    SECTION( "overlap top left corner posetive" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -101,10 +179,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK( ab1.collision(ab2) );
+	CHECK( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision bottom left corner posetive" )
+    SECTION( "overlap bottom left corner posetive" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -116,10 +194,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK( ab1.collision(ab2) );
+	CHECK( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision bottom right corner posetive" )
+    SECTION( "overlap bottom right corner posetive" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -131,10 +209,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK( ab1.collision(ab2) );
+	CHECK( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision close top right corner negative" )
+    SECTION( "overlap close top right corner negative" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -146,10 +224,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK_FALSE( ab1.collision(ab2) );
+	CHECK_FALSE( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision close top left corner negative" )
+    SECTION( "overlap close top left corner negative" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -161,10 +239,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK_FALSE( ab1.collision(ab2) );
+	CHECK_FALSE( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision close bottom left corner negative" )
+    SECTION( "overlap close bottom left corner negative" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -176,10 +254,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK_FALSE( ab1.collision(ab2) );
+	CHECK_FALSE( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision close bottom right corner negative" )
+    SECTION( "overlap close bottom right corner negative" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -191,10 +269,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK_FALSE( ab1.collision(ab2) );
+	CHECK_FALSE( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision 0-height posetive" )
+    SECTION( "overlap 0-height posetive" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -206,10 +284,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK( ab1.collision(ab2) );
+	CHECK( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision 0-width posetive" )
+    SECTION( "overlap 0-width posetive" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -221,10 +299,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK( ab1.collision(ab2) );
+	CHECK( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision point posetive" )
+    SECTION( "overlap point posetive" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -236,10 +314,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK( ab1.collision(ab2) );
+	CHECK( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision 0-height negative" )
+    SECTION( "overlap 0-height negative" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -251,10 +329,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK_FALSE( ab1.collision(ab2) );
+	CHECK_FALSE( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision 0-width negative" )
+    SECTION( "overlap 0-width negative" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -266,10 +344,10 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK_FALSE( ab1.collision(ab2) );
+	CHECK_FALSE( ab1.overlap(ab2) );
     }
 
-    SECTION( "collision point negative" )
+    SECTION( "overlap point negative" )
     {
 	Vec2d<double> min1{0,0};
 	Vec2d<double> max1{10,10};
@@ -281,6 +359,6 @@ TEST_CASE( "AABB collision test" )
 	
 	AABB<double> ab2{min2, max2};
 
-	CHECK_FALSE( ab1.collision(ab2) );
+	CHECK_FALSE( ab1.overlap(ab2) );
     }    
 }

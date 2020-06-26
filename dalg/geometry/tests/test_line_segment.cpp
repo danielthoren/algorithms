@@ -8,6 +8,7 @@
 
 #include "../vec2d.h"
 #include "../line_segment.h"
+#include "../aabb.h"
 
 #define DEBUG 1
 
@@ -494,10 +495,10 @@ TEST_CASE( "LineSegment on_line test", "[LineSegment]" )
 
     SECTION( "not on line, close (2)" )
     {
-	Vec2d<double> p1{0,0, 0.0};
-	Vec2d<double> p2{0,1, 0.0};
+	Vec2d<double> p1{0,0};
+	Vec2d<double> p2{0,1};
 
-	LineSegment<double> line{p1, p2};
+	LineSegment<double> line{p1, p2, 0.0};
 
 	Vec2d<double> pt{0.0001,1, 0.0};
 
@@ -720,4 +721,32 @@ TEST_CASE( "LineSegment intersection test", "[LineSegment]" )
 	    CHECK( act == Vec2d<double>{221.33, -496.70, 0.05} );
 	}
     }
+}
+
+TEST_CASE( "get_aabb() test", "[LineSegment]" )
+{
+    SECTION( "Normal, posetive inclination" )
+    {
+	Vec2d<double> p1{0,0};
+	Vec2d<double> p2{10, 10};
+
+	LineSegment<double> l1{p1, p2};
+
+	AABB<double> aabb{p1, p2};
+
+	CHECK( l1.get_aabb() == aabb );
+    }
+
+    SECTION( "Normal, negative inclination" )
+    {
+	Vec2d<double> p1{0,0};
+	Vec2d<double> p2{-10, 10};
+
+	LineSegment<double> l1{p1, p2};
+
+	AABB<double> aabb{p1, p2};
+
+	CHECK( l1.get_aabb() == aabb );
+    }
+
 }

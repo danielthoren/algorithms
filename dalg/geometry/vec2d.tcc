@@ -1,8 +1,6 @@
 
 #include <cmath>
 
-#include "utility.h"
-
 #ifndef VEC_2D
 #error 'vec2d.tcc' is not supposed to be included directly. Include 'vec2d.h' instead.
 #endif
@@ -13,7 +11,7 @@ namespace dalg
     template <typename T>
     bool Vec2d<T>::equals(Vec2d<T> const& other, std::true_type) const
     {
-	T precision = std::max(prec, other.prec);
+	p_type precision = get_pref_prec(prec, other.prec);
 	return std::abs(x - other.x) <= precision && std::abs(y - other.y) <= precision;
     }
 

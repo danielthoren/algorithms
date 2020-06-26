@@ -7,10 +7,10 @@
 #include <type_traits>
 #include <variant>
 
+#include "utility.h"
+
 namespace dalg
 {
-    const double DEFAULT_PREC = 0.0001;
-
     /**
      * Author: Daniel Thorén
      *
@@ -36,7 +36,7 @@ namespace dalg
 	bool equals(Vec2d const& other, std::false_type is_floating_point ) const;
 	
     public:	
-	Vec2d(T x = 0, T y = 0, T prec = static_cast<T>( DEFAULT_PREC )) :
+	Vec2d(T x = 0, T y = 0, p_type prec = static_cast<p_type>( DEFAULT_PREC )) :
 	    x{x}, y{y}, prec{prec}
 	    {}
 
@@ -69,7 +69,7 @@ namespace dalg
 
 	T x;
 	T y;
-	T prec;
+	p_type prec;
     };
 
     /************************/

@@ -227,29 +227,29 @@ TEST_CASE( "Polygon-LineSegment min_distance test", "[Polygon]" )
 	CHECK( res.second == pt2 );
     }
 
-    //TODO: something wrong with precision, get (1.15, -1.45) == (1, -1.5) on third check
-    SECTION( "parallel line precision test" )
-    {
-	dalg::Vec2d<long double> p1(0, 0);
-	dalg::Vec2d<long double> p2(1, 1);	
-	dalg::Vec2d<long double> p3(4, 0);
-	dalg::Vec2d<long double> p4(1, -1);
-	std::vector<dalg::Vec2d<long double>> pts{p1, p2, p3, p4};
+    //TODO: Calculated the correct answer incorrectly, needs manual calculation
+    // SECTION( "parallel line precision test" )
+    // {
+    // 	dalg::Vec2d<long double> p1(0, 0);
+    // 	dalg::Vec2d<long double> p2(1, 1);	
+    // 	dalg::Vec2d<long double> p3(4, 0);
+    // 	dalg::Vec2d<long double> p4(1, -1);
+    // 	std::vector<dalg::Vec2d<long double>> pts{p1, p2, p3, p4};
 
-	dalg::Polygon poly(pts);
+    // 	dalg::Polygon poly(pts);
 
-	dalg::Vec2d<long double> pt1(3, -5.0/6.0);
-	dalg::Vec2d<long double> pt2(1, -3.0/2.0);
-	dalg::LineSegment<long double> seg(pt1, pt2);
+    // 	dalg::Vec2d<long double> pt1(3, -5.0/6.0);
+    // 	dalg::Vec2d<long double> pt2(1, -3.0/2.0);
+    // 	dalg::LineSegment<long double> seg(pt1, pt2);
 
-	auto res = poly.min_distance(seg);
+    // 	auto res = poly.min_distance(seg);
 
-	long double dist = (res.first - res.second).length();
+    // 	long double dist = (res.first - res.second).length();
 
-	CHECK( dist == Approx(0.5).epsilon(0.01) );
-	CHECK( res.first == p4 );
-	CHECK( res.second == pt2 );
-    }
+    // 	CHECK( dist == Approx(0.5).epsilon(0.01) );
+    // 	CHECK( res.first == p4 );
+    // 	CHECK( res.second == pt2 );
+    // }
 }
 
 TEST_CASE( "Polygon-Polygon min_distance test", "[Polygon]" )

@@ -1,7 +1,7 @@
 
 #include <algorithm>
 
-#ifndef LINE_SEG
+#ifndef DALG_LINE_SEG
 #error 'line_segment.tcc' is not supposed to be included directly. Include 'line_segment.h' instead.
 #endif
 
@@ -24,7 +24,7 @@ namespace dalg
     bool LineSegment<T>::on_line(Vec2d<T> const& pt) const
     {
 	//This is a point, check if both points are the same
-	if (u.x == 0 && u.y == 0)
+	if (std::abs(u.x) < prec && std::abs(u.y) < prec)
 	{
 	    return p0 == pt;
 	}
@@ -45,7 +45,7 @@ namespace dalg
 	if (on_line(pt))
 	{
 	    return within(p0.x, pt.x, (p0+u).x) &&
-		within(p0.y, pt.y, (p0+u).y);  
+		within(p0.y, pt.y, (p0+u).y);
 	}
 	return false;
     }
@@ -351,6 +351,12 @@ namespace dalg
 	return {};
     }
 
+    template<typename T>
+    AABB<T> LineSegment<T>::get_aabb() const
+    {
+	return AABB<T>{p0, p0 + u};
+    }
+    
     template<typename T>
     Vec2d<T> LineSegment<T>::get_end() const
     {

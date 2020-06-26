@@ -24,7 +24,8 @@ namespace dalg
 	/**
 	 * Constructs polygon from points
 	 */
-	Polygon(std::vector<Vec2d<T>> const& points) : points{points}
+	Polygon(std::vector<Vec2d<T>> const& points) :
+	    points{points}
 	    {}
 
 	/**

@@ -2,6 +2,9 @@
 #include "vec2d.h"
 #include "utility.h"
 
+#ifndef DALG_AABB
+#define DALG_AABB
+
 namespace dalg
 {
     /**
@@ -16,12 +19,25 @@ namespace dalg
     class AABB
     {
     public:
-	AABB(Vec2d<T> const& min, Vec2d<T> const& max) : min{min}, max{max}
+	AABB(Vec2d<T> const& min, Vec2d<T> const& max, p_type prec = static_cast<p_type>(DEFAULT_PREC)) :
+	    min{min}, max{max}, prec{prec}
 	    {
-		format();
+		this->min.prec = prec;
+		this->max.prec = prec;
+		format();	
 	    }
 
-	bool collision(AABB<T> const& other)
+	bool operator==(AABB<T> const& other) const
+	    {
+		return min == other.min && max == other.max;
+	    }
+
+	bool operator!=(AABB<T> const& other) const
+	    {
+		return !(*this == other);
+	    }
+
+	bool overlap(AABB<T> const& other)
 	    {
 		return (max.x >= other.min.x &&
 			min.x <= other.max.x &&
@@ -57,7 +73,10 @@ namespace dalg
 	    }
 	
 	Vec2d<T> min;
-	Vec2d<T> max;	
+	Vec2d<T> max;
+	p_type prec;
     };
 
 }
+
+#endif

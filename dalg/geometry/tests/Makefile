@@ -19,6 +19,7 @@ test_main.o :   ${CATCH_DIR}/test_main.o \
 		${BUILD_DIR}/test_line_segment.o \
 		${BUILD_DIR}/test_polygon.o \
 		${BUILD_DIR}/test_aabb.o \
+		${BUILD_DIR}/test_circle.o \
 		${BUILD_DIR}/test_intersect.o \
 		${BUILD_DIR}/test_rectangle.o
 
@@ -28,11 +29,11 @@ test_main.o :   ${CATCH_DIR}/test_main.o \
 	${BUILD_DIR}/test_line_segment.o \
 	${BUILD_DIR}/test_polygon.o \
 	${BUILD_DIR}/test_aabb.o \
+	${BUILD_DIR}/test_circle.o \
 	${BUILD_DIR}/test_intersect.o \
 	${BUILD_DIR}/test_rectangle.o
 
 ${CATCH_DIR}/test_main.o : test_main.cpp
-	echo "test_main"
 	${CC} ${FLAGS} -c test_main.cpp -o ${CATCH_DIR}/test_main.o
 
 ${BUILD_DIR}/test_intersect.o : test_intersect.cpp
@@ -43,6 +44,9 @@ ${BUILD_DIR}/test_rectangle.o : test_rectangle.cpp
 
 ${BUILD_DIR}/test_aabb.o : test_aabb.cpp
 	${CC} ${FLAGS} -c test_aabb.cpp -o ${BUILD_DIR}/test_aabb.o
+
+${BUILD_DIR}/test_circle.o : test_circle.cpp
+	${CC} ${FLAGS} -c test_circle.cpp -o ${BUILD_DIR}/test_circle.o
 
 ${BUILD_DIR}/test_polygon.o : test_polygon.cpp
 	${CC} ${FLAGS} -c test_polygon.cpp -o ${BUILD_DIR}/test_polygon.o
