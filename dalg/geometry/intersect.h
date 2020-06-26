@@ -55,6 +55,6 @@ namespace dalg
     intersect(Line<T> const& l, Circle<T> const& c);
 }
 
-#include "collision.tcc"
+#include "intersect.tcc"
 
 #endif

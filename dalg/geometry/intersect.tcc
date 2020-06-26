@@ -1,7 +1,7 @@
 #include <cmath>
 
 #ifndef DALG_COLLISION
-#error 'collision.tcc' is not supposed to be included directly. Include 'collision.h' instead.
+#error 'intersect.tcc' is not supposed to be included directly. Include 'intersect.h' instead.
 #endif
 
 namespace dalg
@@ -66,14 +66,18 @@ namespace dalg
      *
      * This give the following equations:
      *
-     * a^2 + h^2 = r0^2 
-     * b^2 + h^2 = r1^2
+     * a² + h² = r0² 
+     * b² + h² = r1²
+     *
+     * h² = r1² - b² -> 
+     * a² + r1² - b² = r0² -> 
+     * a² = r0² - r1² + b² (1)
      *
      * Set d = a + b and solve for a:
      *
-     * a = (r0^2 - r1^2 + d^2) / 2*(a + b)
+     * a = (r0² - r1² + d²) / 2*d
      *
-     * h = sqrt( r0^2 - a^2 )
+     * h = sqrt( r0² - a² )
      *
      * p2 = p0 + a * (p1 - p0) / d
      *
@@ -135,6 +139,35 @@ namespace dalg
 	return std::pair<Vec2d<T>, Vec2d<T>>{p30, p31};
     }
 
+    /**
+     * Author: Daniel Thorén
+     *
+     * The following notation for the circle and line is used:
+     * 
+     * c: (c0 - x0)² + (c1 - x1)² = r² => /parametric form/ => |C - X|² = r²
+     * l: X = A + t * B
+     *
+     * Substitute X in the line into the circle and solv for t:
+     *
+     * |C - X|² = / X = A + tB / = (C - (A + tB))² = (-tB - (A-C))² = r² =>
+     *
+     * => |tB|² + 2(A-C)Bt + |A-C|² - r² = 0 =>
+     *
+     * => t² + 2(A-C)Bt * 1/|B|² + (|A-C|² - r²) * 1/|B|² = 0 =>
+     *
+     * => t² + 2(A-C)Bt * 1/|B|² + ( (A-C)B * 1/|B|² )² = (r² - |A-C|²) * 1/|B|² + ( (A-C)B * 1/|B|² )² =>
+     *
+     * => ( t + (A-C)B * 1/|B|² )² = ( (r² - |A-C|²) + (A-C)² ) * |B|² * 1/|B|⁴ =>
+     *
+     * => t = ( -(A-C)B ± √( (r² - |A-C|²) * |B|² + ((A-C)B)² ) ) * 1/|B|² =>
+     *
+     * => t = ( -(A-C)B ± √( ((A-C)B)² - |B|² * (|A-C|² - r²) ) ) * 1/|B|²
+     * 
+     * Thus t is obtained. Using t in the original expression of the
+     * line will yield the intersection pint/points.
+     *
+     *  
+     */
     template <typename T>
     inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
     intersect(Circle<T> const& c, Line<T> const& l)

@@ -8,7 +8,7 @@
 
 #include "../circle.h"
 #include "../line.h"
-#include "../collision.h"
+#include "../intersect.h"
 
 #define DEBUG 1
 
