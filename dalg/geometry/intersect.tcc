@@ -90,7 +90,7 @@ namespace dalg
      *
      */
     template <typename T>
-    inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>>, Circle<T> >
+    std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>>, Circle<T> >
     intersect(Circle<T> const& c0, Circle<T> const& c1)
     {
 	//Check if the bounding boxes of the circles overlap, if not
@@ -176,7 +176,7 @@ namespace dalg
      *  
      */
     template <typename T>
-    inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
+    std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
     intersect(Circle<T> const& c, Line<T> const& l)
     {
 	//If the distance between the center of the circle and the
@@ -213,6 +213,63 @@ namespace dalg
     template <typename T>
     inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
     intersect(Line<T> const& l, Circle<T> const& c)
+    {
+	return intersect(c, l);
+    }
+
+    /**
+     * Author: Daniel Thorén
+     *
+     * The following notation for the circle and line is used:
+     * 
+     * c: (c0 - x0)² + (c1 - x1)² = r² => /parametric form/ => |C - X|² = r²
+     * l: X = A + t * B
+     *
+     * This function uses the result from the intersection function
+     * between a circle and a line then does a boundry check on the
+     * result.
+     *  
+     */
+    template <typename T>
+    std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
+    intersect(Circle<T> const& c, LineSegment<T> const& lseg)
+    {
+	Line<T> l{lseg.get_start(), lseg.get_end()};
+	auto col = intersect<T>(c, l);
+	
+	if (std::holds_alternative<std::pair<Vec2d<double>, Vec2d<double>>>(col))
+	{
+	    std::pair<Vec2d<double>, Vec2d<double>> res = std::get<std::pair<Vec2d<double>, Vec2d<double>>>(col);
+
+	    if (lseg.on_segment(res.first))
+	    {
+		if (lseg.on_segment(res.second))
+		{
+		    return res;
+		}
+		return res.first;
+	    }
+	    if (lseg.on_segment(res.second))
+	    {
+		return res.second;
+	    }
+	}
+	else if (std::holds_alternative<Vec2d<double>>(col))
+	{
+	    Vec2d<double> res = std::get<Vec2d<double>>(col);
+
+	    if (lseg.on_line(res))
+	    {
+		return res;
+	    }
+	}
+	
+	return {};
+    }
+
+    template <typename T>
+    inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
+    intersect(LineSegment<T> const& l, Circle<T> const& c)
     {
 	return intersect(c, l);
     }

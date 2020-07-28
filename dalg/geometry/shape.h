@@ -2,6 +2,8 @@
 #ifndef DALG_SHAPE
 #define DALG_SHAPE
 
+#include "aabb.h"
+
 namespace dalg
 {    
     enum ShapeType
@@ -24,8 +26,16 @@ namespace dalg
     public:
 	Shape(ShapeType type) : type{type}
 	    {}
-	
-	const ShapeType type;
+
+	virtual AABB<T> get_aabb() const = 0;
+
+	inline ShapeType get_type() const
+	    {
+		return type;
+	    }
+
+    private:	
+	ShapeType type;
     };
 }
 

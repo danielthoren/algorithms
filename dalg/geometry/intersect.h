@@ -28,7 +28,7 @@ namespace dalg
      *          Circle            : Intersects everywhere along the circle
      */
     template <typename T>
-    inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>>, Circle<T> >
+    std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>>, Circle<T> >
     intersect(Circle<T> const& c0, Circle<T> const& c1);
 
     
@@ -47,12 +47,33 @@ namespace dalg
      *          pair<Vec2d, Vec2d>: Two intersection points
      */
     template <typename T>
-    inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
+    std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
     intersect(Circle<T> const& c, Line<T> const& l);
 
     template <typename T>
     inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
     intersect(Line<T> const& l, Circle<T> const& c);
+
+    /**
+     * Author: Daniel Thorén
+     *
+     * Handles collisions between a circle and a line segment. Returns
+     * monostate if they do not intersect.
+     *
+     * c : The circle
+     * l : The line segment
+     *
+     * return : monostate         : no intersection
+     *          Vec2d             : Only boundry intersection
+     *          pair<Vec2d, Vec2d>: Two intersection points
+     */
+    template <typename T>
+    std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
+    intersect(Circle<T> const& c, LineSegment<T> const& l);
+
+    template <typename T>
+    inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
+    intersect(LineSegment<T> const& l, Circle<T> const& c);
 }
 
 #include "intersect.tcc"
