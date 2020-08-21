@@ -1,0 +1,32 @@
+
+Test 1:
+
+T_bit = 0.001
+Bits_per_frame = 135
+
+Tasks:
+
+Name:  Priority:  Period (ms):
+m1     1          5
+m2     2          7
+m3     3          10
+
+Expected result:
+
+Name:  Ri:    Bi:    Wi:    Ci:   
+m1     0.270  0.135  0      0.135
+m2     0.405  0.135  0.270  0.135
+m3     0.405  0      0.270  0.135
+
+Test 2:
+
+Same as above but with following jitter
+
+Name:  Jitter:
+m1     5
+m2     5
+m3     8
+
+Expected result:
+
+Name:  Ri:    Bi:    Wi:    Ci:

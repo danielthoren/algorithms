@@ -79,7 +79,7 @@ def calc_busy_periods(tasks):
         while t_prev != t:
             t_prev = t
 
-            arr = [ math.ceil( (t_prev + Ji(x)) / Ti(x)) * Ci(x) for x in tasks ]
+            arr = [ math.ceil( (t_prev + Ji(x)) / Ti(x) ) * Ci(x) for x in tasks[:i] ]
             
             t = Bi(tasks[i]) + sum(arr)
 
@@ -92,7 +92,7 @@ def calc_instance_accumulation(tasks):
     for task in tasks:
         q = math.ceil( (ti(task) + Ji(task)) / Ti(task) )
         Qi(task, q)
-
+        
     return tasks
 
 
@@ -101,26 +101,31 @@ def help_calc_queueing_time(tasks, T_bit, i, q):
     w_prev = 0
     w = Bi(tasks[i])
 
-    while w != w_prev:
-        w_prev = w
-        
-        sum_arr = [ math.ceil( (w_prev + Ji(x) + T_bit) / Ti(x) ) * Ci(x) for x in tasks[:i] ]
-        
-        w = Bi(tasks[i]) + Ji(tasks[i]) + sum(sum_arr)
+    first = True
 
+    while w != w_prev or first == True:
+        first = False        
+        w_prev = w
+        sum_arr = [ math.ceil( (w_prev + Ji(x) + T_bit) / Ti(x) ) * Ci(x) for x in tasks[:i] ]
+
+        print("sum_arr: {}".format(sum_arr))
+        print("sum: {}".format(sum(sum_arr)))
+        w = Bi(tasks[i]) + Ci(tasks[i]) * (q - 1) + sum(sum_arr)
+
+        print("w_prev: {}".format(w_prev))
+        print("w: {}".format(w))
+
+    print("final w: {}".format(w))
     return w
     
 
 def calc_queueing_times(tasks, T_bit):
 
-    w_arr = []
-
     #Highest priority message will always be transmitted as fast as possible
-    w_arr.append( Bi(tasks[0]) ) 
+    Wi(tasks[0]).append( Bi(tasks[0]) * (Qi(tasks[0]) - 1) )
 
     for i in range(1, len(tasks)):
-        
-        for q in range(0, Qi(tasks[i])):
+        for q in range(1, Qi(tasks[i]) + 1):
             w_tmp = help_calc_queueing_time(tasks, T_bit, i, q)
 
             Wi(tasks[i]).append(w_tmp)
@@ -141,23 +146,19 @@ def calc_response_times(tasks):
 
 
 def can_response_analysis(tasks, T_bit, Cm):
-
-    print(Cm)
     
     for task in tasks:
-        Ci(task, Cm)
+        Ci(task, Cm * T_bit)
 
     calc_blocking_times(tasks)    
     calc_busy_periods(tasks)
     calc_instance_accumulation(tasks)
     calc_queueing_times(tasks, T_bit)
+    calc_response_times(tasks)
 
     list_tasks(tasks)
 
-    calc_response_times(tasks)
-
-    print(tasks)
-
+    return tasks
 
 
 def list_tasks(tasks):
@@ -185,7 +186,7 @@ def list_tasks(tasks):
 
 
 
-def add_task(tasks):
+def add_task(tasks):    
     print("Enter task set on the following format:")
     print("{:15}{:15}{:15}{:15}".format("Name",
                                         "Priority (Pi)",
@@ -220,14 +221,12 @@ def add_task(tasks):
     return tasks
 
 
-    
-
 def help():
     print("Choose an option:")
     print("a     : add task")
     print("l     : list tasks")
-    print("rd     : CAN response time analysis with n = bytes in message")
-    print("rf     : CAN response time analysis with Cm = bits in a frame")
+    print("rd    : CAN response time analysis with n = bytes in message")
+    print("rf    : CAN response time analysis with Cm = bits in a frame")
     print("reset : reset")
     print("h     : print this again")
 
