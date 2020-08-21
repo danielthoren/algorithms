@@ -2,11 +2,17 @@
 
 import math
 
-def name(task):
-    return task[0]
+def name(task, data = -1):
+    if data != -1:
+        task[0] = data
+    else:
+        return task[0]
 
-def Pi(task):
-    return task[1]
+def Pi(task, data = -1):
+    if data != -1:
+        task[1] = data
+    else:
+        return task[1]
 
 def Ci(task, data = -1):
     if data != -1:
@@ -14,11 +20,17 @@ def Ci(task, data = -1):
     else:
         return task[3]
 
-def Ti(task):
-    return task[2]
+def Ti(task, data = -1):
+    if data != -1:
+        task[2] = data
+    else:
+        return task[2]
 
-def Ji(task):
-    return task[4]
+def Ji(task, data = -1):
+    if data != -1:
+        task[4] = data
+    else:
+        return task[4]
 
 def Bi(task, data = -1):
     if data != -1:
@@ -107,15 +119,9 @@ def help_calc_queueing_time(tasks, T_bit, i, q):
         first = False        
         w_prev = w
         sum_arr = [ math.ceil( (w_prev + Ji(x) + T_bit) / Ti(x) ) * Ci(x) for x in tasks[:i] ]
-
-        print("sum_arr: {}".format(sum_arr))
-        print("sum: {}".format(sum(sum_arr)))
+        
         w = Bi(tasks[i]) + Ci(tasks[i]) * (q - 1) + sum(sum_arr)
-
-        print("w_prev: {}".format(w_prev))
-        print("w: {}".format(w))
-
-    print("final w: {}".format(w))
+        
     return w
     
 
@@ -156,8 +162,6 @@ def can_response_analysis(tasks, T_bit, Cm):
     calc_queueing_times(tasks, T_bit)
     calc_response_times(tasks)
 
-    list_tasks(tasks)
-
     return tasks
 
 
@@ -186,40 +190,39 @@ def list_tasks(tasks):
 
 
 
-def add_task(tasks):    
-    print("Enter task set on the following format:")
-    print("{:15}{:15}{:15}{:15}".format("Name",
-                                        "Priority (Pi)",
-                                        "Period (Ti)",
-                                        "Jitter (Ji)"))
-
-    task = input()
-    task = task.split()
-
-    if len(task) < 3:
-        print("Wrong format, aborting....")
-        return None
+def add_task(tasks, task_in):
+    task = [0] * 9
+    task.append( [] )
     
-    task[1] = float(task[1])
-    task[2] = float(task[2])
+    name(task, task_in[0] )
+    Pi(task, float(task_in[1]) )
+    Ti(task, float(task_in[2]) )
 
-    if len(task) == 3:
-        task.append(float(0))
-
-    task[3] = float(task[3])
-
-    task.append(float(0))
-    task.append(float(0))
-    task.append(float(0))
-    task.append(float(0))
-    task.append(float(0))
-    task.append([])
+    if len(task_in) == 3:
+        Ji(task, float(0))
+    else:
+        Ji(task, float(task_in[3]) )
 
     tasks.append(task)
     tasks.sort(key = lambda x: Pi(x))
 
     return tasks
 
+def get_task_input():
+    print("Enter task set on the following format:")
+    print("{:15}{:15}{:15}{:15}".format("Name",
+                                        "Priority (Pi)",
+                                        "Period (Ti)",
+                                        "Jitter (Ji)"))
+
+    task_in = input()
+    task_in = task_in.split()
+
+    if len(task_in) < 3:
+        print("Wrong format, aborting....")
+        return None
+
+    return task_in
 
 def help():
     print("Choose an option:")
@@ -230,39 +233,46 @@ def help():
     print("reset : reset")
     print("h     : print this again")
 
+def cli():
+    help()
+
+    while True:
+        print()
+        data = input("Option:")
+        if data == "a":
+            task_in = get_task_input()
+            add_task(tasks, task_in)
+
+        elif data == "l":
+            list_tasks(tasks)
+
+        elif data == "rd":
+            T_bit = float( input("Enter T_bit: ") )
+            n = float( input("Enter n (number of bytes per message): ") )
+
+            Cm = (8*n + 47 + math.floor( (38 + 8*n - 1) / 4 )) / T_bit
+        
+            can_response_analysis(tasks, T_bit, Cm)
+            list_tasks(tasks)
+
+        elif data == "rf":
+            T_bit = float( input("Enter T_bit: ") )
+            Cm = float( input("Enter Cm (number of bits per frame): ") )
+
+            can_response_analysis(tasks, T_bit, Cm)
+            list_tasks(tasks)
+
+        elif data == "reset":
+            tasks = []
+
+        elif (data == "h"):
+            help()
+
+            
 tasks = []
 T_bit = -1
 n = -1
 
-help()
+if __name__ == "__main__":
+    cli()
 
-while True:
-    print()
-    data = input("Option:")
-    if data == "a":
-        add_task(tasks)
-
-    elif data == "l":
-        list_tasks(tasks)
-
-    elif data == "rd":
-        if T_bit == -1:
-            T_bit = float( input("Enter T_bit: ") )
-            n = float( input("Enter n (number of bytes per message): ") )
-
-        Cm = (8*n + 47 + math.floor( (38 + 8*n - 1) / 4 )) / T_bit
-            
-        can_response_analysis(tasks, T_bit, Cm)
-
-    elif data == "rf":
-        if T_bit == -1:
-            T_bit = float( input("Enter T_bit: ") )
-            Cm = float( input("Enter Cm (number of bits per frame): ") )
-
-        can_response_analysis(tasks, T_bit, Cm)
-
-    elif data == "reset":
-        tasks = []
-
-    elif (data == "h"):
-      help()

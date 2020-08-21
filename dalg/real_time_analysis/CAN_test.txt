@@ -30,3 +30,22 @@ m3     8
 Expected result:
 
 Name:  Ri:    Bi:    Wi:    Ci:
+
+Test 3:
+
+T_bit = 0.1
+Bits_per_frame = 10
+
+Tasks:
+
+Name:  Priority:  Period (ms):  Jitter:
+m1     1          20            1
+m2     2          10            2
+m3     3          5             0
+
+Expected result:
+
+Name:  Ri:    Bi:    Ci:   
+m1     2      1      1
+m2     5      1      1
+m3     3      0      1
