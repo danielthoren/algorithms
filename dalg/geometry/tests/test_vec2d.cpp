@@ -463,3 +463,107 @@ TEST_CASE( "Vec2d angle test", "[Vec2d]")
 	CHECK( Approx(PI / 4) == rad_angle(p1,p2) );
     }
 }
+
+TEST_CASE( "Vec2d collinear test", "[Vec2d]")
+{
+    SECTION( "(+,+) (+,+) collinear" )
+    {
+	Vec2d<double> p1{1, 1};
+	Vec2d<double> p2{2, 2};
+
+	CHECK( collinear(p1, p2) );
+    }
+
+    SECTION( "(-,-) (+,+) collinear" )
+    {
+	Vec2d<double> p1{-1, -1};
+	Vec2d<double> p2{2, 2};
+
+	CHECK( collinear(p1, p2) );
+    }
+
+    SECTION( "(+,+) (-,-) collinear" )
+    {
+	Vec2d<double> p1{1, 1};
+	Vec2d<double> p2{-2, -2};
+
+	CHECK( collinear(p1, p2) );
+    }
+
+    SECTION( "(-,-) (-,-) collinear" )
+    {
+	Vec2d<double> p1{-1, -1};
+	Vec2d<double> p2{-2, -2};
+
+	CHECK( collinear(p1, p2) );
+    }
+
+    SECTION( "(+,-) (+,-) collinear" )
+    {
+	Vec2d<double> p1{1, -1};
+	Vec2d<double> p2{2, -2};
+
+	CHECK( collinear(p1, p2) );
+    }
+
+    SECTION( "(-,+) (-,+) collinear" )
+    {
+	Vec2d<double> p1{-1, 1};
+	Vec2d<double> p2{-2, 2};
+
+	CHECK( collinear(p1, p2) );
+    }
+
+    SECTION( "not collinear" )
+    {
+	Vec2d<double> p1{5, 5};
+	Vec2d<double> p2{5, 0};
+
+	CHECK_FALSE( collinear(p1, p2) );
+
+	Vec2d<double> p3{5, 5};
+	Vec2d<double> p4{10, 20};
+
+	CHECK_FALSE( collinear(p3, p4) );
+    }
+
+    SECTION( "prec test 1, not collinear" )
+    {
+	Vec2d<double> p1{1, 1 + (DEFAULT_PREC/2)};
+	Vec2d<double> p2{2, 2};
+
+	CHECK_FALSE( collinear(p1, p2) );
+    }
+
+    SECTION( "prec test 2, not collinear" )
+    {
+	Vec2d<double> p1{1, 1};
+	Vec2d<double> p2{2 - (DEFAULT_PREC*2), 2};
+
+	CHECK_FALSE( collinear(p1, p2) );
+    }
+
+    SECTION( "prec test 3, collinear" )
+    {
+	Vec2d<double> p1{1 + ((DEFAULT_PREC/2) - (DEFAULT_PREC/10)), 1};
+	Vec2d<double> p2{2, 2};
+
+	CHECK( collinear(p1, p2) );
+    }
+
+    SECTION( "prec test 4, collinear" )
+    {
+	Vec2d<double> p1{1, 1};
+	Vec2d<double> p2{2, 2 - (DEFAULT_PREC - (DEFAULT_PREC/10))};
+
+	CHECK( collinear(p1, p2) );
+    }
+
+    SECTION( "Same vector" )
+    {
+	Vec2d<double> p1{1, 1};
+
+	CHECK( collinear(p1, p1) );
+    }
+    
+}

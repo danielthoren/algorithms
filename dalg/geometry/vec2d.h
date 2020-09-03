@@ -6,6 +6,7 @@
 #include <cmath>
 #include <type_traits>
 #include <variant>
+#include <vector>
 
 #include "utility.h"
 
@@ -137,20 +138,22 @@ namespace dalg
     template <typename T>
     Vec2d<T> operator/(Vec2d<T> const& pt, T scalar);
 
+
     /**
-     * Checks if the tree given points are collinear
-     * (lie on the same line)
+     *  Check if colinnear by performing the determinant and checking
+     *  if it is 0. If it is 0 then they are collinear since the
+     *  geometric representation of the determinant is the area of the
+     *  paralellogram that the vectors create. If the area is 0 then
+     *  there is no area thus no paralellogram and thus they are
+     *  colinnear.
      *
-     * a : Point a
-     * b : Point b
-     * c : Point c
+     * P1: First point
+     * P1: Second point
      *
-     * return: true if collinear otherwise false
+     * return: true if collinear vectors, else false
      */
     template <typename T>
-    bool collinear(dalg::Vec2d<T> const& a,
-		   dalg::Vec2d<T> const& b,
-		   dalg::Vec2d<T> const& c);
+    bool collinear(Vec2d<T> const& p1, Vec2d<T> const& p2);
 
     /**
      * Checks if the given points are collinear
@@ -163,7 +166,7 @@ namespace dalg
      * return: true if collinear otherwise false
      */
     template <typename T>
-    bool collinear(std::vector<dalg::Vec2d<T>> const& points);    
+    bool collinear(std::vector<dalg::Vec2d<T>> const& points);
 }
 
 #include "vec2d.tcc"

@@ -177,34 +177,47 @@ namespace dalg
 	return Vec2d<T>{pt.x / scalar, pt.y / scalar};
     }
 
+    /**
+     *  Check if colinnear by performing the determinant and checking
+     *  if it is 0. If it is 0 then they are collinear since the
+     *  geometric representation of the determinant is the area of the
+     *  paralellogram that the vectors create. If the area is 0 then
+     *  there is no area thus no paralellogram and thus they are
+     *  colinnear.
+     *
+     * P1: First point
+     * P1: Second point
+     *
+     * return: true if collinear vectors, else false
+     */
     template <typename T>
-    bool collinear(Vec2d<T> const& a,
-		   Vec2d<T> const& b,
-		   Vec2d<T> const& c)
+    bool collinear(Vec2d<T> const& p1,
+    		   Vec2d<T> const& p2)
     {
-	return (b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y) < a.prec;
+	p_type precision = get_pref_prec(p1.prec, p2.prec);
+	T ret = cross(p1, p2);
+
+	return std::abs(ret) < precision;
     }
 
     template <typename T>
     bool collinear(std::vector<Vec2d<T>> const& points)
     {
-	if (points.size() < 3)
-	    return true;
+    	if (points.size() < 2)
+    	    return true;
 
-	unsigned p1{0};
-	unsigned p2{1};
-	unsigned p3{2};
-	for (int i{2}; i < points.size(); i++)
-	{
-	    if (!collinear(points[p1], points[p2], points[p3]))
-		return false;
+    	unsigned p1{0};
+    	unsigned p2{1};
+    	for (int i{1}; i < points.size(); i++)
+    	{
+    	    if (!collinear(points[p1], points[p2]))
+    		return false;
 
-	    ++p1;
-	    ++p2;
-	    ++p3;
-	}
+    	    ++p1;
+    	    ++p2;
+    	}
 
-	return true;
+    	return true;
     }
 
 }

@@ -9,20 +9,14 @@
   - [ ] add kattis test for baseball elimination
 
 ** Geometry
-   * [ ] Move PI constant from vec2d to utility
-
-*** LineSegment
-  - [X] Add test file for LineSegment
 
 *** Polygon
-  - [X] Move from LineSegment representation to Vec2d representation for polygon
   - [ ] Found precision error in LineSegment distance function. 
         Get large precision offset with comparison (1.15, -1.45) == (1, -1.5)
         Error as large as 0.15 which is unacceptable and needs further investigation
 
 *** AABB
-   - [X] Implement tests for AABB
    - [ ] Possibly implement comparison in vector to make collision method smaller
+
 *** Vec2d
-    * [X] Implement *=
-    * [X] Implement /=
+   - [ ] Implement tests for collinear functions

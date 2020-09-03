@@ -156,7 +156,7 @@ TEST_CASE( "Circle-Line intersection test", "[Intersection]" )
     SECTION( "Test no intersection circle in origo" )
     {
 	Circle<double> c1{Vec2d<double>{0,0}, 5};
-	Line<double> l1{Vec2d<double>{10,10}, Vec2d<double>{11,10}};
+	Line<double> l1{Vec2d<double>{10,10}, Vec2d<double>{1,0}};
 
 	auto col = intersect<double>(c1, l1);
 
@@ -167,7 +167,7 @@ TEST_CASE( "Circle-Line intersection test", "[Intersection]" )
     SECTION( "Test tangent intersection circle in origo" )
     {
 	Circle<double> c1{Vec2d<double>{0,0}, 5};
-	Line<double> l1{Vec2d<double>{5,0}, Vec2d<double>{5,1}};
+	Line<double> l1{Vec2d<double>{5,0}, Vec2d<double>{0,1}};
 
 	auto col = intersect<double>(c1, l1);
 
@@ -219,90 +219,31 @@ TEST_CASE( "Circle-Line intersection test", "[Intersection]" )
     
 }
 
-TEST_CASE( "Circle-LineSegment intersection test", "[Intersection]" )
+TEST_CASE( "Line-Line intersection test", "[Intersection]" )
 {
-    SECTION( "Test sloped two point intersection circle in origo" )
+    SECTION( "Parallel lines" )
     {
-	Circle<double> c1{Vec2d<double>{0,0}, 5};
-	LineSegment<double> l1{Vec2d<double>{-10,-10}, Vec2d<double>{10,10}};
+	Line<double> l1{Vec2d<double>{0,0}, Vec2d<double>{10,10}};
+	Line<double> l2{Vec2d<double>{5,0}, Vec2d<double>{10,10}};
 
-	auto col = intersect<double>(c1, l1);
+	auto col = intersect<double>(l1, l2);
 
-	REQUIRE( std::holds_alternative<std::pair<Vec2d<double>, Vec2d<double>>>(col) );
-	    
-	std::pair<Vec2d<double>, Vec2d<double>> res = std::get<std::pair<Vec2d<double>, Vec2d<double>>>(col);
-
-	double x = c1.radius * std::cos(PI / 4);
-	double y = c1.radius * std::sin(PI / 4);
-	
-	CHECK( res.first == Vec2d<double>{x, y} );
-	CHECK( res.second == Vec2d<double>{-x, -y} );
-    }
-
-    SECTION( "Test tangent intersection circle in origo" )
-    {
-	Circle<double> c1{Vec2d<double>{0,0}, 5};
-	LineSegment<double> l1{Vec2d<double>{5,-1}, Vec2d<double>{5,1}};
-
-	auto col = intersect<double>(c1, l1);
-
-	REQUIRE( std::holds_alternative<Vec2d<double>>(col) );
-	    
-	Vec2d<double> res = std::get<Vec2d<double>>(col);
-	
-	CHECK( res == Vec2d<double>{5, 0} );
-    }
-    
-    SECTION( "Test two point line intersection, one point line segment intersection" )
-    {
-	Circle<double> c1{Vec2d<double>{0,0}, 5};
-	LineSegment<double> l1{Vec2d<double>{0,0}, Vec2d<double>{10,0}};
-
-	auto col = intersect<double>(c1, l1);
-
-	REQUIRE( std::holds_alternative<Vec2d<double>>(col) );
-	    
-	Vec2d<double> res = std::get<Vec2d<double>>(col);
-	
-	CHECK( res == Vec2d<double>{5,0} );
-    }
-
-    SECTION( "Test two point line intersection, one point line segment intersection (reversed order)" )
-    {
-	Circle<double> c1{Vec2d<double>{0,0}, 5};
-	LineSegment<double> l1{Vec2d<double>{-10,0}, Vec2d<double>{0,0}};
-
-	auto col = intersect<double>(c1, l1);
-
-	REQUIRE( std::holds_alternative<Vec2d<double>>(col) );
-	    
-	Vec2d<double> res = std::get<Vec2d<double>>(col);
-	
-	CHECK( res == Vec2d<double>{-5,0} );
-    }
-
-    SECTION( "Test line intersection, line segment no intersection" )
-    {
-	Circle<double> c1{Vec2d<double>{0,0}, 5};
-	LineSegment<double> l1{Vec2d<double>{10,0}, Vec2d<double>{20,0}};
-
-	auto col = intersect<double>(c1, l1);
-
-	CHECK_FALSE( std::holds_alternative<std::pair<Vec2d<double>, Vec2d<double>>>(col) );
 	CHECK_FALSE( std::holds_alternative<Vec2d<double>>(col) );
+	CHECK_FALSE( std::holds_alternative<Line<double>>(col) );
     }
 
-    SECTION( "Test line segment end point intersection" )
+    SECTION( "Through origin" )
     {
-	Circle<double> c1{Vec2d<double>{0,0}, 5};
-	LineSegment<double> l1{Vec2d<double>{5,0}, Vec2d<double>{10,0}};
+	Line<double> l1{Vec2d<double>{0,0}, Vec2d<double>{1,1}};
+	Line<double> l2{Vec2d<double>{0,0}, Vec2d<double>{1,2}};
 
-	auto col = intersect<double>(c1, l1);
+	auto col = intersect<double>(l1, l2);
 
 	REQUIRE( std::holds_alternative<Vec2d<double>>(col) );
-	    
+
 	Vec2d<double> res = std::get<Vec2d<double>>(col);
-	
-	CHECK( res == Vec2d<double>{5,0} );
+
+	CHECK( res == Vec2d<double>{0,0} );
     }
+
 }

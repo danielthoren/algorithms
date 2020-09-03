@@ -74,6 +74,12 @@ namespace dalg
     template <typename T>
     inline std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
     intersect(LineSegment<T> const& l, Circle<T> const& c);
+
+
+    template <typename T>
+    std::variant<std::monostate, Vec2d<T>, Line<T> >
+    intersect(Line<T> const& l1, Line<T> const& l2);
+
 }
 
 #include "intersect.tcc"

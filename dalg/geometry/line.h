@@ -18,8 +18,8 @@ namespace dalg
     class Line
     {
     public:
-	Line(Vec2d<T> p0, Vec2d<T> p1)
-	    : p0{p0}, u{p1 - p0}
+	Line(Vec2d<T> p0, Vec2d<T> u)
+	    : p0{p0}, u{u}
 	    {}
     
 	Line(T x0, T y0, T x1, T y1)
