@@ -246,4 +246,68 @@ TEST_CASE( "Line-Line intersection test", "[Intersection]" )
 	CHECK( res == Vec2d<double>{0,0} );
     }
 
+    SECTION( "kattis test 1" )
+    {
+	Vec2d<double> p1{-10, 0};
+	Vec2d<double> p2{10, 0};
+
+	Line<double> l1{p1, p2};
+      
+	Vec2d<double> q1{0, -10};
+	Vec2d<double> q2{0, 10};
+
+	Line<double> l2{q1, q2};
+
+	auto res = intersect(l1, l2);
+
+	REQUIRE( std::holds_alternative<dalg::Vec2d<double>>(res) );
+	
+	dalg::Vec2d<double> act = std::get<dalg::Vec2d<double>>(res);
+	CHECK( act == Vec2d<double>{0.0, 0.0} );
+    }
+
+    SECTION( "kattis test 2" )
+    {
+	Vec2d<double> p1{-10, 0};
+	Vec2d<double> p2{10, 0};
+      
+	Line<double> l1{p1, p1 - p2};
+      
+	Vec2d<double> q1{-5, 0};
+	Vec2d<double> q2{5, 0};
+
+	Line<double> l2{q1, q1 - q2};
+
+	auto res = intersect(l1, l2);
+      
+	REQUIRE( std::holds_alternative<Line<double>>(res) );
+
+	Line<double> act =
+	    std::get<Line<double>>(res);
+	  
+	CHECK( act == l1 );
+    }
+
+    SECTION( "kattis test 3" )
+    {
+	Vec2d<double> p1{1,1};
+	Vec2d<double> p2{1,1};
+
+	Line<double> l1{p1, p2};
+      
+	Vec2d<double> q1{1,1};
+	Vec2d<double> q2{2,1};
+
+	Line<double> l2{q1, q2};
+
+	auto res = intersect(l1, l2);
+
+	REQUIRE( std::holds_alternative<dalg::Vec2d<double>>(res) );
+
+	dalg::Vec2d<double> act = std::get<dalg::Vec2d<double>>(res);
+	CHECK( act == Vec2d<double>{1.0, 1.0} );
+    }
+
+
+
 }
