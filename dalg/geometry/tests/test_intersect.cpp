@@ -224,7 +224,7 @@ TEST_CASE( "Line-Line intersection test", "[Intersection]" )
     SECTION( "Parallel lines" )
     {
 	Line<double> l1{Vec2d<double>{0,0}, Vec2d<double>{10,10}};
-	Line<double> l2{Vec2d<double>{5,0}, Vec2d<double>{10,10}};
+	Line<double> l2{Vec2d<double>{0,5}, Vec2d<double>{10,10}};
 
 	auto col = intersect<double>(l1, l2);
 
