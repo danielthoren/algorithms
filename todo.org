@@ -4,19 +4,32 @@
  - [ ] Fix all w-signed warnings
 
 ** Random
-  - [ ] Polygon (min distance): Implement quad and use to only look at the necessary line segments
   - [ ] Write tests for subset sum
   - [ ] add kattis test for baseball elimination
 
-** Geometry
-
-*** Polygon
-  - [ ] Found precision error in LineSegment distance function. 
-        Get large precision offset with comparison (1.15, -1.45) == (1, -1.5)
-        Error as large as 0.15 which is unacceptable and needs further investigation
+** Linear algebra
 
 *** AABB
+   - [ ] Start using AABB comparison in all intersection checks for speedup
+
    - [ ] Possibly implement comparison in vector to make collision method smaller
 
 *** Vec2d
-   - [ ] Implement tests for collinear functions
+   - [X] Implement tests for collinear functions
+
+*** Intersect     
+    - [X] Move line intersection to intersect file
+    - [X] Comment line intersection function
+
+    - [ ] Move line segment intersection method to intersect file
+    - [ ] create polygon intersection method
+
+*** Polygon
+    - [ ] Polygon (min distance): Implement quad and use to only look at the necessary line segments
+
+** Real time
+
+   - [ ] Comment on methods in CAN bus analysis
+
+   - [ ] Rewrite in c++
+   - [ ] Write tests for methods
