@@ -713,13 +713,10 @@ TEST_CASE( "LineSegment intersection test", "[LineSegment]" )
 
 	auto res = l1.intersect(l2);
 
-	CHECK( std::holds_alternative<dalg::Vec2d<double>>(res) );
+	REQUIRE( std::holds_alternative<dalg::Vec2d<double>>(res) );
 
-	if (std::holds_alternative<dalg::Vec2d<double>>(res))
-	{
-	    dalg::Vec2d<double> act = std::get<dalg::Vec2d<double>>(res);
-	    CHECK( act == Vec2d<double>{221.33, -496.70, 0.05} );
-	}
+	dalg::Vec2d<double> act = std::get<dalg::Vec2d<double>>(res);
+	CHECK( act == Vec2d<double>{221.33, -496.70, 0.05} );
     }
 }
 

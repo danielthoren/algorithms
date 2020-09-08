@@ -2,6 +2,7 @@
 #define LINE_
 
 #include "vec2d.h"
+#include "utility.h"
 
 #include <limits>
 
@@ -18,12 +19,14 @@ namespace dalg
     class Line
     {
     public:
-	Line(Vec2d<T> p0, Vec2d<T> u)
-	    : p0{p0}, u{u}
+	Line(Vec2d<T> p0, Vec2d<T> u,
+	     p_type prec = static_cast<p_type>( DEFAULT_PREC ))
+	    : p0{p0}, u{u}, prec{prec}
 	    {}
     
-	Line(T x0, T y0, T x1, T y1)
-	    : Line({x0, y0}, {x1, y1 })
+	Line(T x0, T y0, T x1, T y1,
+	     p_type prec = static_cast<p_type>( DEFAULT_PREC ))
+	    : Line({x0, y0}, {x1, y1 }, prec)
 	    {}
 
 	/**
@@ -54,6 +57,7 @@ namespace dalg
 	//p(s) = p0 + su
 	Vec2d<T> p0;
 	Vec2d<T> u;    // u = p1 - p0
+	p_type prec;
     };
 
     template <typename T>
@@ -73,7 +77,7 @@ namespace dalg
     template <typename T>
     bool Line<T>::operator==(Line<T> const& other) const
     {
-	return is_parallel(other) && cross(u, p0 - other.p0) == 0;
+	return is_parallel(other) && std::abs( cross(u, p0 - other.p0) ) < prec;
     }
 
     template <typename T>

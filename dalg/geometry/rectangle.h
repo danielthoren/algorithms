@@ -26,9 +26,13 @@ namespace dalg
 	 * must be furthest from each other (opposing). The vectors
 	 * between the points must have an angle of 90 degrees
 	 */
-	Rectangle(Vec2d<T> const& c1, Vec2d<T> const& c2, Vec2d<T> const& c3, Vec2d<T> const& c4) :
-	    corners{c1, c2, c3, c4}
+	Rectangle(Vec2d<T> const& c1, Vec2d<T> const& c2, Vec2d<T> const& c3, Vec2d<T> const& c4) : corners{c1, c2, c3, c4}
 	    {
+		// corners.push_back(c1);
+		// corners.push_back(c2);
+		// corners.push_back(c3);
+		// corners.push_back(c4);
+		
 		if (90 - angle( c1 - c2, c2 - c3) > 0.01 ||
 		    90 - angle( c2 - c3, c3 - c4) > 0.01 ||
 		    90 - angle(c3 - c4, c4 - c1) > 0.01 ||
