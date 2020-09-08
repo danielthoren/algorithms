@@ -97,6 +97,9 @@ namespace dalg
 	 */
 	Vec2d<T> get_start() const;
 
+	/**
+	 * Returns u
+	 */
 	Vec2d<T> get_vec() const;
 
     private:

@@ -261,6 +261,20 @@ TEST_CASE( "Line-Line intersection test", "[Intersection]" )
 	CHECK( res == l2);
     }
 
+    SECTION( "Vertical and horizontal lines" )
+    {
+	Line<double> l1{Vec2d<double>{-1,0}, Vec2d<double>{0,1}};
+	Line<double> l2{Vec2d<double>{-1,0}, Vec2d<double>{1,0}};
+
+	auto col = intersect<double>(l1, l2);
+
+	REQUIRE( std::holds_alternative<Vec2d<double>>(col) );
+
+	Vec2d<double> res = std::get<Vec2d<double>>(col);
+
+	CHECK( res == Vec2d<double>{-1,0} );
+    }
+
     SECTION( "kattis test 1 (line segment)" )
     {
 	Vec2d<double> p1{-10, 0};

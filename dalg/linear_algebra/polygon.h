@@ -1,5 +1,5 @@
-#ifndef POLYGON
-#define POLYGON
+#ifndef DALG_POLYGON
+#define DALG_POLYGON
 
 #include <vector>
 

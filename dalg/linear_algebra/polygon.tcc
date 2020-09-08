@@ -1,4 +1,5 @@
-#ifndef POLYGON
+
+#ifndef DALG_POLYGON
 #error 'polygon.tcc' is not supposed to be included directly. Include 'polygon.h' instead.
 #endif
 

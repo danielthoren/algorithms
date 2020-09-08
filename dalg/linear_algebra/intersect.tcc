@@ -274,6 +274,70 @@ namespace dalg
 	return intersect(c, l);
     }
 
+    /**
+     * Author: Daniel Thorén
+     *
+     * Handles collisions between two lines. This is done by solving
+     * the equation systems:
+     *
+     * (1):   l1(t) = At + B ->  l1_x(t) = a1 * t + b1
+     *                           l1_y(t) = a2 * t + b2
+     *
+     * (2):   l2(s) = Ps + Q ->  l2_x(s) = p1 * s + q1
+     *                           l2_y(s) = p2 * s + q2
+     *
+     * Where big letters represent 2-dimensional vectors and small
+     * letters are variables. An equation system is created by solving
+     * each pair of equation for x and y respektively:
+     *
+     * (3):    (1) & (2) 
+     *          -> l1_x(t) = l2_x(s) 
+     *           -> a1*t + b1 = p1*s + q1 
+     *            -> s = (a1*t + b1 - q1) / p1
+     *
+     * (4):    (1) & (2) 
+     *          -> l1_y(t) = l2_y(s) 
+     *           -> a2*t + b2 = p2*s + q2 
+     *            -> s = (a2*t + b2 - q2) / p2
+     *
+     * Set s = s and get:
+     *
+     * (5):    (3) & (4) 
+     *          -> S = S
+     *           -> (a1*t + b1 - q1) / p1 = (a2*t + b2 - q1) / p2
+     *            -> p2*a1*t + p2*(b1 - q1) = p1*a2*t + p1*(b2 - q2)
+     *             -> (p2*a1 - p1*a2)t = p1*(b2 - q2) - p2*(b1 - q1)
+     *              -> t = ( p1*(b2 - q2) - p2*(b1 - q1) ) / (p2*a1 - p1*a2)
+     *
+     * Solve for t then put t into equation (1) to get the point. This
+     * can be performed using the determinant in the following manner.
+     *
+     *                              | p1  (q1 - b1) | 
+     *   det(l2.u, l2.p0 - l1.p0) = | p2  (q2 - b2) | = p1(q2 - b2) - p2(q1 - b1)
+     *
+     *                     | p1  a1 |
+     *   det(l2.u, l1.u) = | p2  a2 | = p1*a2 - p2*a1
+     *
+     * (6):    t = det(l2.u, l2.p0 - l1.p0) / det(l2.u, l1.u)
+     *
+     *                    | p1  (q1 - b1) |  / | p1  a1 |
+     * (7):    (6) -> t = | p2  (q2 - b2) | /  | p2  a2 | 
+     *                   = ( p1*(q2 - b2) - p2*(q1 - b1) ) / ( p1*a2 - p2*a1 )
+     *                    = -1*( p1*(q2 - b2) - p2*(q1 - b1) ) / -1*( p1*a2 - p2*a1 )
+     *                     = ( p1*(b2 - q2) - p2*(b1 - q1) ) / (p2*a1 - p1*a2)
+     *
+     * (5) <-> (7)
+     *
+     * Thus equation (6) can be used to easily get t which in turn
+     * yeilds the intersection point.
+     *
+     * l1 : Line 1
+     * l2 : Line 2
+     *
+     * return : monostate         : no intersection
+     *          Vec2d             : Only boundry intersection
+     *          Line              : l1 and l2 represent the same line
+     */
     template <typename T>
     std::variant<std::monostate, Vec2d<T>, Line<T> >
     intersect(Line<T> const& l1, Line<T> const& l2)

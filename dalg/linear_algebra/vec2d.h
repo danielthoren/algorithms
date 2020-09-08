@@ -1,6 +1,6 @@
 
-#ifndef VEC_2D
-#define VEC_2D
+#ifndef DALG_VEC_2D
+#define DALG_VEC_2D
 
 #include <iostream>
 #include <cmath>

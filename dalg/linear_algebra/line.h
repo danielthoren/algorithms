@@ -1,10 +1,8 @@
-#ifndef LINE_
-#define LINE_
+#ifndef DALG_LINE
+#define DALG_LINE
 
 #include "vec2d.h"
 #include "utility.h"
-
-#include <limits>
 
 namespace dalg
 {
@@ -37,84 +35,27 @@ namespace dalg
 
 	bool is_parallel(Line<T> const& other) const;
 
-	/*
-	 * Returns the point where this Line and other intersects
-	 * If the lines are parallel then return point with
-	 * std::numeric_limits<T>::min()
-	 *
-	 * Given Lines 
-	 * L1(t) = p + t * U
-	 * L2(s) = q + s * V
-	 * 
-	 * We get the constant t on Line L1 where the intersection occurs as:
-	 * t = (q - p) x V / U x V
-	 *
-	 * Then we obtain the actual intersection point from the following:
-	 * p_inter = p + t * U
+	/**
+	 * Returns p0
 	 */
-	Vec2d<T> intersection(Line<T> const& other) const;
+	Vec2d<T> get_start() const;
 
+	/**
+	 * Returns u
+	 */
+	Vec2d<T> get_vec() const;
+
+    private:
 	//p(s) = p0 + su
 	Vec2d<T> p0;
-	Vec2d<T> u;    // u = p1 - p0
+	Vec2d<T> u;
 	p_type prec;
     };
 
     template <typename T>
     Vec2d<T> project(Vec2d<T> const& pt, Line<T> const& l);
-
-/*************************************************************/
-/* Should be in tcc file, temporarily here for kattis        */
-/*************************************************************/
-
-    template <typename T>
-    bool Line<T>::is_parallel(Line<T> const& other) const
-    {
-	return cross(u, other.u) == 0;
-    }
-
-
-    template <typename T>
-    bool Line<T>::operator==(Line<T> const& other) const
-    {
-	return is_parallel(other) && std::abs( cross(u, p0 - other.p0) ) < prec;
-    }
-
-    template <typename T>
-    bool Line<T>::operator!=(Line<T> const& other) const
-    {
-	return ! (*this == other);
-    }
-
-    template <typename T>
-    Vec2d<T> project(Vec2d<T> const& pt, Line<T> const& l)
-    {
-	Vec2d<T> pt_t {pt - l.p0};
-
-	Vec2d<T> res{ project(pt_t, l.u) };
-
-	res += l.p0;
-
-	return res;
-    }
-
-
-    template <typename T>
-    Vec2d<T> Line<T>::intersection(Line<T> const& other) const
-    {
-	T t = cross(other.u, (other.p0 - p0) ) / cross(other.u, u);
-
-	//No solution
-	if (t == 0)
-	{
-	    return Vec2d<T>(std::numeric_limits<T>::min(),
-			    std::numeric_limits<T>::min());
-	}
-
-	Vec2d<T> inter{ p0 + (t * u) };
-	return inter;
-    }
-
 }
+
+#include "line.tcc"
 
 #endif

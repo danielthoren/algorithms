@@ -1,7 +1,7 @@
 
 #include <cmath>
 
-#ifndef VEC_2D
+#ifndef DALG_VEC_2D
 #error 'vec2d.tcc' is not supposed to be included directly. Include 'vec2d.h' instead.
 #endif
 

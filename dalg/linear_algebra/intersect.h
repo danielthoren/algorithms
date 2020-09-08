@@ -76,10 +76,21 @@ namespace dalg
     intersect(LineSegment<T> const& l, Circle<T> const& c);
 
 
+    /**
+     * Author: Daniel Thorén
+     *
+     * Handles collisions between two lines
+     *
+     * l1 : Line 1
+     * l2 : Line 2
+     *
+     * return : monostate         : no intersection
+     *          Vec2d             : Only boundry intersection
+     *          Line              : l1 and l2 represent the same line
+     */    
     template <typename T>
     std::variant<std::monostate, Vec2d<T>, Line<T> >
     intersect(Line<T> const& l1, Line<T> const& l2);
-
 }
 
 #include "intersect.tcc"
