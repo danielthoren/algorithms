@@ -526,5 +526,34 @@ namespace dalg
 
 	return {};
     }
+
+    
+    template <typename T>
+    std::variant<std::monostate, Vec2d<T>, LineSegment<T>>
+    intersect(Line<T> const& l, LineSegment<T> const& lseg)
+    {
+	auto res = intersect(l, Line<T>{lseg.p0, lseg.u});
+
+	//If res contains a line then the line segment overlaps with
+	//the line, thus return the line semgment
+	if ( std::holds_alternative<Line<T>>(res) )
+	{
+	    return lseg;
+	}
+
+	//If res contains a vector and it is on the segment then l and
+	//lseg intersects, return point
+	if ( std::holds_alternative<Vec2d<T>>(res))
+	{
+	    Vec2d<T> act = std::get<Vec2d<T>>(res);
+
+	    if (lseg.on_segment(act))
+	    {
+		return act;
+	    }
+	}
+	
+	return {};
+    }
     
 }

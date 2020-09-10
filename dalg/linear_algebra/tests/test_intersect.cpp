@@ -463,3 +463,64 @@ TEST_CASE( "LineSegment-LineSegment intersection test", "[Intersection]" )
     }
 }
 
+TEST_CASE( "Line-LineSegment intersection test", "[Intersection]" )
+{
+    SECTION( "Intersect origo" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{10, 10};
+
+	Line<double> l{p1, p2};
+      
+	Vec2d<double> q1{-1, 1};
+	Vec2d<double> q2{1, -1};
+
+	LineSegment<double> lseg{q1, q2};
+
+	auto res = intersect(l,lseg);
+
+	REQUIRE( std::holds_alternative<dalg::Vec2d<double>>(res) );
+
+	dalg::Vec2d<double> act = std::get<dalg::Vec2d<double>>(res);
+	CHECK( act == Vec2d<double>{0,0} );
+    }
+
+    SECTION( "No Intersect" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{10, 10};
+
+	Line<double> l{p1, p2};
+      
+	Vec2d<double> q1{-1, 1};
+	Vec2d<double> q2{-0.1, 0.1};
+
+	LineSegment<double> lseg{q1, q2};
+
+	auto res = intersect(l,lseg);
+
+	CHECK_FALSE( std::holds_alternative<dalg::Vec2d<double>>(res) );
+	CHECK_FALSE( std::holds_alternative<dalg::LineSegment<double>>(res) );
+    }
+
+    SECTION( "Overlap" )
+    {
+	Vec2d<double> p1{0, 0};
+	Vec2d<double> p2{10, 10};
+
+	Line<double> l{p1, p2};
+      
+	Vec2d<double> q1{0, 0};
+	Vec2d<double> q2{1, 1};
+
+	LineSegment<double> lseg{q1, q2};
+
+	auto res = intersect(l,lseg);
+
+	REQUIRE( std::holds_alternative<dalg::LineSegment<double>>(res) );
+
+	dalg::LineSegment<double> act = std::get<dalg::LineSegment<double>>(res);
+	CHECK( act == lseg );
+    }
+}
+

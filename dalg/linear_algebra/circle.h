@@ -4,22 +4,21 @@
 #include <optional>
 
 #include "vec2d.h"
-#include "shape.h"
 #include "aabb.h"
 #include "utility.h"
 
 namespace dalg
 {
     template <typename T>
-    class Circle : public Shape<T>
+    class Circle
     {
     public:
 	Circle() :
-	    Shape<T>(ShapeType::circle), center{}, radius{0}, prec{DEFAULT_PREC}
+	    center{}, radius{0}, prec{DEFAULT_PREC}
 	    {}
 	
 	Circle(Vec2d<T> const& center, T radius, p_type prec = static_cast<p_type>(DEFAULT_PREC)) :
-	    Shape<T>(ShapeType::circle), center{center}, radius{radius}, prec{prec}
+	    center{center}, radius{radius}, prec{prec}
 	    {
 		this->center.prec = prec;
 	    }

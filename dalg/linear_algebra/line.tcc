@@ -18,6 +18,19 @@ namespace dalg
     }
 
     template <typename T>
+    bool Line<T>::on_line(Vec2d<T> const& pt) const
+    {
+	//This is a point, check if both points are the same
+	if (std::abs(u.x) < prec && std::abs(u.y) < prec)
+	{
+	    return p0 == pt;
+	}
+    
+	T t { dot( (pt - p0), u) / dot(u, u) };
+	return (p0 + u * t) == pt;
+    }
+
+    template <typename T>
     bool parallel(Line<T> const& l1, Line<T> const& l2)
     {
 	p_type prec = get_pref_prec(l1.prec, l2.prec);

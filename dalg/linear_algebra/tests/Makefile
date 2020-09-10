@@ -21,8 +21,7 @@ test_main.o :   ${CATCH_DIR}/test_main.o \
 		${BUILD_DIR}/test_polygon.o \
 		${BUILD_DIR}/test_aabb.o \
 		${BUILD_DIR}/test_circle.o \
-		${BUILD_DIR}/test_intersect.o \
-		${BUILD_DIR}/test_rectangle.o
+		${BUILD_DIR}/test_intersect.o
 
 	${CC} ${FLAGS} \
 	${CATCH_DIR}/test_main.o \
@@ -32,17 +31,13 @@ test_main.o :   ${CATCH_DIR}/test_main.o \
 	${BUILD_DIR}/test_polygon.o \
 	${BUILD_DIR}/test_aabb.o \
 	${BUILD_DIR}/test_circle.o \
-	${BUILD_DIR}/test_intersect.o \
-	${BUILD_DIR}/test_rectangle.o
+	${BUILD_DIR}/test_intersect.o
 
 ${CATCH_DIR}/test_main.o : test_main.cpp
 	${CC} ${FLAGS} -c test_main.cpp -o ${CATCH_DIR}/test_main.o
 
 ${BUILD_DIR}/test_intersect.o : test_intersect.cpp
 	${CC} ${FLAGS} -c test_intersect.cpp -o ${BUILD_DIR}/test_intersect.o
-
-${BUILD_DIR}/test_rectangle.o : test_rectangle.cpp
-	${CC} ${FLAGS} -c test_rectangle.cpp -o ${BUILD_DIR}/test_rectangle.o
 
 ${BUILD_DIR}/test_aabb.o : test_aabb.cpp
 	${CC} ${FLAGS} -c test_aabb.cpp -o ${BUILD_DIR}/test_aabb.o

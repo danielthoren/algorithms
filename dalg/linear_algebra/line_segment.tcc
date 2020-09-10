@@ -25,14 +25,7 @@ namespace dalg
     template <typename T>
     bool LineSegment<T>::on_line(Vec2d<T> const& pt) const
     {
-	//This is a point, check if both points are the same
-	if (std::abs(u.x) < prec && std::abs(u.y) < prec)
-	{
-	    return p0 == pt;
-	}
-    
-	T t { dot( (pt - p0), u) / dot(u, u) };
-	return (p0 + u * t) == pt;
+	return Line<T>{p0, u, prec}.on_line(pt);
     }
 
     template <typename T>

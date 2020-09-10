@@ -16,12 +16,12 @@ namespace dalg
     class Line
     {
     public:
-	Line(Vec2d<T> p0, Vec2d<T> u,
+	Line(Vec2d<T> const& p0, Vec2d<T> const& u,
 	     p_type prec = static_cast<p_type>( DEFAULT_PREC ))
 	    : p0{p0}, u{u}, prec{prec}
 	    {
-		p0.prec = prec;
-		u.prec = prec;
+		this->p0.prec = prec;
+		this->u.prec = prec;
 	    }
     
 	Line(T x0, T y0, T x1, T y1,
@@ -31,6 +31,12 @@ namespace dalg
 
 	bool operator==(Line<T> const& other) const;
 	bool operator!=(Line<T> const& other) const;
+
+	/**
+	 * Returns true if this line contains the given point,
+	 * otherwise false
+	 */
+	bool on_line(Vec2d<T> const& pt) const;
 
 	//p(s) = p0 + su
 	Vec2d<T> p0;

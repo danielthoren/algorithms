@@ -4,7 +4,6 @@
 #include <variant>
 
 #include "vec2d.h"
-#include "shape.h"
 #include "utility.h"
 #include "aabb.h"
 
@@ -20,12 +19,16 @@ namespace dalg
     template<typename T>
     class LineSegment
     {
-    public:	
+    public:
+
+	/**
+	 * Constructs a line segment between the given points p1, p2.
+	 */
 	LineSegment(Vec2d<T> const& p0, Vec2d<T> const& p1, p_type prec = static_cast<p_type>(DEFAULT_PREC))
 	    :  p0{p0}, u{p1 - p0}
 	    {
-		p0.prec = prec;
-		u.prec = prec;
+		this->p0.prec = prec;
+		this->u.prec = prec;
 	    }
 
 	LineSegment(T x0, T y0, T x1, T y1, p_type prec = static_cast<p_type>(DEFAULT_PREC))
