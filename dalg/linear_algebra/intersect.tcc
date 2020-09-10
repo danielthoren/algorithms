@@ -527,7 +527,19 @@ namespace dalg
 	return {};
     }
 
-    
+
+    /**
+     * Author: Daniel Thorén
+     *
+     * This function uses the Line-line intersect function and the
+     * LineSegment::on_segment() functions to determine if and how the
+     * given line and the given segment intersects.
+     *
+     * l    : Line
+     * lseg : Line segment
+     *
+     * return: The intersection point if there is one, else monostate 
+     */
     template <typename T>
     std::variant<std::monostate, Vec2d<T>, LineSegment<T>>
     intersect(Line<T> const& l, LineSegment<T> const& lseg)
@@ -555,5 +567,38 @@ namespace dalg
 	
 	return {};
     }
+
+    template <typename T>
+    std::variant<std::monostate, Vec2d<T>, LineSegment<T>>
+    intersect(LineSegment<T> const& lseg, Line<T> const& l)
+    {
+	return intersect(l, lseg);
+    }
+
+
+    /**
+     * Author: Daniel Thorén
+     *
+     * Uses the LineSegment-LineSegment intersection method to see if
+     * and how the given polygons intersect.
+     *
+     * Time complexity: O(n^2) n = sum( LineSegments in p1 & p2 )
+     *
+     * Note: This can be accomplished faster if using a quad tree to
+     * remove most of the posibilities (LineSegments).
+     *
+     * p1    : Polygon 1
+     * p2    : Polygon 2
+     *
+     * return: The intersection points and/or lines of p1 and p2
+     */
+    // template <typename T>
+    // std::variant<std::monostate, Vec2d<T>> //, std::pair<std::vector<Vec2d<T>>, std::vector<LineSegment<T>>>>
+    // intersect(Polygon<T> const& p1, Polygon<T> const& p2)
+    // {
+    // 	std::vector<LineSegment<T>> seg1;
+
+    // 	return {};
+    // }
     
 }

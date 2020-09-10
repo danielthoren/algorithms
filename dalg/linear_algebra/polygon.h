@@ -38,6 +38,16 @@ namespace dalg
 	std::vector<Vec2d<T>>& get_points();
 
 	/**
+	 * Returns all the line segment that this polygon concists of
+	 *
+	 * Time Complexity: O(n) n = points
+	 *
+	 * return: vector containing all LineSegments along the border
+	 *         of the polygon
+	 */
+	std::vector<LineSegment<T>> get_segments() const;
+
+	/**
 	 * Calculates the area of the polygon and returns it. Awnswer is
 	 * always posetive.
 	 *

@@ -20,6 +20,28 @@ namespace dalg
 	return points;
     }
 
+    template<typename T>
+    std::vector<LineSegment<T>> Polygon<T>::get_segments() const
+    {
+	std::vector<LineSegment<T>> segs{};
+	if (points.size() <= 1)
+	{
+	    return segs;
+	}
+
+	for (unsigned i{0}; i < points.size() - 1; i++)
+	{
+	    segs.push_back( LineSegment<T>{points[i], points[i+1]} );
+	}
+
+	if (points.size() > 2)
+	{
+	    segs.push_back( LineSegment<T>{points[points.size() - 1], points[0]} );
+	}
+
+	return segs;
+    }
+
     template <typename T>
     template <typename F>
     F Polygon<T>::get_area() const

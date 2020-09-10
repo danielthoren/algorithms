@@ -59,7 +59,7 @@ TEST_CASE( "Polygon Constructor test", "[Polygon]")
     }
 }
 
-TEST_CASE( "Polygon add_point test" )
+TEST_CASE( "Polygon add_point test", "[Polygon]" )
 {
     SECTION( "Test add_point" )
     {
@@ -85,6 +85,68 @@ TEST_CASE( "Polygon add_point test" )
 	CHECK( n_points[1] == p2 );
 	CHECK( n_points[2] == p4 );
 	CHECK( n_points[3] == p3 );
+    }
+}
+
+TEST_CASE( "Polygon get_segments test", "[Polygon]" )
+{
+    SECTION( "Normal test" )
+    {
+	Vec2d<int> p1(0, 0);
+	Vec2d<int> p2(1, 1);
+	Vec2d<int> p3(1, -1);
+	std::vector<Vec2d<int>> pts{p1, p2, p3};
+
+	Polygon poly(pts);
+	
+	std::vector<LineSegment<int>> segs = poly.get_segments();
+
+	REQUIRE( segs.size() == 3 );
+
+	CHECK( segs[0] == LineSegment{p1, p2} );
+	CHECK( segs[1] == LineSegment{p2, p3} );
+	CHECK( segs[2] == LineSegment{p3, p1} );	
+    }
+
+    SECTION( "Empty polygon" )
+    {
+	std::vector<Vec2d<int>> pts{};
+
+	Polygon poly(pts);
+	
+	std::vector<LineSegment<int>> segs = poly.get_segments();
+
+	REQUIRE( segs.size() == 0 );
+    }
+
+
+    SECTION( "One point" )
+    {
+	Vec2d<int> p1(0, 0);
+	
+	std::vector<Vec2d<int>> pts{p1};
+
+	Polygon poly(pts);
+	
+	std::vector<LineSegment<int>> segs = poly.get_segments();
+
+	REQUIRE( segs.size() == 0 );
+    }
+
+    SECTION( "Two points" )
+    {
+	Vec2d<int> p1(0, 0);
+	Vec2d<int> p2(1, 1);
+	
+	std::vector<Vec2d<int>> pts{p1, p2};
+
+	Polygon poly(pts);
+	
+	std::vector<LineSegment<int>> segs = poly.get_segments();
+
+	REQUIRE( segs.size() == 1 );
+
+	CHECK( segs[0] == LineSegment<int>{p1, p2} );
     }
 }
 
