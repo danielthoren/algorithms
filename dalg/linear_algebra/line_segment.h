@@ -68,17 +68,6 @@ namespace dalg
 	 * otherwise false
 	 */
 	bool on_segment(Vec2d<T> const& pt) const;
-	
-	/**
-	 * Returns the point where this Line and other intersects If they
-	 * don't intersect then return point(std::numeric_limits<T>::min())
-	 *
-	 * other : The line to check for intersection with
-	 * return: The intersection point. If there is non then return point with
-	 *         std::numeric_limits<T>::min() as its values
-	 */
-	std::variant<std::monostate, Vec2d<T>, LineSegment<T>>
-	intersect(LineSegment<T> const& other) const;
 
 	/**
 	 * Returns the AABB that encloses this line segment
@@ -102,7 +91,6 @@ namespace dalg
 	 */
 	Vec2d<T> get_vec() const;
 
-    private:
 	//p(s) = p0 + su
 	Vec2d<T> p0;
 	Vec2d<T> u;    // u = p1 - p0

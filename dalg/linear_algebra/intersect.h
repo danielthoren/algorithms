@@ -7,6 +7,8 @@
 #include "shape.h"
 #include "polygon.h"
 #include "rectangle.h"
+#include "circle.h"
+#include "line.h"
 
 namespace dalg
 {
@@ -91,6 +93,19 @@ namespace dalg
     template <typename T>
     std::variant<std::monostate, Vec2d<T>, Line<T> >
     intersect(Line<T> const& l1, Line<T> const& l2);
+
+    /**
+     * Returns the point where l1 and l2 intersects If they
+     * don't intersect then return monostate
+     *
+     * l1 : Line segment 1
+     * l2 : Line segment 2
+     *
+     * return: The intersection point if there is one, else monostate
+     */
+    template <typename T>
+    std::variant<std::monostate, Vec2d<T>, LineSegment<T>>
+    intersect(LineSegment<T> const& l1, LineSegment<T> const& l2);
 }
 
 #include "intersect.tcc"
