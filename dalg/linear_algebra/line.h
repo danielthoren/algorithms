@@ -19,7 +19,10 @@ namespace dalg
 	Line(Vec2d<T> p0, Vec2d<T> u,
 	     p_type prec = static_cast<p_type>( DEFAULT_PREC ))
 	    : p0{p0}, u{u}, prec{prec}
-	    {}
+	    {
+		p0.prec = prec;
+		u.prec = prec;
+	    }
     
 	Line(T x0, T y0, T x1, T y1,
 	     p_type prec = static_cast<p_type>( DEFAULT_PREC ))

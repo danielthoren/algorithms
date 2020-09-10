@@ -24,8 +24,8 @@ namespace dalg
 	LineSegment(Vec2d<T> const& p0, Vec2d<T> const& p1, p_type prec = static_cast<p_type>(DEFAULT_PREC))
 	    :  p0{p0}, u{p1 - p0}
 	    {
-		this->p0.prec = prec;
-		this->u.prec = prec;
+		p0.prec = prec;
+		u.prec = prec;
 	    }
 
 	LineSegment(T x0, T y0, T x1, T y1, p_type prec = static_cast<p_type>(DEFAULT_PREC))

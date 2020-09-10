@@ -24,30 +24,16 @@ namespace dalg
 		this->center.prec = prec;
 	    }
 
-	bool operator==(Circle<T> const& other) const
-	    {
-		p_type precision = get_pref_prec(prec, other.prec);
-		
-		return std::abs(radius - other.radius) < precision && this->center == other.center;
-	    }
+	bool operator==(Circle<T> const& other) const;
 
-	bool operator!=(Circle<T> const& other) const
-	    {
-		return !(*this == other);
-	    }
+	bool operator!=(Circle<T> const& other) const;
 
 	/**
 	 * Returns the AABB that encloses this circle segment
 	 *
 	 * return: AABB encloding this circle
 	 */
-	AABB<T> get_aabb() const
-	    {
-		Vec2d<T> max{center.x + radius, center.y + radius}; //up right corner
-		Vec2d<T> min{center.x - radius, center.y - radius}; //down left corner
-
-		return AABB{min, max};
-	    }
+	AABB<T> get_aabb() const;
 
 	Vec2d<T> center;
 	T radius;
