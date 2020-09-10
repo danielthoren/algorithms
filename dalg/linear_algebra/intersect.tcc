@@ -234,6 +234,13 @@ namespace dalg
     std::variant<std::monostate, Vec2d<T>, std::pair<Vec2d<T>, Vec2d<T>> >
     intersect(Circle<T> const& c, LineSegment<T> const& lseg)
     {
+	//Check if the bounding boxes of the circle and line_segment
+	//overlap, if not hten return monostate
+	if (!c.get_aabb().overlap(lseg.get_aabb()))
+	{
+	    return {};
+	}
+	
 	Line<T> l{lseg.get_start(), lseg.get_end()};
 	auto col = intersect<T>(c, l);
 	

@@ -18,11 +18,11 @@ namespace dalg
      * Line segment represented by its endpoints
      */
     template<typename T>
-    class LineSegment : public Shape<T>
+    class LineSegment
     {
     public:	
 	LineSegment(Vec2d<T> const& p0, Vec2d<T> const& p1, p_type prec = static_cast<p_type>(DEFAULT_PREC))
-	    :  Shape<T>(ShapeType::lineSegment), p0{p0}, u{p1 - p0}
+	    :  p0{p0}, u{p1 - p0}
 	    {
 		this->p0.prec = prec;
 		this->u.prec = prec;
@@ -85,7 +85,7 @@ namespace dalg
 	 *
 	 * return: AABB encloding line segment
 	 */
-	AABB<T> get_aabb() const override;
+	AABB<T> get_aabb() const;
 	
 	/**
 	 * returns p0 + u

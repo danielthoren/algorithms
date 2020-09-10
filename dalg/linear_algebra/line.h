@@ -6,7 +6,6 @@
 
 namespace dalg
 {
-
     /**
      * Author: Daniel Thorén
      *
@@ -27,31 +26,41 @@ namespace dalg
 	    : Line({x0, y0}, {x1, y1 }, prec)
 	    {}
 
-	/**
-	 * Checks if the Lines are equal (parallel and has the same points)
-	 */
 	bool operator==(Line<T> const& other) const;
 	bool operator!=(Line<T> const& other) const;
 
-	bool is_parallel(Line<T> const& other) const;
-
-	/**
-	 * Returns p0
-	 */
-	Vec2d<T> get_start() const;
-
-	/**
-	 * Returns u
-	 */
-	Vec2d<T> get_vec() const;
-
-    private:
 	//p(s) = p0 + su
 	Vec2d<T> p0;
 	Vec2d<T> u;
 	p_type prec;
     };
 
+
+    /**
+     * Author: Daniel Thorén
+     *
+     * Checks if the given lines are parallel
+     *
+     * l1    : First line
+     * l2    : Second line
+     *
+     * return: True if l1 & l2 are parallel, else false 
+     */
+    template <typename T>
+    bool parallel(Line<T> const& l1, Line<T> const& l2);
+
+
+    
+    /**
+     * Author: Daniel Thorén
+     *
+     * Calculates the projection of point pt on the line l
+     *
+     * pt    : The point to project
+     * l     : The line to project onto
+     *
+     * return: The projection of pt onto l
+     */
     template <typename T>
     Vec2d<T> project(Vec2d<T> const& pt, Line<T> const& l);
 }
